@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>1489781 SodroN</title>
+    <link rel="icon" href="https://papayaent.com/favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+        
+        .bg-image {
+            position: absolute;
+            width: 200%;
+            height: 120%;
+            background: url('https://papayaent.com/h5/img/long.77aa6a69.png') center/cover no-repeat;
+            animation: slide 30s ease-in-out infinite;
+            opacity: 0.8;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .logo-container {
+            margin-top: 10vh;
+            z-index: 2;
+            text-align: center;
+            width: 100%;
+        }
+        
+        .logo {
+            width: 60%;
+            max-width: 120px;
+            filter: drop-shadow(0 0 15px rgba(255, 200, 0, 0.7));
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .white-box {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 300px;
+            border: 3px solid white;
+            border-radius: 10px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+            font-size: 16px;
+            line-height: 1.5;
+            backdrop-filter: blur(5px);
+        }
+        
+        .btn-container {
+            margin-top: 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 2;
+            gap: 15px;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #ffcc00, #ff9900);
+            color: #000;
+            border: none;
+            border-radius: 50px;
+            padding: 15px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            width: 80%;
+            max-width: 300px;
+            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
+        }
+        
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
+        
+        
+        .hacker-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .matrix-rain {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+        }
+        
+        .crack-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,10 Q30,5 50,20 T90,10" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M20,30 Q40,25 60,40 T80,30" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M30,50 Q50,45 70,60 T90,50" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M10,70 Q30,65 50,80 T90,70" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/></svg>');
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            opacity: 0;
+            animation: crackAppear 1.5s forwards;
+            z-index: 2;
+        }
+        
+        .hacker-text {
+            color: lime;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            margin: 20px;
+            font-size: 18px;
+            opacity: 0;
+            text-shadow: 0 0 0px lime;
+            z-index: 3;
+            position: relative;
+            animation: textAppear 2s 0.5s forwards;
+        }
+        
+        .binary-code {
+            position: absolute;
+            color: rgba(0, 255, 0, 0.3);
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 1;
+            animation: binaryScroll 10s linear infinite;
+        }
+        
+        .glitch-box {
+            position: relative;
+            border: 2px solid lime;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.1);
+            z-index: 4;
+            animation: glitch 1s linear infinite alternate;
+        }
+      
+         .profile-image {
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            border-radius: 3px;
+            margin: 20px auto;
+            display: block;
+        }
+      
+      
+        @keyframes crackAppear {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 0.5; }
+        }
+        
+        @keyframes textAppear {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes binaryScroll {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        
+        @keyframes glitch {
+            0% { transform: translate(0); box-shadow: 0 0 10px lime; }
+            25% { transform: translate(-2px, 2px); }
+            50% { transform: translate(2px, -2px); box-shadow: 0 0 15px lime; }
+            75% { transform: translate(-2px, -2px); }
+            100% { transform: translate(2px, 2px); box-shadow: 0 0 20px lime; }
+        }
+        
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.2; }
+        }
+        
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 255, 0, 0.1) 0%,
+                rgba(0, 255, 0, 0) 5%
+            );
+            background-size: 100% 5px;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.1s infinite;
+        }
+        
+        @media (max-height: 600px) {
+            .logo-container {
+                margin-top: 5vh;
+            }
+            .logo {
+                width: 50%;
+            }
+            .white-box {
+                margin-top: 10px;
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-container">
+        <div class="bg-image"></div>
+    </div>
+    
+    <div class="logo-container">
+        <img src="https://papayaent.com/h5/img/logo.6061c48e.png" alt="Papaya Entertainment" class="logo">
+        
+        <center>
+            <div class="white-box">
+                selamat datang di welcome!<br>
+                i`am SodroN 1489781
+            </div>
+            
+            <div class="btn-container">
+                <a href="#" class="btn" id="viewBtn">VIEW</a>
+            </div>
+        </center>
+    </div>
+
+    <div class="hacker-overlay" id="hackerOverlay">
+        <div class="matrix-rain" id="matrixRain"></div>
+        <div class="crack-effect"></div>
+        <div class="scanlines"></div>
+        
+        <div class="glitch-box">
+            <div class="hacker-text">
+                SYSTEM ACCESS GRANTED<br>
+                1489781 SodroN<br>
+                 <img src="https://s4.gifyu.com/images/bpYBu.png" alt="SodroN Profile" class="profile-image">
+                WELCOME TO THE SYSTEM<br>
+              <br><br><br>
+               <a href="#" class="btn">🖲️👉BACK👈🖲️</a>
+            </div>
+        </div>
+    </div>
+
+    
+    <audio id="hackerSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/190/190-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="matrixSound" preload="auto">
+        <source src="https://lq.denger.in" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+        
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || // F12
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || // Ctrl+Shift+I
+                (e.ctrlKey && e.shiftKey && e.keyCode == 74) || // Ctrl+Shift+J
+                (e.ctrlKey && e.keyCode == 85)) { // Ctrl+U
+                e.preventDefault();
+                alert('Access denied');
+                return false;
+            }
+        };
+        
+        if (window.top !== window.self) {
+            window.top.location = window.self.location;
+        }
+
+        function createMatrixRain() {
+            const chars = "01";
+            const container = document.getElementById('matrixRain');
+            const fontSize = 14;
+            const columns = Math.floor(window.innerWidth / fontSize);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.style.position = 'absolute';
+                column.style.top = '-50px';
+                column.style.left = (i * fontSize) + 'px';
+                column.style.fontSize = fontSize + 'px';
+                column.style.fontFamily = 'Courier New, monospace';
+                column.style.color = 'rgba(0, 255, 0, 0.8)';
+                column.style.width = fontSize + 'px';
+                column.style.height = '100%';
+                column.style.overflow = 'hidden';
+                column.style.textAlign = 'center';
+                
+                let text = '';
+                const length = Math.floor(Math.random() * 20) + 10;
+                for (let j = 0; j < length; j++) {
+                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                
+                column.innerHTML = text;
+                column.dataset.text = text;
+                column.dataset.position = 0;
+                column.dataset.speed = Math.random() * 3 + 1;
+                
+                container.appendChild(column);
+            }
+            
+            function animateMatrix() {
+                const columns = document.querySelectorAll('#matrixRain div');
+                columns.forEach(column => {
+                    let position = parseFloat(column.dataset.position);
+                    const speed = parseFloat(column.dataset.speed);
+                    
+                    position += speed;
+                    if (position > 100) {
+                        position = -20;
+                        
+                        let newText = '';
+                        const length = Math.floor(Math.random() * 20) + 10;
+                        for (let j = 0; j < length; j++) {
+                            newText += chars.charAt(Math.floor(Math.random() * chars.length));
+                        }
+                        column.dataset.text = newText;
+                        column.innerHTML = newText;
+                    }
+                    
+                    column.style.top = position + '%';
+                    column.dataset.position = position;
+                    
+                    
+                    const textLength = column.dataset.text.length;
+                    const newText = column.dataset.text.split('').map((char, index) => {
+                        const opacity = Math.min(1, index / (textLength / 2));
+                        return `<span style="opacity:${opacity}">${char}</span>`;
+                    }).join('');
+                    column.innerHTML = newText;
+                });
+                
+                if (document.getElementById('hackerOverlay').style.display === 'flex') {
+                    requestAnimationFrame(animateMatrix);
+                }
+            }
+            
+            animateMatrix();
+        }
+
+        document.getElementById('viewBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            
+            document.body.style.overflow = 'hidden';
+            
+            const overlay = document.getElementById('hackerOverlay');
+            overlay.style.display = 'flex';
+            
+            
+            createMatrixRain();
+            
+           
+            const sound1 = document.getElementById('hackerSound');
+            const sound2 = document.getElementById('matrixSound');
+            sound1.volume = 0.4;
+            sound2.volume = 0.9;
+            sound1.play();
+            sound2.loop = true;
+            sound2.play();
+            
+            
+            for (let i = 0; i < 20; i++) {
+                const binary = document.createElement('div');
+                binary.className = 'binary-code';
+                binary.style.top = Math.random() * 100 + '%';
+                binary.style.left = Math.random() * 100 + '%';
+                binary.style.animationDelay = Math.random() * 5 + 's';
+                
+                let binaryText = '';
+                for (let j = 0; j < 50; j++) {
+                    binaryText += Math.round(Math.random()) + ' ';
+                }
+                binary.textContent = binaryText;
+                
+                overlay.appendChild(binary);
+            }
+            
+          
+            setTimeout(function() {
+                overlay.style.display = 'none';
+                
+                document.body.style.overflow = 'hidden';
+                sound1.pause();
+                sound1.currentTime = 0;
+                sound2.pause();
+                sound2.currentTime = 0;
+                
+                
+                const binaries = document.querySelectorAll('.binary-code');
+                binaries.forEach(b => b.remove());
+                
+                
+                document.getElementById('matrixRain').innerHTML = '';
+            }, unlimited);
+        });
+    </script>
+</body>
+</html>
