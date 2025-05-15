@@ -112,7 +112,6 @@
             100% { transform: translateX(0); }
         }
         
-        
         .hacker-overlay {
             position: fixed;
             top: 0;
@@ -181,7 +180,7 @@
             animation: glitch 1s linear infinite alternate;
         }
       
-         .profile-image {
+        .profile-image {
             width: 100%;
             max-width: 480px;
             height: auto;
@@ -190,7 +189,68 @@
             display: block;
         }
       
-      
+        .book-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 100;
+            display: none;
+            overflow-y: auto;
+            padding: 20px;
+            color: white;
+        }
+        
+        .book-content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #ffcc00;
+        }
+        
+        .book-content h1 {
+            color: #ffcc00;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .book-content h2 {
+            color: #ff9900;
+            margin-top: 30px;
+        }
+        
+        .book-content p.quote {
+            margin: 15px 0;
+            line-height: 1.6;
+        }
+        
+        .book-content em {
+            color: #ccc;
+            display: block;
+            margin: 20px 0;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        .close-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff3333;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 101;
+        }
+        
         @keyframes crackAppear {
             0% { transform: scale(0.5); opacity: 0; }
             50% { transform: scale(1.1); opacity: 0.8; }
@@ -267,7 +327,8 @@
             </div>
             
             <div class="btn-container">
-                <a href="#" class="btn" id="viewBtn">VIEW</a>
+                <a href="#" class="btn" id="viewBtn">📼Radio</a><br>
+                <a href="#" class="btn" id="bookBtn">📖Tentang Titid</a>
             </div>
         </center>
     </div>
@@ -282,13 +343,63 @@
                 SYSTEM ACCESS GRANTED<br>
                 1489781 SodroN<br>
                  <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
-                WELCOME TO THE SYSTEM<br>
+                WELCOME TO THE RADIO<br>
               <br><br><br>
                <a href="https://sodronppy.github.io/" class="btn">🖲️👉BACK👈🖲️</a>
             </div>
         </div>
     </div>
-
+    
+    <div class="book-overlay" id="bookOverlay">
+        <button class="close-btn" id="closeBookBtn">×</button>
+        <div class="book-content">
+            <h1>KATA-KATA TITID: Bijak, Binal, tapi Bermakna</h1>
+            <hr>
+            <h2>Pembuka Absurd</h2>
+            <em>"Buku ini tidak mengajarkan moral, tapi bisa bikin kamu sadar: kadang yang paling bikin ketawa… justru yang paling relate."</em>
+            <h2>Bagian 1: Kata-Kata Titid & Hidup</h2>
+            <p class="quote">Hidup itu kayak titid—kalau nggak naik, ya lemes. Tapi dua-duanya butuh alasan.</p>
+            <p class="quote">Kadang yang bikin hidup berat bukan masalahnya, tapi ekspektasi—sama kayak titid waktu dingin: kecil, tapi dituntut besar.</p>
+            <p class="quote">Hidup tanpa tujuan itu kayak titid nganggur—bingung mau berdiri buat siapa.</p>
+            <p class="quote">Banyak orang kelihatan hebat, padahal cuma ketolong lighting dan filter. Titid juga bisa terlihat panjang dari angle bawah.</p>
+            <p class="quote">Jangan paksain tegang kalau situasinya nggak mendukung. Titid aja tahu kapan waktunya istirahat.</p>
+            <p class="quote">Hidup itu keras, tapi kamu nggak harus keras tiap saat. Titid pun butuh jeda.</p>
+            <p class="quote">Terkadang diam lebih baik. Titid juga nggak perlu ngomong, tapi semua tahu kalau dia serius.</p>
+            <p class="quote">Jangan cuma kelihatan gagah pas berdiri. Titid juga bisa gitu, tapi kalau nggak bermanfaat, ya percuma.</p>
+            <h2>Bagian 2: Cinta, Napsu & Kenyataan Pahit</h2>
+            <p class="quote">Cinta itu kayak coli—kalau keseringan sendiri, lama-lama tumpul perasaannya.</p>
+            <p class="quote">Jangan percaya dia yang bilang "aku serius"—titid juga tegang kalau dikasih sinyal.</p>
+            <p class="quote">Kadang yang bikin baper bukan kata-kata manis, tapi kenangan pas lagi buka celana.</p>
+            <p class="quote">Hubungan tanpa kejelasan itu kayak grepe-grepe di bioskop—deg-degan, tapi nggak ke mana-mana.</p>
+            <p class="quote">Jangan bucin sama yang nggak pasti, nanti kayak titid pas salah timing—udah siap, malah zonk.</p>
+            <p class="quote">Cinta sejati bukan yang bikin deg-degan, tapi yang tetap berdiri walau udah capek.</p>
+            <p class="quote">Kalau dia cuma datang pas butuh, itu bukan cinta. Itu kayak tisu toilet—dipakai, lalu dibuang.</p>
+            <p class="quote">Jangan jadi cadangan. Titid aja maunya satu lubang yang konsisten.</p>
+            <p class="quote">Ada kalanya kita harus pura-pura kuat, padahal hati kayak titid abis diguyur air dingin.</p>
+            
+            <h2>Bagian 3: Sindiran Santai Tapi Nylekit</h2>
+            <p class="quote">Orang sok bijak itu kayak titid tanpa fungsi—ngomong doang, tapi nggak ngasih solusi.</p>
+            <p class="quote">Jangan merasa paling benar, bahkan titid pun harus masuk ke tempat yang sesuai.</p>
+            <p class="quote">Lo bukan siapa-siapa, bro. Titid aja baru dianggap penting kalau udah berdiri.</p>
+            <p class="quote">Banyak yang kelihatan dewasa, tapi kelakuan masih kayak titid pas liat paha—nggak bisa fokus.</p>
+            <p class="quote">Jangan suka buka aib orang, kalo celana dalam sendiri sobeknya udah dari zaman orok.</p>
+            <p class="quote">Jadi bijak itu penting, tapi jangan terlalu kaku. Ingat, titid yang fleksibel lebih disukai.</p>
+            <p class="quote">Sombong dikit boleh, asal sadar kapasitas. Jangan kayak titid kecil tapi mental badak.</p>
+            <p class="quote">Banyak yang ngaku dewasa, tapi dikit-dikit ngambek—titid aja tahu kapan harus lemes.</p>
+            <p class="quote">Kalo nggak bisa bikin bahagia, minimal jangan jadi beban. Titid aja tahu diri kalo nggak dibutuhin.</p>
+            <h2>Bagian 4: Penutup Goblok Tapi Dalem</h2>
+            <p class="quote">Hidup itu nggak selalu soal berdiri tegak, kadang harus tau kapan pura-pura lemes biar aman.</p>
+            <p class="quote">Bahagia itu sederhana, kayak titid abis denger suara pintu kamar dikunci.</p>
+            <p class="quote">Jangan terlalu berharap sama orang, nanti kayak titid—udah berdiri, tapi nggak kepake.</p>
+            <p class="quote">Hidup butuh keseimbangan—kayak titid dan hati, satu keras, satu sensitif.</p>
+            <p class="quote">Kadang solusi hidup bukan tambah pintar, tapi tambah bodo amat.</p>
+            <p class="quote">Belajar ikhlas dari titid: meski sering dibohongi dengan janji manis, dia tetap berdiri duluan.</p>
+            <p class="quote">Jangan terlalu takut gagal. Titid juga sering salah arah, tapi tetap berusaha masuk.</p>
+            <p class="quote">Jadi orang baik itu penting, tapi tetap pasang batas. Titid aja tahu kapan harus pakai pengaman.</p>
+            <p class="quote">Yang penting bukan seberapa sering jatuh, tapi seberapa sering kamu bisa berdiri lagi… kayak titid.</p>
+            <em>"Kalau hidup masih terasa berat, mungkin karena kamu terlalu sering menekan sesuatu yang nggak seharusnya ditekan. Rileks, tarik napas, dan ingat: bahkan hal paling absurd pun bisa jadi pelajaran hidup."</em>
+        </div>
+    </div>
     
     <audio id="hackerSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/190/190-preview.mp3" type="audio/mpeg">
@@ -378,7 +489,6 @@
                     column.style.top = position + '%';
                     column.dataset.position = position;
                     
-                    
                     const textLength = column.dataset.text.length;
                     const newText = column.dataset.text.split('').map((char, index) => {
                         const opacity = Math.min(1, index / (textLength / 2));
@@ -398,16 +508,13 @@
         document.getElementById('viewBtn').addEventListener('click', function(e) {
             e.preventDefault();
             
-            
             document.body.style.overflow = 'hidden';
             
             const overlay = document.getElementById('hackerOverlay');
             overlay.style.display = 'flex';
             
-            
             createMatrixRain();
             
-           
             const sound1 = document.getElementById('hackerSound');
             const sound2 = document.getElementById('matrixSound');
             sound1.volume = 0.4;
@@ -415,7 +522,6 @@
             sound1.play();
             sound2.loop = true;
             sound2.play();
-            
             
             for (let i = 0; i < 20; i++) {
                 const binary = document.createElement('div');
@@ -433,7 +539,6 @@
                 overlay.appendChild(binary);
             }
             
-          
             setTimeout(function() {
                 overlay.style.display = 'none';
                 
@@ -443,13 +548,23 @@
                 sound2.pause();
                 sound2.currentTime = 0;
                 
-                
                 const binaries = document.querySelectorAll('.binary-code');
                 binaries.forEach(b => b.remove());
                 
-                
                 document.getElementById('matrixRain').innerHTML = '';
             }, unlimited);
+        });
+        
+        // Book functionality
+        document.getElementById('bookBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('bookOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        });
+        
+        document.getElementById('closeBookBtn').addEventListener('click', function(e) {
+            document.getElementById('bookOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
         });
     </script>
 </body>
