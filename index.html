@@ -160,6 +160,25 @@
             opacity: 0.7;
         }
         
+        .play-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: rgba(0, 255, 0, 0.2);
+            color: lime;
+            border: 1px solid lime;
+            font-family: 'Courier New', monospace;
+            cursor: pointer;
+            z-index: 1000;
+            display: none;
+            animation: glitch 1s linear infinite alternate;
+        }
+        
+        .play-button:hover {
+            background-color: rgba(0, 255, 0, 0.3);
+        }
+        
         @keyframes slide {
             0% { transform: translateX(0); }
             50% { transform: translateX(-50%); }
@@ -210,17 +229,12 @@
             .profile-image {
                 margin: 10px auto;
             }
-        }
-        
-        @media (max-height: 600px) {
-            .profile-image {
-                max-height: 30vh;
-                width: auto;
-            }
             
-            .hacker-text {
-                margin: 5px;
-                font-size: clamp(10px, 3vh, 14px);
+            .play-button {
+                bottom: 10px;
+                right: 10px;
+                padding: 8px 12px;
+                font-size: 14px;
             }
         }
     </style>
@@ -241,10 +255,12 @@
                 1489781 SodroN<br>
                 <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
                 WELCOME TO THE SYSTEM<br>
-                <em>Enjoy</em>
+                    <button class="play-button" id="playButton">PLAY RADIO</button>
             </div>
         </div>
     </div>
+    
+
     
     <audio id="backgroundSound" loop>
         <source src="https://lq.denger.in" type="audio/mpeg">
@@ -361,23 +377,17 @@
         // Audio handling function
         async function playAudio() {
             const sound = document.getElementById('backgroundSound');
+            const playButton = document.getElementById('playButton');
+            
             sound.volume = 0.5;
             
             try {
                 await sound.play();
+                playButton.style.display = 'none';
                 return true;
             } catch (err) {
-                // Audio was blocked, we'll enable it on user interaction
-                const enableAudio = function() {
-                    sound.play();
-                    document.removeEventListener('click', enableAudio);
-                    document.removeEventListener('touchstart', enableAudio);
-                    document.removeEventListener('keydown', enableAudio);
-                };
-                
-                document.addEventListener('click', enableAudio);
-                document.addEventListener('touchstart', enableAudio);
-                document.addEventListener('keydown', enableAudio);
+                // Show play button if audio was blocked
+                playButton.style.display = 'block';
                 return false;
             }
         }
@@ -391,6 +401,11 @@
             
             createMatrixRain();
             playAudio();
+            
+            // Setup play button click handler
+            document.getElementById('playButton').addEventListener('click', function() {
+                playAudio();
+            });
             
             // Create binary code elements
             for (let i = 0; i < 20; i++) {
