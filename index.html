@@ -1,465 +1,612 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SodroN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1489781 SodroN</title>
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-        
-        body {
             font-family: 'Courier New', monospace;
-            height: 100vh;
-            overflow: hidden;
-            position: relative;
-            background: #000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            touch-action: manipulation;
-        }
-        
-        .bg-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 1;
-        }
-        
-        .bg-image {
-            position: absolute;
-            width: 200%;
-            height: 100%;
-            background: url('https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png') center/cover no-repeat;
-            animation: slide 30s ease-in-out infinite;
-            opacity: 0.8;
-            pointer-events: none;
-            user-select: none;
-            transition: filter 1s ease;
-        }
-        
-        /* Hacker overlay styles */
-        .hacker-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            z-index: 100;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow: hidden;
-            padding: 20px;
-            transition: filter 1s ease;
-        }
-        
-        .matrix-rain {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.6;
-        }
-        
-        .crack-effect {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,10 Q30,5 50,20 T90,10" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M20,30 Q40,25 60,40 T80,30" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M30,50 Q50,45 70,60 T90,50" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/><path d="M10,70 Q30,65 50,80 T90,70" stroke="rgba(0,255,0,0.8)" fill="none" stroke-width="0.5"/></svg>');
-            background-size: 300px 300px;
-            background-repeat: repeat;
-            opacity: 0;
-            animation: crackAppear 1.5s forwards;
-            z-index: 2;
-        }
-        
-        .hacker-text {
-            color: lime;
-            font-family: 'Courier New', monospace;
+            background-color: #000;
+            color: #0f0;
             text-align: center;
-            margin: 15px;
-            font-size: clamp(14px, 3vw, 18px);
-            opacity: 0;
-            text-shadow: 0 0 0px lime;
-            z-index: 3;
-            position: relative;
-            animation: textAppear 2s 0.5s forwards;
-            line-height: 1.5;
-            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(0, 255, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        .container {
             max-width: 800px;
-        }
-        
-        .binary-code {
-            position: absolute;
-            color: rgba(0, 255, 0, 0.3);
-            font-size: 12px;
-            white-space: nowrap;
-            z-index: 1;
-            animation: binaryScroll 10s linear infinite;
-            user-select: none;
-        }
-        
-        .glitch-box {
-            position: relative;
-            border: 2px solid lime;
-            padding: clamp(10px, 3vw, 20px);
-            background-color: rgba(0, 0, 0, 0.1);
-            z-index: 4;
-            animation: glitch 1s linear infinite alternate;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+            border: 1px solid #0f0;
             width: 90%;
-            max-width: 600px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-      
-        .profile-image {
-            width: 100%;
-            max-width: 300px;
-            height: auto;
-            border-radius: 3px;
-            margin: 15px auto;
-            display: block;
-            border: 1px solid rgba(0, 255, 0, 0.5);
-            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            
+            position: relative;
+            overflow: hidden;
         }
         
-        .scanlines {
+        .container::before {
+            content: "";
             position: absolute;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 255, 0, 0.1) 0%,
-                rgba(0, 255, 0, 0) 5%
-            );
-            background-size: 100% 5px;
-            z-index: 2;
-            pointer-events: none;
-            animation: flicker 0.1s infinite;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+            animation: scanline 3s linear infinite;
         }
         
-        .audio-status {
-            color: lime;
-            font-size: 12px;
-            margin-top: 10px;
-            text-align: center;
-            opacity: 0.7;
+        @keyframes scanline {
+            0% { top: 0; }
+            100% { top: 100%; }
         }
         
-        .play-button {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 15px;
-            background-color: rgba(0, 255, 0, 0.2);
-            color: lime;
-            border: 1px solid lime;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
-            z-index: 1000;
-            display: none;
-            animation: glitch 1s linear infinite alternate;
+        h1 {
+            color: #0f0;
+            text-shadow: 0 0 5px #0f0;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+            font-weight: normal;
         }
         
-        .play-button:hover {
-            background-color: rgba(0, 255, 0, 0.3);
-        }
-        
-        /* Blur effect class */
-        .blur-effect {
-            filter: blur(5px);
-        }
-        
-        @keyframes slide {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
-        
-        @keyframes crackAppear {
-            0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.1); opacity: 0.8; }
-            100% { transform: scale(1); opacity: 0.5; }
-        }
-        
-        @keyframes textAppear {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes binaryScroll {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-        
-        @keyframes glitch {
-            0% { transform: translate(0); box-shadow: 0 0 10px lime; }
-            25% { transform: translate(-2px, 2px); }
-            50% { transform: translate(2px, -2px); box-shadow: 0 0 15px lime; }
-            75% { transform: translate(-2px, -2px); }
-            100% { transform: translate(2px, 2px); box-shadow: 0 0 20px lime; }
+        .garuda {
+            font-size: 3rem;
+            margin: 20px 0;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+            animation: flicker 1.5s infinite alternate;
         }
         
         @keyframes flicker {
-            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
-            20%, 22%, 24%, 55% { opacity: 0.2; }
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+                text-shadow: 0 0 10px #0f0;
+            }
+            20%, 24%, 55% {
+                text-shadow: 0 0 5px #0f0, 0 0 10px #0f0, 0 0 15px #0f0;
+            }
         }
         
-        /* Mobile-specific adjustments */
+        .profile-image {
+            width: 100%;
+            max-width: 350px;
+            height: 350px;
+            border-radius: 1px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        p {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            color: #0f0;
+        }
+      
+        /* Terminal-like cursor effect */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: #0f0;
+            animation: blink 1s infinite;
+            margin-left: 5px;
+            vertical-align: middle;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Binary rain effect */
+        .binary {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 768px) {
-            .glitch-box {
-                padding: 12px;
-                width: 95%;
+            h1 {
+                font-size: 2rem;
             }
             
-            .hacker-text {
-                margin: 10px;
-                font-size: clamp(12px, 4vw, 16px);
+            .garuda {
+                font-size: 2.5rem;
             }
             
-            .profile-image {
-                margin: 10px auto;
-            }
-            
-            .play-button {
-                bottom: 10px;
-                right: 10px;
-                padding: 8px 12px;
-                font-size: 14px;
+            .container {
+                padding: 15px;
+                margin-top: 20px;
             }
         }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .garuda {
+                font-size: 2rem;
+            }
+        }
+        
+        /* Hide audio controls */
+        #bgAudio, #soundcloudPlayer, #radioPlayer, #iwanFalsPlayer {
+            display: none;
+        }
+        
+       /* Hacker button style */
+        .hacker-btn {
+            background-color: transparent;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+            margin: 10px;
+        }
+        
+        .hacker-btn:hover {
+            background-color: rgba(0, 255, 0, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+        
+        .hacker-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.4), transparent);
+            transition: 0.5s;
+        }
+        
+        .hacker-btn:hover::before {
+            left: 100%;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+       
+            
+        /* Tambahkan style berikut untuk pesan proteksi */
+        .protection-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: red;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            font-size: 2rem;
+            text-align: center;
+            flex-direction: column;
+            display: none;
+        }
+        
+        .protection-message {
+            margin: 20px;
+            padding: 20px;
+            border: 2px solid red;
+            background-color: black;
+            max-width: 80%;
+        }
+   
+        .blink {
+            animation: blink 1s step-end infinite;
+        }
+  
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        
+        .profile-image2 {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            border-radius: 3px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .player-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+      
+      .hacker-btn2 {
+            background-color: transparent;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        width: 10px;
+            height: 20px;
+            background-color: #0f0;
+            animation: blink 1s infinite;
+            margin-left: 5px; }
+        
+       .hacker-btn3 {
+            background-color: transparent;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        width: 10px;
+            height: 20px;
+            background-color: #0f0;
+            animation: blink 2s infinite;
+            margin-left: 3px; }
+             
+                .hacker-btn4 {
+            background-color: transparent;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+        width: 10px;
+            height: 20px;
+            background-color: #0f0;
+            animation: blink 3s infinite;
+            margin-left: 4px; }
+        
     </style>
 </head>
 <body>
-    <div class="bg-container">
-        <div class="bg-image"></div>
-    </div>
-    
-    <div class="hacker-overlay" id="hackerOverlay">
-        <div class="matrix-rain" id="matrixRain"></div>
-        <div class="crack-effect"></div>
-        <div class="scanlines"></div>
-        
-        <div class="glitch-box">
-            <div class="hacker-text">
-               <EM>WELCOME TO THE SYSTEM</EM><br>
-                SYSTEM ACCESS GRANTED<br>
-                <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
-                
-                    <button class="play-button" id="playButton">🎼KLIK & ENJOY 🎧</button>
-            </div>
+    <!-- Tambahkan div overlay untuk proteksi -->
+    <div class="protection-overlay" id="protectionOverlay">
+        <div class="protection-message">
+            <p class="blink">&nbsp;&nbsp;&nbsp;⚠️ protect ⚠️&nbsp;&nbsp;&nbsp;</p>
+            <img src="https://s4.gifyu.com/images/bpYBu.png" alt="SodroN Profile2" class="profile-image2">
+            <p>by: SodroN </p>
+            <p id="protectionDetails"></p>
         </div>
     </div>
- 
-    <audio id="backgroundSound" loop>
-        <source src="https://lq.denger.in" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-    
-    <script>
-        // Prevent right-click and other default behaviors
-        document.addEventListener('contextmenu', function(e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
-            }
-        });
-        
-        document.onkeydown = function(e) {
-            if (e.keyCode == 123 || // F12
-                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || // Ctrl+Shift+I
-                (e.ctrlKey && e.shiftKey && e.keyCode == 74) || // Ctrl+Shift+J
-                (e.ctrlKey && e.keyCode == 85)) { // Ctrl+U
-                e.preventDefault();
-                return false;
-            }
-        };
-        
-        if (window.top !== window.self) {
-            window.top.location = window.self.location;
-        }
 
-        function createMatrixRain() {
-            const chars = "01";
-            const container = document.getElementById('matrixRain');
-            const fontSize = Math.max(10, Math.min(14, window.innerWidth / 100));
-            const columns = Math.floor(window.innerWidth / fontSize);
+    <!-- Konten asli Anda -->
+    <div class="binary" id="binaryRain"></div>
+    
+    <div class="container">
+        <h3>selamat datang di welcome!</h3>
+        <div class="garuda">i`am  SODRON</div>
+        <img src="" alt="SodroN Profile" class="profile-image">
+      
+        <br>  
+<a class="hacker-btn2">HOME</a>
+<a class="hacker-btn3">HOME</a>
+<a class="hacker-btn4">HOME</a>
+<a class="hacker-btn2">HOME</a>
+<a class="hacker-btn4">HOME</a>
+<a class="hacker-btn3">HOME</a>
+<a class="hacker-btn2">HOME</a>
+  <br>
+        <div class="player-controls">
+            <button class="hacker-btn" id="playButton">📼Music</button>
             
-            // Clear existing columns
-            container.innerHTML = '';
+            <button class="hacker-btn" id="radioToggle">Radio🎧</button>
+        </div>
+        <!-- SoundCloud Player yang disembunyikan -->
+        <iframe id="soundcloudPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2089617705&color=%2316792c&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>
+        
+        <!-- Iwan Fals Player -->
+        <iframe id="iwanFalsPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/54645807&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+        
+        <!-- Radio Player -->
+        <audio id="radioPlayer" loop>
+            <source src="https://lq.denger.in/" type="audio/mpeg">
+            Browser Anda tidak mendukung elemen audio.
+        </audio>
+        
+        <!-- Audio hidden sebagai fallback -->
+        <audio id="bgAudio" loop>
+            <source src="https://soundcloud.com/sodron92/we-wok-de-tok" type="audio/mpeg">
+            Browser Anda tidak mendukung elemen audio.
+        </audio>
+    </div>
+  
+    <script>
+        // Proteksi anti-copy dan anti-inspect
+        document.addEventListener('DOMContentLoaded', function() {
+            const protectionOverlay = document.getElementById('protectionOverlay');
+            const protectionDetails = document.getElementById('protectionDetails');
+            const playButton = document.getElementById('playButton');
+            const iwanFalsButton = document.getElementById('iwanFalsButton');
+            const radioToggle = document.getElementById('radioToggle');
+            const soundcloudPlayer = document.getElementById('soundcloudPlayer');
+            const iwanFalsPlayer = document.getElementById('iwanFalsPlayer');
+            const radioPlayer = document.getElementById('radioPlayer');
+            const bgAudio = document.getElementById('bgAudio');
+            
+            let isPlaying = false;
+            let isRadioPlaying = false;
+            let isIwanFalsPlaying = false;
+            let soundcloudWidget = null;
+            let iwanFalsWidget = null;
+
+            // 1. Deteksi klik kanan (disable context menu)
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                showProtectionMessage("");
+            });
+            
+            // 2. Deteksi kombinasi keyboard untuk dev tools
+            document.addEventListener('keydown', function(e) {
+                // Block F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U
+                if (e.key === 'F12' || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                    (e.ctrlKey && e.shiftKey && e.key === 'J') || 
+                    (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                    showProtectionMessage("");
+                }
+            });
+            
+            // 3. Deteksi seleksi teks (copy)
+            document.addEventListener('selectstart', function(e) {
+                e.preventDefault();
+                showProtectionMessage("");
+            });
+            
+            // 4. Deteksi drag and drop (mencegah pengambilan gambar)
+            document.addEventListener('dragstart', function(e) {
+                e.preventDefault();
+                showProtectionMessage("");
+            });
+            
+            // 5. Deteksi dev tools dengan interval checking
+            let devToolsOpened = false;
+            
+            function checkDevTools() {
+                const widthThreshold = window.outerWidth - window.innerWidth > 160;
+                const heightThreshold = window.outerHeight - window.innerHeight > 160;
+                const orientation = widthThreshold ? 'vertical' : 'horizontal';
+                
+                if (!devToolsOpened && (heightThreshold || widthThreshold)) {
+                    devToolsOpened = true;
+                    showProtectionMessage("");
+                }
+            }
+            
+            setInterval(checkDevTools, 1000);
+            
+            // Fungsi untuk menampilkan pesan proteksi
+            function showProtectionMessage(message) {
+                protectionDetails.textContent = message;
+                protectionOverlay.style.display = 'flex';
+                
+                // Set timeout untuk menyembunyikan pesan setelah 4 detik
+                setTimeout(() => {
+                    protectionOverlay.style.display = 'none';
+                }, 4000);
+            }
+            
+            // Binary rain effect
+            const binaryRain = document.getElementById('binaryRain');
+            const characters = "01";
+            const columns = Math.floor(window.innerWidth / 20);
             
             for (let i = 0; i < columns; i++) {
                 const column = document.createElement('div');
                 column.style.position = 'absolute';
                 column.style.top = '-50px';
-                column.style.left = (i * fontSize) + 'px';
-                column.style.fontSize = fontSize + 'px';
-                column.style.fontFamily = 'Courier New, monospace';
-                column.style.color = 'rgba(0, 255, 0, 0.8)';
-                column.style.width = fontSize + 'px';
-                column.style.height = '100%';
-                column.style.overflow = 'hidden';
+                column.style.left = (i * 20) + 'px';
+                column.style.width = '20px';
+                column.style.fontSize = '16px';
+                column.style.color = '#0f0';
+                column.style.wordBreak = 'break-all';
                 column.style.textAlign = 'center';
+                column.style.lineHeight = '20px';
+                column.style.textShadow = '0 0 5px #0f0';
                 
                 let text = '';
-                const length = Math.floor(Math.random() * 20) + 10;
-                for (let j = 0; j < length; j++) {
-                    text += chars.charAt(Math.floor(Math.random() * chars.length));
+                const rows = Math.floor(window.innerHeight / 20) + 1;
+                
+                for (let j = 0; j < rows; j++) {
+                    text += characters.charAt(Math.floor(Math.random() * characters.length)) + '<br>';
                 }
                 
                 column.innerHTML = text;
-                column.dataset.text = text;
-                column.dataset.position = 0;
-                column.dataset.speed = Math.random() * 3 + 1;
+                binaryRain.appendChild(column);
                 
-                container.appendChild(column);
+                animateColumn(column);
             }
             
-            function animateMatrix() {
-                const columns = document.querySelectorAll('#matrixRain div');
-                columns.forEach(column => {
-                    let position = parseFloat(column.dataset.position);
-                    const speed = parseFloat(column.dataset.speed);
-                    
+            function animateColumn(column) {
+                let position = 0;
+                const speed = 2 + Math.random() * 3;
+                
+                function move() {
                     position += speed;
-                    if (position > 100) {
-                        position = -20;
-                        
+                    column.style.top = position + 'px';
+                    
+                    if (position > window.innerHeight) {
+                        position = -200;
                         let newText = '';
-                        const length = Math.floor(Math.random() * 20) + 10;
-                        for (let j = 0; j < length; j++) {
-                            newText += chars.charAt(Math.floor(Math.random() * chars.length));
+                        const rows = Math.floor(window.innerHeight / 20) + 1;
+                        for (let j = 0; j < rows; j++) {
+                            newText += characters.charAt(Math.floor(Math.random() * characters.length)) + '<br>';
                         }
-                        column.dataset.text = newText;
                         column.innerHTML = newText;
                     }
                     
-                    column.style.top = position + '%';
-                    column.dataset.position = position;
-                    
-                    const textLength = column.dataset.text.length;
-                    const newText = column.dataset.text.split('').map((char, index) => {
-                        const opacity = Math.min(1, index / (textLength / 2));
-                        return `<span style="opacity:${opacity}">${char}</span>`;
-                    }).join('');
-                    column.innerHTML = newText;
-                });
+                    requestAnimationFrame(move);
+                }
                 
-                requestAnimationFrame(animateMatrix);
+                move();
             }
             
-            animateMatrix();
-        }
-
-        // Handle window resize
-        let resizeTimeout;
-        window.addEventListener('resize', function() {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(function() {
-                createMatrixRain();
-            }, 200);
-        });
-
-        // Audio handling function
-        async function playAudio() {
-            const sound = document.getElementById('backgroundSound');
-            const playButton = document.getElementById('playButton');
-            
-            sound.volume = 0.5;
-            
-            try {
-                await sound.play();
-                playButton.style.display = 'none';
-                return true;
-            } catch (err) {
-                // Show play button if audio was blocked
-                playButton.style.display = 'block';
-                return false;
+            // Fungsi untuk menghentikan semua pemutaran
+            function stopAllPlayers() {
+                try {
+                    if (soundcloudWidget) {
+                        soundcloudWidget.pause();
+                    }
+                    if (iwanFalsWidget) {
+                        iwanFalsWidget.pause();
+                    }
+                    bgAudio.pause();
+                    radioPlayer.pause();
+                    isPlaying = false;
+                    isRadioPlaying = false;
+                    isIwanFalsPlaying = false;
+                    playButton.textContent = "📼Music";
+                    iwanFalsButton.textContent = "Album Iwan Fals";
+                    radioToggle.textContent = "Radio🎧";
+                } catch (error) {
+                    console.log('Error stopping players:', error);
+                }
             }
-        }
-
-        // Inactivity timer for blur effect
-        let inactivityTimer;
-        const blurTimeout = 60000; // 1 minute in milliseconds
-        
-        function resetInactivityTimer() {
-            // Clear existing timer
-            clearTimeout(inactivityTimer);
             
-            // Remove blur effect if it was applied
-            document.querySelector('.bg-image').classList.remove('blur-effect');
-            document.getElementById('hackerOverlay').classList.remove('blur-effect');
+            // Fungsi untuk memutar audio utama
+            function playMainAudio() {
+                stopAllPlayers();
+                try {
+                    // Coba memutar melalui SoundCloud player
+                    if (soundcloudWidget) {
+                        soundcloudWidget.play();
+                    }
+                    
+                    // Juga coba memutar audio HTML5 sebagai fallback
+                    bgAudio.play().catch(e => console.log('HTML5 Audio play failed:', e));
+                    
+                    isPlaying = true;
+                    playButton.textContent = "⏹️ Stop Music";
+                } catch (error) {
+                    console.log('Error playing main audio:', error);
+                   
+                    playButton.textContent = "⚠️ Gagal Memutar";
+                    
+                }
+            }
             
-            // Start new timer
-            inactivityTimer = setTimeout(applyBlurEffect, blurTimeout);
-        }
-        
-        function applyBlurEffect() {
-            document.querySelector('.bg-image').classList.add('blur-effect');
-            document.getElementById('hackerOverlay').classList.add('blur-effect');
-        }
-        
-        // Initialize the page
-        window.onload = function() {
-            document.body.style.overflow = 'hidden';
+            // Fungsi untuk memutar Iwan Fals
+            function playIwanFals() {
+                if (isIwanFalsPlaying) {
+                    stopAllPlayers();
+                } else {
+                    stopAllPlayers();
+                    try {
+                        if (iwanFalsWidget) {
+                            iwanFalsWidget.play();
+                        }
+                        isIwanFalsPlaying = true;
+                        iwanFalsButton.textContent = "⏹️ Stop Album";
+                    } catch (error) {
+                        console.log('Error playing Iwan Fals:', error);
+                        iwanFalsButton.textContent = "⚠️ Gagal Memutar";
+                    }
+                }
+            }
             
-            const overlay = document.getElementById('hackerOverlay');
-            overlay.style.display = 'flex';
+            // Fungsi untuk memutar radio
+            function toggleRadio() {
+                if (isRadioPlaying) {
+                    radioPlayer.pause();
+                    isRadioPlaying = false;
+                    radioToggle.textContent = "Radio🎧";
+                } else {
+                    stopAllPlayers();
+                    radioPlayer.play().catch(e => {
+                        console.log('Radio play failed:', e);
+                        radioToggle.textContent = "⚠️ Gagal Memutar";
+                    });
+                    isRadioPlaying = true;
+                    radioToggle.textContent = "⏹️ Stop Radio";
+                }
+            }
             
-            createMatrixRain();
-            playAudio();
-            
-            // Setup play button click handler
-            document.getElementById('playButton').addEventListener('click', function() {
-                playAudio();
+            // Event listener untuk tombol play utama
+            playButton.addEventListener('click', function() {
+                if (isPlaying) {
+                    stopAllPlayers();
+                } else {
+                    playMainAudio();
+                }
             });
             
-            // Create binary code elements
-            for (let i = 0; i < 20; i++) {
-                const binary = document.createElement('div');
-                binary.className = 'binary-code';
-                binary.style.top = Math.random() * 100 + '%';
-                binary.style.left = Math.random() * 100 + '%';
-                binary.style.animationDelay = Math.random() * 5 + 's';
+            // Event listener untuk tombol Iwan Fals
+            iwanFalsButton.addEventListener('click', playIwanFals);
+            
+            // Event listener untuk tombol radio
+            radioToggle.addEventListener('click', toggleRadio);
+            
+            // Inisialisasi SoundCloud Widget API
+            function initSoundCloud() {
+                // Load SoundCloud Widget API
+                const script = document.createElement('script');
+                script.src = 'https://w.soundcloud.com/player/api.js';
+                document.body.appendChild(script);
                 
-                let binaryText = '';
-                for (let j = 0; j < 50; j++) {
-                    binaryText += Math.round(Math.random()) + ' ';
-                }
-                binary.textContent = binaryText;
-                
-                overlay.appendChild(binary);
+                // Setelah API dimuat, siapkan player
+                script.onload = function() {
+                    soundcloudWidget = SC.Widget(soundcloudPlayer);
+                    iwanFalsWidget = SC.Widget(iwanFalsPlayer);
+                    
+                    // Atur event listener untuk player utama
+                    soundcloudWidget.bind(SC.Widget.Events.READY, function() {
+                        console.log('SoundCloud Player ready');
+                    });
+                    
+                    soundcloudWidget.bind(SC.Widget.Events.PLAY, function() {
+                        isPlaying = true;
+                        playButton.textContent = "⏹️ Stop Music";
+                    });
+                    
+                    soundcloudWidget.bind(SC.Widget.Events.PAUSE, function() {
+                        isPlaying = false;
+                        playButton.textContent = "📼Music";
+                    });
+                    
+                    // Atur event listener untuk Iwan Fals player
+                    iwanFalsWidget.bind(SC.Widget.Events.READY, function() {
+                        console.log('Iwan Fals Player ready');
+                    });
+                    
+                    iwanFalsWidget.bind(SC.Widget.Events.PLAY, function() {
+                        isIwanFalsPlaying = true;
+                        iwanFalsButton.textContent = "⏹️ Stop Album";
+                    });
+                    
+                    iwanFalsWidget.bind(SC.Widget.Events.PAUSE, function() {
+                        isIwanFalsPlaying = false;
+                        iwanFalsButton.textContent = "Album Iwan Fals";
+                    });
+                };
             }
             
-            // Set up inactivity detection
-            resetInactivityTimer();
-            
-            // Add event listeners for user activity
-            document.addEventListener('mousemove', resetInactivityTimer);
-            document.addEventListener('keydown', resetInactivityTimer);
-            document.addEventListener('click', resetInactivityTimer);
-            document.addEventListener('touchstart', resetInactivityTimer);
-            document.addEventListener('scroll', resetInactivityTimer);
-        };
+            // Inisialisasi SoundCloud saat halaman dimuat
+            initSoundCloud();
+        });
     </script>
+  
 </body>
-</html>
+  </html>
+  <button class="hacker-btn" id="iwanFalsButton">Album Iwan Fals</button>
