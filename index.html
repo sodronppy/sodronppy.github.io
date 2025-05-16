@@ -15,7 +15,7 @@
         body {
             font-family: 'Arial', sans-serif;
             height: 100vh;
-            overflow-y: auto;
+            overflow: hidden;
             position: relative;
             background: #000;
             display: flex;
@@ -59,223 +59,7 @@
             user-select: none;
         }
         
-        .white-box {
-            margin-top: 20px;
-            width: 80%;
-            max-width: 300px;
-            border: 3px solid white;
-            border-radius: 10px;
-            padding: 15px;
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            text-align: center;
-            font-size: 16px;
-            line-height: 1.5;
-            backdrop-filter: blur(5px);
-        }
-        
-        .btn-container {
-            margin-top: 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            z-index: 2;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            background: linear-gradient(135deg, #ffcc00, #ff9900);
-            color: #000;
-            border: none;
-            border-radius: 50px;
-            padding: 15px 0;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            width: 45%;
-            max-width: 300px;
-            min-width: 140px;
-            box-shadow: 0 5px 15px rgba(255, 204, 0, 0.4);
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(255, 204, 0, 0.6);
-        }
-        
-        @keyframes slide {
-            0% { transform: translateX(0); }
-            50% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
-        
-        /* Search Container Styles */
-        .search-container {
-            margin: 30px auto;
-            width: 90%;
-            max-width: 800px;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 10px;
-            border: 2px solid #ffcc00;
-            z-index: 2;
-            backdrop-filter: blur(5px);
-        }
-        
-        .search-container .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffcc00;
-            margin-bottom: 20px;
-            text-align: center;
-            width: 100%;
-        }
-        
-        #searchForm {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-        
-        #query {
-            padding: 12px 20px;
-            width: 70%;
-            max-width: 500px;
-            border: 1px solid #dfe1e5;
-            border-radius: 24px;
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s;
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        #query:focus {
-            box-shadow: 0 1px 6px rgba(255, 204, 0, 0.4);
-            border-color: rgba(255, 204, 0, 0.7);
-        }
-        
-        #searchButton {
-            background-color: #ffcc00;
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 24px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            transition: background-color 0.3s;
-        }
-        
-        #searchButton:hover {
-            background-color: #ff9900;
-        }
-        
-        .loading {
-            text-align: center;
-            margin: 30px 0;
-            display: none;
-            color: white;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid #ffcc00;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .results-container {
-            margin-top: 20px;
-        }
-        
-        .result-item {
-            background-color: rgba(0, 0, 0, 0.7);
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid #ffcc00;
-            color: white;
-        }
-        
-        .result-title {
-            color: #ffcc00;
-            font-size: 18px;
-            margin-bottom: 5px;
-            text-decoration: none;
-            display: block;
-        }
-        
-        .result-title:hover {
-            text-decoration: underline;
-        }
-        
-        .result-url {
-            color: #00cc66;
-            font-size: 14px;
-            margin-bottom: 8px;
-        }
-        
-        .result-snippet {
-            color: #cccccc;
-            font-size: 14px;
-        }
-        
-        .no-results {
-            text-align: center;
-            padding: 30px;
-            color: white;
-        }
-        
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-            gap: 10px;
-        }
-        
-        .page-button {
-            padding: 8px 16px;
-            background-color: #ffcc00;
-            color: #000;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        .page-button:disabled {
-            background-color: #666666;
-            cursor: not-allowed;
-            color: #999;
-        }
-        
-        .error-message {
-            color: #ff3333;
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-            border-radius: 8px;
-            margin-top: 20px;
-            border: 1px solid #ff3333;
-        }
-        
-        /* Hacker overlay styles (unchanged) */
+        /* Hacker overlay styles */
         .hacker-overlay {
             position: fixed;
             top: 0;
@@ -284,7 +68,7 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.8);
             z-index: 100;
-            display: none;
+            display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -352,76 +136,36 @@
             margin: 20px auto;
             display: block;
         }
-
-        .profile-image3 {
-            width: 100%;
-            max-width: 240px;
-            height: 240px;
-            border-radius: 3px;
-            margin: 20px auto;
-            display: block;
-        }
-      
-        .book-overlay {
-            position: fixed;
+        
+        .scanlines {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 100;
-            display: none;
-            overflow-y: auto;
-            padding: 20px;
-            color: white;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 255, 0, 0.1) 0%,
+                rgba(0, 255, 0, 0) 5%
+            );
+            background-size: 100% 5px;
+            z-index: 2;
+            pointer-events: none;
+            animation: flicker 0.1s infinite;
         }
         
-        .book-content {
-            max-width: 800px;
-            margin: 0 auto;
-            background: rgba(0, 0, 0, 0.7);
-            padding: 30px;
-            border-radius: 10px;
-            border: 1px solid #ffcc00;
+        .radio-player {
+            width: 80%;
+            max-width: 300px;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeIn 2s 1s forwards;
         }
         
-        .book-content h1 {
-            color: #ffcc00;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .book-content h2 {
-            color: #ff9900;
-            margin-top: 30px;
-        }
-        
-        .book-content p.quote {
-            margin: 15px 0;
-            line-height: 1.6;
-        }
-        
-        .book-content em {
-            color: #ccc;
-            display: block;
-            margin: 20px 0;
-            font-style: italic;
-            text-align: center;
-        }
-        
-        .close-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #ff3333;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 20px;
-            cursor: pointer;
-            z-index: 101;
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            50% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
         }
         
         @keyframes crackAppear {
@@ -453,21 +197,9 @@
             20%, 22%, 24%, 55% { opacity: 0.2; }
         }
         
-        .scanlines {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 255, 0, 0.1) 0%,
-                rgba(0, 255, 0, 0) 5%
-            );
-            background-size: 100% 5px;
-            z-index: 2;
-            pointer-events: none;
-            animation: flicker 0.1s infinite;
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
         
         @media (max-height: 600px) {
@@ -477,29 +209,6 @@
             .logo {
                 width: 50%;
             }
-            .white-box {
-                margin-top: 10px;
-                padding: 10px;
-                font-size: 14px;
-            }
-        }
-        
-        @media (max-width: 600px) {
-            .btn-container {
-                flex-direction: column;
-            }
-            .btn {
-                width: 80%;
-            }
-            #query {
-                width: 100%;
-            }
-            #searchForm {
-                flex-direction: column;
-            }
-            #searchButton {
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -508,39 +217,6 @@
         <div class="bg-image"></div>
     </div>
     
-    <div class="logo-container">
-        <img src="" alt="" class="logo">
-        
-        <center>
-           <div class ="white-box">Jelajahi Internet dengan Teknologi SodroN<br> <em>pencarian yang sudah disempurnakan </em> </div>
-            </div>
-            
-            <div class="btn-container">
-                <a href="#" class="btn" id="viewBtn">📼Radio</a>
-                <a href="#" class="btn" id="bookBtn">📖Tentang Titid</a>
-            </div>
-        </center>
-    </div>
-
-    <!-- Search Container -->
-    <div class="search-container">
-       <center> <div class ="logo">Telusuri</div>
-        <form id="searchForm" onsubmit="event.preventDefault(); cari();">
-            <input type="text" id="query" placeholder="Ketik yang ingin dicari..." autocomplete="off">
-            <button type="submit" id="searchButton">Cari</button>
-        </form>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Memuat hasil pencarian...</p>
-        </div>
-
-        <div id="resultsContainer">
-            <div class="results-container" id="results"></div>
-            <div class="pagination" id="pagination"></div>
-        </div>
-    </div>
-
     <div class="hacker-overlay" id="hackerOverlay">
         <div class="matrix-rain" id="matrixRain"></div>
         <div class="crack-effect"></div>
@@ -550,63 +226,13 @@
             <div class="hacker-text">
                 SYSTEM ACCESS GRANTED<br>
                 1489781 SodroN<br>
-                 <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
+                <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
                 WELCOME TO THE RADIO<br>
-              <br><br><br>
-               <a href="https://sodronppy.github.io/" class="btn">🖲️👉BACK👈🖲️</a>
+                <audio class="radio-player" id="radioPlayer" controls autoplay>
+                    <source src="https://lq.denger.in" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
-        </div>
-    </div>
-    
-    <div class="book-overlay" id="bookOverlay">
-        <button class="close-btn" id="closeBookBtn">×</button>
-        <div class="book-content">
-            <center>
-            <img src="https://s4.gifyu.com/images/bpYBu.png"
-                 alt="SodroN Profile3" class="profile-image3"></center>
-            <hr>
-            <em>"Tulisan ini tidak mengajarkan moral, tapi bisa bikin kamu sadar: kadang yang paling bikin ketawa… justru yang paling relate."</em>
-           <center><h2>Bagian 1 </h2></center>
-            <p class="quote">Hidup itu kayak titid. Kalau nggak naik, ya lemes. Tapi dua-duanya butuh alasan.</p>
-            <p class="quote">Kadang yang bikin hidup berat bukan masalahnya, tapi ekspektasi. Sama kayak titid waktu dingin: kecil, tapi dituntut besar.</p>
-            <p class="quote">Hidup tanpa tujuan itu kayak titid nganggur, bingung mau berdiri buat siapa.</p>
-            <p class="quote">Banyak orang kelihatan hebat, padahal cuma ketolong lighting dan filter. Titid juga bisa terlihat panjang dari angle bawah.</p>
-            <p class="quote">Jangan paksain tegang kalau situasinya nggak mendukung. Titid aja tahu kapan waktunya istirahat.</p>
-            <p class="quote">Hidup itu keras, tapi kamu nggak harus keras tiap saat. Titid pun butuh jeda.</p>
-            <p class="quote">Terkadang diam lebih baik. Titid juga nggak perlu ngomong, tapi semua tahu kalau dia serius.</p>
-            <p class="quote">Jangan cuma kelihatan gagah pas berdiri. Titid juga bisa gitu, tapi kalau nggak bermanfaat, ya percuma.</p>
-            <center><h2>Bagian 2</h2></center>
-            <p class="quote">Cinta itu kayak coli, kalau keseringan sendiri, lama-lama tumpul perasaannya.</p>
-            <p class="quote">Jangan percaya dia yang bilang "aku serius", titid juga tegang kalau dikasih sinyal.</p>
-            <p class="quote">Kadang yang bikin baper bukan kata-kata manis, tapi kenangan pas lagi buka celana.</p>
-            <p class="quote">Hubungan tanpa kejelasan itu kayak grepe-grepe di bioskop. Deg-degan, tapi nggak ke mana-mana.</p>
-            <p class="quote">Jangan bucin sama yang nggak pasti, nanti kayak titid pas salah timing. Udah siap, malah zonk.</p>
-            <p class="quote">Cinta sejati bukan yang bikin deg-degan, tapi yang tetap berdiri walau udah capek.</p>
-            <p class="quote">Kalau dia cuma datang pas butuh, itu bukan cinta. Itu kayak tisu toilet. Dipakai, lalu dibuang.</p>
-            <p class="quote">Jangan jadi cadangan. Titid aja maunya satu lubang yang konsisten.</p>
-            <p class="quote">Ada kalanya kita harus pura-pura kuat, padahal hati kayak titid abis diguyur air dingin.</p>
-            
-           <center><h2>Bagian 3 </h2></center>
-            <p class="quote">Orang sok bijak itu kayak titid tanpa fungsi. Ngomong doang, tapi nggak ngasih solusi.</p>
-            <p class="quote">Jangan merasa paling benar, bahkan titid pun harus masuk ke tempat yang sesuai.</p>
-            <p class="quote">Lo bukan siapa-siapa, bro. Titid aja baru dianggap penting kalau udah berdiri.</p>
-            <p class="quote">Banyak yang kelihatan dewasa, tapi kelakuan masih kayak titid pas liat paha. Nggak bisa fokus.</p>
-            <p class="quote">Jangan suka buka aib orang, kalo celana dalam sendiri sobeknya udah dari zaman orok.</p>
-            <p class="quote">Jadi bijak itu penting, tapi jangan terlalu kaku. Ingat, titid yang fleksibel lebih disukai.</p>
-            <p class="quote">Sombong dikit boleh, asal sadar kapasitas. Jangan kayak titid kecil tapi mental badak.</p>
-            <p class="quote">Banyak yang ngaku dewasa, tapi dikit-dikit ngambek. Titid aja tahu kapan harus lemes.</p>
-            <p class="quote">Kalo nggak bisa bikin bahagia, minimal jangan jadi beban. Titid aja tahu diri kalo nggak dibutuhin.</p>
-          <center>  <h2>Bagian 4 </h2></center>
-            <p class="quote">Hidup itu nggak selalu soal berdiri tegak, kadang harus tau kapan pura-pura lemes biar aman.</p>
-            <p class="quote">Bahagia itu sederhana, kayak titid abis denger suara pintu kamar dikunci.</p>
-            <p class="quote">Jangan terlalu berharap sama orang, nanti kayak titid. Sudah berdiri, tapi nggak kepake.</p>
-            <p class="quote">Hidup butuh keseimbangan, kayak titid dan hati, satu keras, satu sensitif.</p>
-            <p class="quote">Kadang solusi hidup bukan tambah pintar, tapi tambah bodo amat.</p>
-            <p class="quote">Belajar ikhlas dari titid: meski sering dibohongi dengan janji manis, dia tetap berdiri duluan.</p>
-            <p class="quote">Jangan terlalu takut gagal. Titid juga sering salah arah, tapi tetap berusaha masuk.</p>
-            <p class="quote">Jadi orang baik itu penting, tapi tetap pasang batas. Titid aja tahu kapan harus pakai pengaman.</p>
-            <p class="quote">Yang penting bukan seberapa sering jatuh, tapi seberapa sering kamu bisa berdiri lagi… kayak titid.</p>
-            <em>"Kalau hidup masih terasa berat, mungkin karena kamu terlalu sering menekan sesuatu yang nggak seharusnya ditekan. Rileks, tarik napas, dan ingat: bahkan hal paling absurd pun bisa jadi pelajaran hidup." <br><br> ---SodroN---</em>
         </div>
     </div>
     
@@ -714,9 +340,8 @@
             animateMatrix();
         }
 
-        document.getElementById('viewBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            
+        // Initialize the radio directly
+        window.onload = function() {
             document.body.style.overflow = 'hidden';
             
             const overlay = document.getElementById('hackerOverlay');
@@ -731,6 +356,11 @@
             sound1.play();
             sound2.loop = true;
             sound2.play();
+            
+            // Start the radio player
+            const radioPlayer = document.getElementById('radioPlayer');
+            radioPlayer.volume = 0.7;
+            radioPlayer.play().catch(e => console.log("Autoplay prevented: ", e));
             
             for (let i = 0; i < 20; i++) {
                 const binary = document.createElement('div');
@@ -747,187 +377,6 @@
                 
                 overlay.appendChild(binary);
             }
-            
-            setTimeout(function() {
-                overlay.style.display = 'none';
-                
-                document.body.style.overflow = 'hidden';
-                sound1.pause();
-                sound1.currentTime = 0;
-                sound2.pause();
-                sound2.currentTime = 0;
-                
-                const binaries = document.querySelectorAll('.binary-code');
-                binaries.forEach(b => b.remove());
-                
-                document.getElementById('matrixRain').innerHTML = '';
-            }, unlimited);
-        });
-        
-        // Book functionality
-        document.getElementById('bookBtn').addEventListener('click', function(e) {
-            e.preventDefault();
-            document.getElementById('bookOverlay').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        });
-        
-        document.getElementById('closeBookBtn').addEventListener('click', function(e) {
-            document.getElementById('bookOverlay').style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
-
-        // Search functionality
-        // Konfigurasi API
-        const API_KEY = 'AIzaSyCb9xI9AauEp5MM0zj5EErsdcPzouD4vNM';
-        const CX = '03a2ebe80be594fc3'; // Ganti dengan CX Anda jika berbeda
-        let currentQuery = '';
-        let currentStartIndex = 1;
-        const resultsPerPage = 10;
-
-        async function cari() {
-            const query = document.getElementById("query").value.trim();
-            if (query === "") return;
-            
-            currentQuery = query;
-            currentStartIndex = 1;
-            
-            await performSearch(query, currentStartIndex);
-        }
-
-        async function performSearch(query, startIndex) {
-            const resultsContainer = document.getElementById("results");
-            const loadingIndicator = document.getElementById("loading");
-            const paginationContainer = document.getElementById("pagination");
-            
-            // Kosongkan hasil sebelumnya dan tampilkan loading
-            resultsContainer.innerHTML = "";
-            paginationContainer.innerHTML = "";
-            loadingIndicator.style.display = "block";
-            
-            try {
-                const response = await fetch(
-                    `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${API_KEY}&cx=${CX}&start=${startIndex}&num=${resultsPerPage}`
-                );
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                loadingIndicator.style.display = "none";
-                
-                if (data.items && data.items.length > 0) {
-                    displayResults(data.items);
-                    displayPagination(data.queries, data.searchInformation.totalResults);
-                } else {
-                    resultsContainer.innerHTML = `
-                        <div class="no-results">
-                            <p>Tidak ditemukan hasil untuk "${query}".</p>
-                            <p>Coba dengan kata kunci yang berbeda.</p>
-                        </div>
-                    `;
-                }
-            } catch (error) {
-                loadingIndicator.style.display = "none";
-                resultsContainer.innerHTML = `
-                    <div class="error-message">
-                        <p>Terjadi kesalahan saat melakukan pencarian:</p>
-                        <p>${error.message}</p>
-                    </div>
-                `;
-                console.error("Error:", error);
-            }
-        }
-
-        function displayResults(items) {
-            const resultsContainer = document.getElementById("results");
-            
-            items.forEach(item => {
-                const resultElement = document.createElement("div");
-                resultElement.className = "result-item";
-                
-                const titleLink = document.createElement("a");
-                titleLink.className = "result-title";
-                titleLink.href = item.link;
-                titleLink.textContent = item.title;
-                titleLink.target = "_blank";
-                
-                const urlElement = document.createElement("div");
-                urlElement.className = "result-url";
-                // Menampilkan domain yang lebih bersih
-                const url = new URL(item.link);
-                urlElement.textContent = url.hostname.replace('www.', '');
-                
-                const snippetElement = document.createElement("div");
-                snippetElement.className = "result-snippet";
-                snippetElement.textContent = item.snippet;
-                
-                resultElement.appendChild(titleLink);
-                resultElement.appendChild(urlElement);
-                resultElement.appendChild(snippetElement);
-                
-                resultsContainer.appendChild(resultElement);
-            });
-        }
-
-        function displayPagination(queries, totalResults) {
-            if (!queries || !queries.request || !queries.nextPage) return;
-            
-            const paginationContainer = document.getElementById("pagination");
-            const request = queries.request[0];
-            const nextPage = queries.nextPage ? queries.nextPage[0] : null;
-            
-            // Tombol Previous
-            const prevButton = document.createElement("button");
-            prevButton.className = "page-button";
-            prevButton.textContent = "Sebelumnya";
-            prevButton.disabled = currentStartIndex <= 1;
-            prevButton.addEventListener("click", () => {
-                if (currentStartIndex > 1) {
-                    currentStartIndex -= resultsPerPage;
-                    performSearch(currentQuery, currentStartIndex);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-            
-            // Tombol Next
-            const nextButton = document.createElement("button");
-            nextButton.className = "page-button";
-            nextButton.textContent = "Berikutnya";
-            nextButton.disabled = !nextPage || (currentStartIndex + resultsPerPage > totalResults);
-            nextButton.addEventListener("click", () => {
-                if (nextPage) {
-                    currentStartIndex += resultsPerPage;
-                    performSearch(currentQuery, currentStartIndex);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                }
-            });
-            
-            // Info halaman
-            const pageInfo = document.createElement("span");
-            const currentPage = Math.ceil(currentStartIndex / resultsPerPage);
-            const totalPages = Math.ceil(totalResults / resultsPerPage);
-            pageInfo.textContent = `Halaman ${currentPage} dari ${totalPages}`;
-            pageInfo.style.margin = "0 15px";
-            pageInfo.style.lineHeight = "36px";
-            pageInfo.style.color = "white";
-            
-            paginationContainer.appendChild(prevButton);
-            paginationContainer.appendChild(pageInfo);
-            paginationContainer.appendChild(nextButton);
-        }
-
-        // Pencarian saat menekan Enter
-        document.getElementById("query").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                cari();
-            }
-        });
-
-        // Fokus ke input pencarian saat halaman dimuat
-        window.onload = function() {
-            document.getElementById("query").focus();
         };
     </script>
 </body>
