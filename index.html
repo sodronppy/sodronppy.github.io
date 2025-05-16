@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>SodroN</title>
-    
     <style>
         * {
             margin: 0;
@@ -153,36 +152,12 @@
             animation: flicker 0.1s infinite;
         }
         
-        .radio-player {
-            width: 100%;
-            max-width: 300px;
-            margin-top: 15px;
-            opacity: 0;
-            animation: fadeIn 2s 1s forwards;
-            filter: drop-shadow(0 0 5px lime);
-        }
-        
-        /* Custom radio player controls */
-        audio::-webkit-media-controls-panel {
-            background-color: rgba(0, 20, 0, 0.7);
-            border-radius: 0;
-            border: 1px solid lime;
-        }
-        
-        audio::-webkit-media-controls-play-button,
-        audio::-webkit-media-controls-mute-button {
-            filter: sepia(100%) saturate(10000%) hue-rotate(50deg);
-        }
-        
-        audio::-webkit-media-controls-current-time-display,
-        audio::-webkit-media-controls-time-remaining-display {
+        .audio-status {
             color: lime;
-            text-shadow: 0 0 2px lime;
-        }
-        
-        audio::-webkit-media-controls-timeline {
-            background-color: lime;
-            border-radius: 2px;
+            font-size: 12px;
+            margin-top: 10px;
+            text-align: center;
+            opacity: 0.7;
         }
         
         @keyframes slide {
@@ -220,11 +195,6 @@
             20%, 22%, 24%, 55% { opacity: 0.2; }
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         /* Mobile-specific adjustments */
         @media (max-width: 768px) {
             .glitch-box {
@@ -240,10 +210,6 @@
             .profile-image {
                 margin: 10px auto;
             }
-            
-            .radio-player {
-                margin-top: 10px;
-            }
         }
         
         @media (max-height: 600px) {
@@ -255,20 +221,6 @@
             .hacker-text {
                 margin: 5px;
                 font-size: clamp(10px, 3vh, 14px);
-            }
-        }
-        
-        /* Orientation-specific adjustments */
-        @media (orientation: portrait) {
-            .profile-image {
-                max-width: 80vw;
-            }
-        }
-        
-        @media (orientation: landscape) {
-            .profile-image {
-                max-height: 60vh;
-                width: auto;
             }
         }
     </style>
@@ -288,22 +240,17 @@
                 SYSTEM ACCESS GRANTED<br>
                 1489781 SodroN<br>
                 <img src="https://i.ibb.co.com/dwPMPCxy/file-000000000d1461f788a13d567ca66458.png" alt="SodroN Profile" class="profile-image">
-                WELCOME TO THE RADIO<br>
-                <audio class="radio-player" id="radioPlayer" controls autoplay>
-                    <source src="https://lq.denger.in" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+                WELCOME TO THE SYSTEM<br>
+                <em>Enjoy</em>
             </div>
         </div>
     </div>
     
-    <audio id="hackerSound" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/190/190-preview.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="matrixSound" preload="auto">
+    <audio id="backgroundSound" loop>
         <source src="https://lq.denger.in" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
-
+    
     <script>
         // Prevent right-click and other default behaviors
         document.addEventListener('contextmenu', function(e) {
@@ -311,7 +258,7 @@
         });
         
         document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG' || e.target.tagName === 'AUDIO') {
+            if (e.target.tagName === 'IMG') {
                 e.preventDefault();
             }
         });
@@ -396,9 +343,7 @@
                     column.innerHTML = newText;
                 });
                 
-                if (document.getElementById('hackerOverlay').style.display === 'flex') {
-                    requestAnimationFrame(animateMatrix);
-                }
+                requestAnimationFrame(animateMatrix);
             }
             
             animateMatrix();
@@ -413,6 +358,30 @@
             }, 200);
         });
 
+        // Audio handling function
+        async function playAudio() {
+            const sound = document.getElementById('backgroundSound');
+            sound.volume = 0.5;
+            
+            try {
+                await sound.play();
+                return true;
+            } catch (err) {
+                // Audio was blocked, we'll enable it on user interaction
+                const enableAudio = function() {
+                    sound.play();
+                    document.removeEventListener('click', enableAudio);
+                    document.removeEventListener('touchstart', enableAudio);
+                    document.removeEventListener('keydown', enableAudio);
+                };
+                
+                document.addEventListener('click', enableAudio);
+                document.addEventListener('touchstart', enableAudio);
+                document.addEventListener('keydown', enableAudio);
+                return false;
+            }
+        }
+
         // Initialize the page
         window.onload = function() {
             document.body.style.overflow = 'hidden';
@@ -421,31 +390,7 @@
             overlay.style.display = 'flex';
             
             createMatrixRain();
-            
-            const sound1 = document.getElementById('hackerSound');
-            const sound2 = document.getElementById('matrixSound');
-            sound1.volume = 0.4;
-            sound2.volume = 0.9;
-            
-            // Try to play sounds with user interaction
-            const playSounds = function() {
-                sound1.play().catch(e => console.log("Sound play prevented: ", e));
-                sound2.loop = true;
-                sound2.play().catch(e => console.log("Sound play prevented: ", e));
-                
-                // Start the radio player
-                const radioPlayer = document.getElementById('radioPlayer');
-                radioPlayer.volume = 0.7;
-                radioPlayer.play().catch(e => console.log("Autoplay prevented: ", e));
-                
-                // Remove the event listener after first interaction
-                document.removeEventListener('click', playSounds);
-                document.removeEventListener('touchstart', playSounds);
-            };
-            
-            // Wait for user interaction to play sounds
-            document.addEventListener('click', playSounds);
-            document.addEventListener('touchstart', playSounds);
+            playAudio();
             
             // Create binary code elements
             for (let i = 0; i < 20; i++) {
