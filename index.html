@@ -194,8 +194,6 @@
             display: none;
         }
         
-       
-            
         /* Tambahkan style berikut untuk pesan proteksi */
         .protection-overlay {
             position: fixed;
@@ -248,36 +246,60 @@
             flex-wrap: wrap;
         }
       
-      .hacker-btn2 {
+        .hacker-btn2 {
             background-color: transparent;
             color: #0f0;
             font-family: 'Courier New', monospace;
-        width: 10px;
+            width: 10px;
             height: 20px;
             background-color: #0f0;
             animation: blink 1s infinite;
-            margin-left: 5px; }
+            margin-left: 5px;
+        }
         
-       .hacker-btn3 {
+        .hacker-btn3 {
             background-color: transparent;
             color: #0f0;
             font-family: 'Courier New', monospace;
-        width: 10px;
+            width: 10px;
             height: 20px;
             background-color: #0f0;
             animation: blink 2s infinite;
-            margin-left: 3px; }
+            margin-left: 3px;
+        }
              
-                .hacker-btn4 {
+        .hacker-btn4 {
             background-color: transparent;
             color: #0f0;
             font-family: 'Courier New', monospace;
-        width: 10px;
+            width: 10px;
             height: 20px;
             background-color: #0f0;
             animation: blink 3s infinite;
-            margin-left: 4px; }
+            margin-left: 4px;
+        }
         
+        /* Style untuk container GIF */
+        .gif-container {
+            margin: 20px auto;
+            max-width: 300px;
+            border: 1px solid #0f0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+            padding: 5px;
+        }
+        
+        .gif-container img {
+            width: 100%;
+            height: auto;
+        }
+        
+        .gif-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
@@ -298,23 +320,33 @@
         <h3>selamat datang di welcome!</h3>
         <div class="garuda">i`am  SODRON</div>
         
-      
         <br>  
-<a class="hacker-btn2">HOME</a>
-<a class="hacker-btn3">HOME</a>
-<a class="hacker-btn4">HOME</a>
-<a class="hacker-btn2">HOME</a>
-<a class="hacker-btn4">HOME</a>
-<a class="hacker-btn3">HOME</a>
-<a class="hacker-btn2">HOME</a>
-  <br>
+        <a class="hacker-btn2">HOME</a>
+        <a class="hacker-btn3">HOME</a>
+        <a class="hacker-btn4">HOME</a>
+        <a class="hacker-btn2">HOME</a>
+        <a class="hacker-btn4">HOME</a>
+        <a class="hacker-btn3">HOME</a>
+        <a class="hacker-btn2">HOME</a>
+        <br>
+        
         <div class="player-controls">
             <button class="hacker-btn" id="playButton">📼Music</button>
-            
             <button class="hacker-btn" id="radioToggle">Radio🎧</button>
         </div>
-        <!-- SoundCloud Player yang disembunyikan -->
         
+        <!-- Container untuk GIF animasi -->
+        <div class="gif-row">
+            <div id="musicGifContainer" class="gif-container hidden">
+                <img src="https://i.pinimg.com/originals/f7/20/df/f720df37ff3964df6e4b92146a1fe97e.gif" alt="Music Animation">
+            </div>
+            
+            <div id="radioGifContainer" class="gif-container hidden">
+                <img src="https://cdn.dribbble.com/userupload/20424668/file/original-0f36169585f3d98c5a09847d86f4e089.gif" alt="Radio Animation">
+            </div>
+        </div>
+        
+        <!-- SoundCloud Player yang disembunyikan -->
         <iframe id="soundcloudPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/54645807&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
         
         <!-- Radio Player -->
@@ -336,18 +368,16 @@
             const protectionOverlay = document.getElementById('protectionOverlay');
             const protectionDetails = document.getElementById('protectionDetails');
             const playButton = document.getElementById('playButton');
-            const iwanFalsButton = document.getElementById('iwanFalsButton');
             const radioToggle = document.getElementById('radioToggle');
             const soundcloudPlayer = document.getElementById('soundcloudPlayer');
-            const iwanFalsPlayer = document.getElementById('iwanFalsPlayer');
             const radioPlayer = document.getElementById('radioPlayer');
             const bgAudio = document.getElementById('bgAudio');
+            const musicGifContainer = document.getElementById('musicGifContainer');
+            const radioGifContainer = document.getElementById('radioGifContainer');
             
             let isPlaying = false;
             let isRadioPlaying = false;
-            let isIwanFalsPlaying = false;
             let soundcloudWidget = null;
-            let iwanFalsWidget = null;
 
             // 1. Deteksi klik kanan (disable context menu)
             document.addEventListener('contextmenu', function(e) {
@@ -467,17 +497,16 @@
                     if (soundcloudWidget) {
                         soundcloudWidget.pause();
                     }
-                    if (iwanFalsWidget) {
-                        iwanFalsWidget.pause();
-                    }
                     bgAudio.pause();
                     radioPlayer.pause();
                     isPlaying = false;
                     isRadioPlaying = false;
-                    isIwanFalsPlaying = false;
                     playButton.textContent = "📼Music";
-                    iwanFalsButton.textContent = "Album Iwan Fals";
                     radioToggle.textContent = "Radio🎧";
+                    
+                    // Sembunyikan semua GIF
+                    musicGifContainer.classList.add('hidden');
+                    radioGifContainer.classList.add('hidden');
                 } catch (error) {
                     console.log('Error stopping players:', error);
                 }
@@ -497,15 +526,14 @@
                     
                     isPlaying = true;
                     playButton.textContent = "⏹️ Stop Music";
+                    
+                    // Tampilkan GIF musik
+                    musicGifContainer.classList.remove('hidden');
                 } catch (error) {
                     console.log('Error playing main audio:', error);
-                   
                     playButton.textContent = "⚠️ Gagal Memutar";
-                    
                 }
             }
-            
-            
             
             // Fungsi untuk memutar radio
             function toggleRadio() {
@@ -513,6 +541,7 @@
                     radioPlayer.pause();
                     isRadioPlaying = false;
                     radioToggle.textContent = "Radio🎧";
+                    radioGifContainer.classList.add('hidden');
                 } else {
                     stopAllPlayers();
                     radioPlayer.play().catch(e => {
@@ -521,6 +550,7 @@
                     });
                     isRadioPlaying = true;
                     radioToggle.textContent = "⏹️ Stop Radio";
+                    radioGifContainer.classList.remove('hidden');
                 }
             }
             
@@ -532,8 +562,6 @@
                     playMainAudio();
                 }
             });
-            
-    
             
             // Event listener untuk tombol radio
             radioToggle.addEventListener('click', toggleRadio);
@@ -548,7 +576,6 @@
                 // Setelah API dimuat, siapkan player
                 script.onload = function() {
                     soundcloudWidget = SC.Widget(soundcloudPlayer);
-                    iwanFalsWidget = SC.Widget(iwanFalsPlayer);
                     
                     // Atur event listener untuk player utama
                     soundcloudWidget.bind(SC.Widget.Events.READY, function() {
@@ -558,14 +585,14 @@
                     soundcloudWidget.bind(SC.Widget.Events.PLAY, function() {
                         isPlaying = true;
                         playButton.textContent = "⏹️ Stop Music";
+                        musicGifContainer.classList.remove('hidden');
                     });
                     
                     soundcloudWidget.bind(SC.Widget.Events.PAUSE, function() {
                         isPlaying = false;
                         playButton.textContent = "📼Music";
+                        musicGifContainer.classList.add('hidden');
                     });
-                    
-                    
                 };
             }
             
@@ -573,7 +600,5 @@
             initSoundCloud();
         });
     </script>
-  
 </body>
-  </html>
-
+</html>
