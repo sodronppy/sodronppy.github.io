@@ -22,11 +22,6 @@
             flex-direction: column;
             align-items: center;
             touch-action: manipulation;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        body.dark-mode {
-            background: rgba(0, 0, 0, 0.3);
         }
         
         .bg-container {
@@ -37,11 +32,6 @@
             height: 100%;
             overflow: hidden;
             z-index: 1;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .bg-container {
-            opacity: 0.3;
         }
         
         .bg-image {
@@ -53,11 +43,7 @@
             opacity: 0.8;
             pointer-events: none;
             user-select: none;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .bg-image {
-            opacity: 0.2;
+            transition: filter 1s ease;
         }
         
         /* Hacker overlay styles */
@@ -75,11 +61,7 @@
             flex-direction: column;
             overflow: hidden;
             padding: 20px;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .hacker-overlay {
-            background-color: rgba(0, 0, 0, 0.5);
+            transition: filter 1s ease;
         }
         
         .matrix-rain {
@@ -90,11 +72,6 @@
             height: 100%;
             z-index: 1;
             opacity: 0.6;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .matrix-rain {
-            opacity: 0.3;
         }
         
         .crack-effect {
@@ -107,11 +84,6 @@
             opacity: 0;
             animation: crackAppear 1.5s forwards;
             z-index: 2;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .crack-effect {
-            opacity: 0.2;
         }
         
         .hacker-text {
@@ -128,12 +100,6 @@
             line-height: 1.5;
             width: 100%;
             max-width: 800px;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .hacker-text {
-            color: rgba(0, 255, 0, 0.7);
-            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
         
         .binary-code {
@@ -144,11 +110,6 @@
             z-index: 1;
             animation: binaryScroll 10s linear infinite;
             user-select: none;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .binary-code {
-            color: rgba(0, 255, 0, 0.1);
         }
         
         .glitch-box {
@@ -163,13 +124,6 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .glitch-box {
-            border-color: rgba(0, 255, 0, 0.5);
-            background-color: rgba(0, 0, 0, 0.05);
-            animation: glitch 2s linear infinite alternate;
         }
       
         .profile-image {
@@ -181,13 +135,6 @@
             display: block;
             border: 1px solid rgba(0, 255, 0, 0.5);
             box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .profile-image {
-            border-color: rgba(0, 255, 0, 0.3);
-            box-shadow: 0 0 5px rgba(0, 255, 0, 0.2);
-            opacity: 0.8;
         }
         
         .scanlines {
@@ -205,16 +152,6 @@
             z-index: 2;
             pointer-events: none;
             animation: flicker 0.1s infinite;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .scanlines {
-            background: linear-gradient(
-                to bottom,
-                rgba(0, 255, 0, 0.05) 0%,
-                rgba(0, 255, 0, 0) 5%
-            );
-            animation: flicker 0.2s infinite;
         }
         
         .audio-status {
@@ -223,11 +160,6 @@
             margin-top: 10px;
             text-align: center;
             opacity: 0.7;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .audio-status {
-            opacity: 0.4;
         }
         
         .play-button {
@@ -243,21 +175,15 @@
             z-index: 1000;
             display: none;
             animation: glitch 1s linear infinite alternate;
-            transition: all 1.5s ease-in-out;
-        }
-        
-        .dark-mode .play-button {
-            background-color: rgba(0, 255, 0, 0.1);
-            border-color: rgba(0, 255, 0, 0.5);
-            animation: glitch 2s linear infinite alternate;
         }
         
         .play-button:hover {
             background-color: rgba(0, 255, 0, 0.3);
         }
         
-        .dark-mode .play-button:hover {
-            background-color: rgba(0, 255, 0, 0.2);
+        /* Blur effect class */
+        .blur-effect {
+            filter: blur(5px);
         }
         
         @keyframes slide {
@@ -295,28 +221,6 @@
             20%, 22%, 24%, 55% { opacity: 0.2; }
         }
         
-        /* Dark mode notification */
-        .dark-mode-notification {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(0, 0, 0, 0.7);
-            color: lime;
-            padding: 10px 20px;
-            border: 1px solid lime;
-            border-radius: 3px;
-            z-index: 1001;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-            font-size: 14px;
-            pointer-events: none;
-        }
-        
-        .dark-mode-notification.show {
-            opacity: 1;
-        }
-        
         /* Mobile-specific adjustments */
         @media (max-width: 768px) {
             .glitch-box {
@@ -338,12 +242,6 @@
                 right: 10px;
                 padding: 8px 12px;
                 font-size: 14px;
-            }
-            
-            .dark-mode-notification {
-                width: 90%;
-                text-align: center;
-                font-size: 12px;
             }
         }
     </style>
@@ -367,10 +265,6 @@
                     <button class="play-button" id="playButton">🎼KLIK & ENJOY 🎧</button>
             </div>
         </div>
-    </div>
-    
-    <div class="dark-mode-notification" id="darkModeNotification">
-        SYSTEM ENTERING LOW-POWER MODE
     </div>
  
     <audio id="backgroundSound" loop>
@@ -503,20 +397,27 @@
             }
         }
 
-        // Activate dark mode after 5 minutes
-        function activateDarkMode() {
-            document.body.classList.add('dark-mode');
+        // Inactivity timer for blur effect
+        let inactivityTimer;
+        const blurTimeout = 60000; // 1 minute in milliseconds
+        
+        function resetInactivityTimer() {
+            // Clear existing timer
+            clearTimeout(inactivityTimer);
             
-            // Show notification
-            const notification = document.getElementById('darkModeNotification');
-            notification.classList.add('show');
+            // Remove blur effect if it was applied
+            document.querySelector('.bg-image').classList.remove('blur-effect');
+            document.getElementById('hackerOverlay').classList.remove('blur-effect');
             
-            // Hide notification after 3 seconds
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
+            // Start new timer
+            inactivityTimer = setTimeout(applyBlurEffect, blurTimeout);
         }
-
+        
+        function applyBlurEffect() {
+            document.querySelector('.bg-image').classList.add('blur-effect');
+            document.getElementById('hackerOverlay').classList.add('blur-effect');
+        }
+        
         // Initialize the page
         window.onload = function() {
             document.body.style.overflow = 'hidden';
@@ -549,8 +450,15 @@
                 overlay.appendChild(binary);
             }
             
-            // Set timer for dark mode (5 minutes = 300,000 milliseconds)
-            setTimeout(activateDarkMode, 60000);
+            // Set up inactivity detection
+            resetInactivityTimer();
+            
+            // Add event listeners for user activity
+            document.addEventListener('mousemove', resetInactivityTimer);
+            document.addEventListener('keydown', resetInactivityTimer);
+            document.addEventListener('click', resetInactivityTimer);
+            document.addEventListener('touchstart', resetInactivityTimer);
+            document.addEventListener('scroll', resetInactivityTimer);
         };
     </script>
 </body>
