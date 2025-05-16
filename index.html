@@ -10,10 +10,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Courier New', monospace;
             height: 100vh;
             overflow: hidden;
             position: relative;
@@ -21,6 +22,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            touch-action: manipulation;
         }
         
         .bg-container {
@@ -44,21 +46,6 @@
             user-select: none;
         }
         
-        .logo-container {
-            margin-top: 10vh;
-            z-index: 2;
-            text-align: center;
-            width: 100%;
-        }
-        
-        .logo {
-            width: 60%;
-            max-width: 120px;
-            filter: drop-shadow(0 0 15px rgba(255, 200, 0, 0.7));
-            pointer-events: none;
-            user-select: none;
-        }
-        
         /* Hacker overlay styles */
         .hacker-overlay {
             position: fixed;
@@ -66,13 +53,14 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             z-index: 100;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             overflow: hidden;
+            padding: 20px;
         }
         
         .matrix-rain {
@@ -101,13 +89,16 @@
             color: lime;
             font-family: 'Courier New', monospace;
             text-align: center;
-            margin: 20px;
-            font-size: 18px;
+            margin: 15px;
+            font-size: clamp(14px, 3vw, 18px);
             opacity: 0;
             text-shadow: 0 0 0px lime;
             z-index: 3;
             position: relative;
             animation: textAppear 2s 0.5s forwards;
+            line-height: 1.5;
+            width: 100%;
+            max-width: 800px;
         }
         
         .binary-code {
@@ -117,15 +108,21 @@
             white-space: nowrap;
             z-index: 1;
             animation: binaryScroll 10s linear infinite;
+            user-select: none;
         }
         
         .glitch-box {
             position: relative;
             border: 2px solid lime;
-            padding: 20px;
+            padding: clamp(10px, 3vw, 20px);
             background-color: rgba(0, 0, 0, 0.1);
             z-index: 4;
             animation: glitch 1s linear infinite alternate;
+            width: 90%;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
       
         .profile-image {
@@ -133,8 +130,10 @@
             max-width: 480px;
             height: auto;
             border-radius: 3px;
-            margin: 20px auto;
+            margin: 15px auto;
             display: block;
+            border: 1px solid rgba(0, 255, 0, 0.5);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
         }
         
         .scanlines {
@@ -155,11 +154,35 @@
         }
         
         .radio-player {
-            width: 80%;
+            width: 100%;
             max-width: 300px;
-            margin-top: 20px;
+            margin-top: 15px;
             opacity: 0;
             animation: fadeIn 2s 1s forwards;
+            filter: drop-shadow(0 0 5px lime);
+        }
+        
+        /* Custom radio player controls */
+        audio::-webkit-media-controls-panel {
+            background-color: rgba(0, 20, 0, 0.7);
+            border-radius: 0;
+            border: 1px solid lime;
+        }
+        
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-mute-button {
+            filter: sepia(100%) saturate(10000%) hue-rotate(50deg);
+        }
+        
+        audio::-webkit-media-controls-current-time-display,
+        audio::-webkit-media-controls-time-remaining-display {
+            color: lime;
+            text-shadow: 0 0 2px lime;
+        }
+        
+        audio::-webkit-media-controls-timeline {
+            background-color: lime;
+            border-radius: 2px;
         }
         
         @keyframes slide {
@@ -202,12 +225,50 @@
             to { opacity: 1; }
         }
         
-        @media (max-height: 600px) {
-            .logo-container {
-                margin-top: 5vh;
+        /* Mobile-specific adjustments */
+        @media (max-width: 768px) {
+            .glitch-box {
+                padding: 12px;
+                width: 95%;
             }
-            .logo {
-                width: 50%;
+            
+            .hacker-text {
+                margin: 10px;
+                font-size: clamp(12px, 4vw, 16px);
+            }
+            
+            .profile-image {
+                margin: 10px auto;
+            }
+            
+            .radio-player {
+                margin-top: 10px;
+            }
+        }
+        
+        @media (max-height: 600px) {
+            .profile-image {
+                max-height: 30vh;
+                width: auto;
+            }
+            
+            .hacker-text {
+                margin: 5px;
+                font-size: clamp(10px, 3vh, 14px);
+            }
+        }
+        
+        /* Orientation-specific adjustments */
+        @media (orientation: portrait) {
+            .profile-image {
+                max-width: 80vw;
+            }
+        }
+        
+        @media (orientation: landscape) {
+            .profile-image {
+                max-height: 60vh;
+                width: auto;
             }
         }
     </style>
@@ -244,12 +305,13 @@
     </audio>
 
     <script>
+        // Prevent right-click and other default behaviors
         document.addEventListener('contextmenu', function(e) {
             e.preventDefault();
         });
         
         document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
+            if (e.target.tagName === 'IMG' || e.target.tagName === 'AUDIO') {
                 e.preventDefault();
             }
         });
@@ -260,7 +322,6 @@
                 (e.ctrlKey && e.shiftKey && e.keyCode == 74) || // Ctrl+Shift+J
                 (e.ctrlKey && e.keyCode == 85)) { // Ctrl+U
                 e.preventDefault();
-                alert('Access denied');
                 return false;
             }
         };
@@ -272,8 +333,11 @@
         function createMatrixRain() {
             const chars = "01";
             const container = document.getElementById('matrixRain');
-            const fontSize = 14;
+            const fontSize = Math.max(10, Math.min(14, window.innerWidth / 100));
             const columns = Math.floor(window.innerWidth / fontSize);
+            
+            // Clear existing columns
+            container.innerHTML = '';
             
             for (let i = 0; i < columns; i++) {
                 const column = document.createElement('div');
@@ -340,7 +404,16 @@
             animateMatrix();
         }
 
-        // Initialize the radio directly
+        // Handle window resize
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                createMatrixRain();
+            }, 200);
+        });
+
+        // Initialize the page
         window.onload = function() {
             document.body.style.overflow = 'hidden';
             
@@ -353,15 +426,28 @@
             const sound2 = document.getElementById('matrixSound');
             sound1.volume = 0.4;
             sound2.volume = 0.9;
-            sound1.play();
-            sound2.loop = true;
-            sound2.play();
             
-            // Start the radio player
-            const radioPlayer = document.getElementById('radioPlayer');
-            radioPlayer.volume = 0.7;
-            radioPlayer.play().catch(e => console.log("Autoplay prevented: ", e));
+            // Try to play sounds with user interaction
+            const playSounds = function() {
+                sound1.play().catch(e => console.log("Sound play prevented: ", e));
+                sound2.loop = true;
+                sound2.play().catch(e => console.log("Sound play prevented: ", e));
+                
+                // Start the radio player
+                const radioPlayer = document.getElementById('radioPlayer');
+                radioPlayer.volume = 0.7;
+                radioPlayer.play().catch(e => console.log("Autoplay prevented: ", e));
+                
+                // Remove the event listener after first interaction
+                document.removeEventListener('click', playSounds);
+                document.removeEventListener('touchstart', playSounds);
+            };
             
+            // Wait for user interaction to play sounds
+            document.addEventListener('click', playSounds);
+            document.addEventListener('touchstart', playSounds);
+            
+            // Create binary code elements
             for (let i = 0; i < 20; i++) {
                 const binary = document.createElement('div');
                 binary.className = 'binary-code';
