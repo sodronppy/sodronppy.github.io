@@ -297,7 +297,7 @@
     <div class="container">
         <h3>selamat datang di welcome!</h3>
         <div class="garuda">i`am  SODRON</div>
-        <img src="" alt="SodroN Profile" class="profile-image">
+        
       
         <br>  
 <a class="hacker-btn2">HOME</a>
@@ -314,10 +314,8 @@
             <button class="hacker-btn" id="radioToggle">Radio🎧</button>
         </div>
         <!-- SoundCloud Player yang disembunyikan -->
-        <iframe id="soundcloudPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/2089617705&color=%2316792c&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>
         
-        <!-- Iwan Fals Player -->
-        <iframe id="iwanFalsPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/54645807&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
+        <iframe id="soundcloudPlayer" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/54645807&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>
         
         <!-- Radio Player -->
         <audio id="radioPlayer" loop>
@@ -507,24 +505,7 @@
                 }
             }
             
-            // Fungsi untuk memutar Iwan Fals
-            function playIwanFals() {
-                if (isIwanFalsPlaying) {
-                    stopAllPlayers();
-                } else {
-                    stopAllPlayers();
-                    try {
-                        if (iwanFalsWidget) {
-                            iwanFalsWidget.play();
-                        }
-                        isIwanFalsPlaying = true;
-                        iwanFalsButton.textContent = "⏹️ Stop Album";
-                    } catch (error) {
-                        console.log('Error playing Iwan Fals:', error);
-                        iwanFalsButton.textContent = "⚠️ Gagal Memutar";
-                    }
-                }
-            }
+            
             
             // Fungsi untuk memutar radio
             function toggleRadio() {
@@ -552,8 +533,7 @@
                 }
             });
             
-            // Event listener untuk tombol Iwan Fals
-            iwanFalsButton.addEventListener('click', playIwanFals);
+    
             
             // Event listener untuk tombol radio
             radioToggle.addEventListener('click', toggleRadio);
@@ -585,20 +565,7 @@
                         playButton.textContent = "📼Music";
                     });
                     
-                    // Atur event listener untuk Iwan Fals player
-                    iwanFalsWidget.bind(SC.Widget.Events.READY, function() {
-                        console.log('Iwan Fals Player ready');
-                    });
                     
-                    iwanFalsWidget.bind(SC.Widget.Events.PLAY, function() {
-                        isIwanFalsPlaying = true;
-                        iwanFalsButton.textContent = "⏹️ Stop Album";
-                    });
-                    
-                    iwanFalsWidget.bind(SC.Widget.Events.PAUSE, function() {
-                        isIwanFalsPlaying = false;
-                        iwanFalsButton.textContent = "Album Iwan Fals";
-                    });
                 };
             }
             
