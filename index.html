@@ -47,6 +47,9 @@
             margin-right: 15px;
             object-fit: cover;
             border: 2px solid #feca57;
+            pointer-events: none; /* Prevent pointer events on the image */
+            user-select: none; /* Prevent selection */
+            -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
         }
         
         .profile-info {
@@ -92,6 +95,9 @@
             animation: rocketFloat 2s ease-in-out infinite;
             z-index: 2;
             filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.7));
+            pointer-events: none; /* Prevent pointer events on the rocket */
+            user-select: none; /* Prevent selection */
+            -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
         }
         
         @keyframes rocketFloat {
@@ -368,6 +374,11 @@
         <button class="message-button" id="message-button">RESET</button>
     </div>
 
+    <!-- Audio element for big wins -->
+    <audio id="bigWinSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
         // Prevent zooming
         document.addEventListener('gesturestart', function(e) {
@@ -377,6 +388,20 @@
         document.addEventListener('dblclick', function(e) {
             e.preventDefault();
         }, { passive: false });
+
+        // Prevent image dragging and context menu
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent image dragging
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
 
         // Game elements
         const counter = document.getElementById('counter');
@@ -390,6 +415,8 @@
         const messageTitle = document.getElementById('message-title');
         const messageContent = document.getElementById('message-content');
         const messageButton = document.getElementById('message-button');
+        const bigWinSound = document.getElementById('bigWinSound');
+        const avatar = document.querySelector('.avatar');
         
         // Game variables
         let currentNumber = 0;
@@ -476,6 +503,9 @@
             }, isBigWin ? 2000 : 1000);
             
             if (isBigWin) {
+                // Play big win sound
+                bigWinSound.currentTime = 0;
+                bigWinSound.play();
                 createDiamondBurst(x, y, amount);
             } else {
                 diamonds += amount;
@@ -584,7 +614,7 @@
                 if (!countUp()) {
                     stopAutoCounting();
                 }
-            }, 600);
+            }, 400);
         }
 
         function stopAutoCounting() {
@@ -623,6 +653,17 @@
         function init() {
             createStars();
             updateDiamondsDisplay();
+            
+            // Prevent image clicking and dragging
+            avatar.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+            
+            avatar.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
             
             manualButton.addEventListener('click', manualPlay);
             autoStopButton.addEventListener('click', toggleAutoCounting);
