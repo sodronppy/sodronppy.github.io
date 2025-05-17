@@ -2,186 +2,644 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1489781 | SodroN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Rocket Count Animation</title>
     <style>
-        /* Reset CSS untuk browser lama */
-        body, div, span {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-        }
-        
         body {
-            font-family: 'Times New Roman', serif;
-            background: #f5f5f5;
-            height: 100%;
-            width: 100%;
-            display: table;
-            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #1a0a2e;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+            touch-action: pan-x pan-y;
         }
         
-        .vakum-container {
-            display: table-cell;
-            text-align: center;
-            vertical-align: middle;
-            width: 100%;
+        .animation-container {
             position: relative;
-            padding: 20px;
-            box-sizing: border-box;
+            width: 100%;
+            max-width: 800px;
+            height: 450px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         
-        .vakum-text {
-            font-size: 72px;
+        .profile {
+            display: flex;
+            align-items: center;
+            background: rgba(30, 15, 60, 0.7);
+            padding: 15px 25px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
+            border: 2px solid #feca57;
+            z-index: 5;
+            margin-bottom: 20px;
+        }
+        
+        .avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+            border: 2px solid #feca57;
+        }
+        
+        .profile-info {
+            text-align: left;
+        }
+        
+        .username {
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #3b1d60;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-            letter-spacing: 2px;
+            color: #feca57;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+        }
+        
+        .diamonds {
+            font-size: 1.2rem;
+            color: #42b6e6;
+            margin: 5px 0 0 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .diamond-icon {
+            font-size: 1.5rem;
+            margin-right: 5px;
+        }
+        
+        .counter-animation {
             position: relative;
-            display: inline-block;
-            margin: 0 0 30px 0;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
         
-        /* Fallback untuk browser yang tidak support background-clip:text */
-        .vakum-text span {
-            background: #3b1d60;
-            color: #3b1d60;
+        .rocket {
+            width: 80px;
+            height: 120px;
+            background-image: url('https://png.pngtree.com/png-vector/20221208/ourmid/pngtree-cartoon-illustration-red-rocket-png-image_6515439.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: relative;
+            animation: rocketFloat 2s ease-in-out infinite;
+            z-index: 2;
+            filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.7));
         }
         
-        @supports (-webkit-background-clip: text) or (background-clip: text) {
-            .vakum-text {
-                background: linear-gradient(to bottom, #8e6eab, #3b1d60, #1a0a2e);
-                -webkit-background-clip: text;
-                background-clip: text;
-                color: transparent;
+        @keyframes rocketFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .counter {
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            margin-left: 20px;
+            min-width: 80px;
+            text-align: center;
+            animation: pulse 1s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+        
+        .jpjp-label {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #feca57;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .coin {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%2342b6e6"/><circle cx="10" cy="10" r="5" fill="%2357d1ff"/></svg>');
+            background-size: contain;
+            opacity: 0;
+            z-index: 10;
+        }
+        
+        .win-text {
+            position: absolute;
+            font-weight: bold;
+            color: #feca57;
+            text-shadow: 0 0 10px rgba(254, 202, 87, 0.8);
+            opacity: 0;
+            z-index: 10;
+            animation: winAppear 1.5s forwards;
+            text-align: center;
+        }
+        
+        .small-win {
+            font-size: 1.2rem;
+            animation: smallWinAppear 1s forwards;
+        }
+        
+        .big-win {
+            font-size: 2.5rem;
+            text-shadow: 0 0 20px rgba(254, 202, 87, 0.9);
+            animation: bigWinAppear 2s forwards;
+        }
+        
+        @keyframes smallWinAppear {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            50% { 
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
             }
         }
         
-        .vakum-text:after {
-            content: '';
+        @keyframes bigWinAppear {
+            0% { 
+                transform: translate(-50%, -50%) scale(0.5);
+                opacity: 0;
+            }
+            20% { 
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            80% { 
+                transform: translate(-50%, -50%) scale(1.1);
+                opacity: 1;
+            }
+            100% { 
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .stars {
             position: absolute;
-            bottom: -10px;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 1s infinite alternate;
+        }
+        
+        @keyframes twinkle {
+            from { opacity: 0.2; }
+            to { opacity: 1; }
+        }
+        
+        .cost-info {
+            position: absolute;
+            bottom: -25px;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: #8e6eab;
-            background: linear-gradient(to right, #8e6eab, #3b1d60, #1a0a2e);
-            border-radius: 3px;
+            text-align: center;
+            color: #ff6b6b;
+            font-size: 0.9rem;
         }
         
-        .subtext {
-            font-size: 18px;
-            color: #555;
-            font-weight: normal;
-            letter-spacing: 1px;
-            line-height: 1.6;
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-            padding: 20px 0;
+        .button-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
         
-        .subtext:before, .subtext:after {
-            content: '✻';
-            color: #8e6eab;
-            font-size: 14px;
-            margin: 0 10px;
-            position: relative;
-            top: -2px;
+        .manual-button, .auto-stop-button, .reset-button {
+            background: linear-gradient(135deg, #feca57, #ff9f43);
+            border: none;
+            color: #1a0a2e;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(254, 202, 87, 0.5);
+            transition: all 0.3s ease;
+            z-index: 5;
+            min-width: 120px;
         }
         
-        .decoration {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            border: 2px solid #8e6eab;
-            opacity: 0.3;
+        .auto-stop-button {
+            background: linear-gradient(135deg, #42b6e6, #2e86de);
+            color: white;
         }
         
-        .decoration-1 {
-            top: 0;
-            left: 0;
-            border-radius: 50% 50% 0 50%;
+        .auto-stop-button.stop-mode {
+            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
         }
         
-        .decoration-2 {
-            bottom: 0;
-            right: 0;
-            border-radius: 50% 50% 50% 0;
+        .reset-button {
+            background: linear-gradient(135deg, #8e6eab, #3b1d60);
+            color: white;
         }
         
-        /* Mario Animation - Kompatibel dengan browser lama */
-        .mario {
-            position: absolute;
-            width: 60px;
-            height: 80px;
-            bottom: 30px;
+        .manual-button:hover, .auto-stop-button:hover, .reset-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(254, 202, 87, 0.8);
+        }
+        
+        .manual-button:disabled, .auto-stop-button:disabled, .reset-button:disabled {
+            background: #555;
+            color: #888;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        .message-box {
+            position: fixed;
+            top: 50%;
             left: 50%;
-            margin-left: -30px;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="15" y="10" width="30" height="20" fill="%23e60000"/><rect x="15" y="30" width="30" height="30" fill="%23e60000"/><rect x="10" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="40" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="20" y="60" width="20" height="10" fill="%23b87333"/><circle cx="20" cy="15" r="5" fill="%23f2bc57"/><circle cx="40" cy="15" r="5" fill="%23f2bc57"/><rect x="25" y="25" width="10" height="5" fill="%23f2bc57"/><circle cx="25" cy="20" r="3" fill="%23333"/><circle cx="35" cy="20" r="3" fill="%23333"/><rect x="15" y="5" width="10" height="5" fill="%23e60000"/><rect x="35" y="5" width="10" height="5" fill="%23e60000"/></svg>') no-repeat;
-            z-index: 2;
+            transform: translate(-50%, -50%);
+            background: rgba(30, 15, 60, 0.9);
+            border: 2px solid #ff6b6b;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            z-index: 100;
+            display: none;
+            max-width: 80%;
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
         }
         
-        /* Animasi sederhana yang kompatibel */
-        .mario-move {
-            animation: simpleMove 5s linear infinite;
+        .message-title {
+            color: #ff6b6b;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
         }
         
-        @keyframes simpleMove {
-            0% { left: 10%; transform: translateY(0); }
-            25% { transform: translateY(-50px); }
-            50% { left: 50%; transform: translateY(0); }
-            75% { transform: translateY(-50px); }
-            100% { left: 90%; transform: translateY(0); }
+        .message-content {
+            color: #feca57;
+            margin-bottom: 20px;
         }
         
-        /* Media Query dasar */
-        @media screen and (max-width: 600px) {
-            .vakum-text {
-                font-size: 48px;
+        .message-button {
+            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            font-size: 1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .message-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+        }
+        
+        @media (max-width: 768px) {
+            .animation-container {
+                height: auto;
+                padding: 20px;
+            }
+            
+            .profile {
+                margin-right: 0;
                 margin-bottom: 20px;
             }
             
-            .subtext {
-                font-size: 16px;
-                padding: 15px 0;
+            .counter {
+                font-size: 2.5rem;
             }
             
-            .mario {
-                width: 53px;
-                height: 81px;
-                bottom: 20px;
-                margin-left: -20px;
+            .button-container {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="vakum-container">
-        <div class="decoration decoration-1"></div>
-        <div class="vakum-text">VAKUM</div>
-        <div class="subtext">1489781 SodroN · see you next time ·</div>
-        <div class="decoration decoration-2"></div>
+    <div class="animation-container">
+        <div class="stars" id="stars"></div>
         
-        <!-- Mario dengan animasi sederhana -->
-        <div class="mario mario-move"></div>
+        <div class="profile">
+            <img class="avatar" src="https://s14.gifyu.com/images/bsQ25.png" alt="Player Avatar">
+            <div class="profile-info">
+                <h2 class="username">🐒SodroN</h2>
+                <p class="diamonds"><span class="diamond-icon">💎</span><span id="diamond-count">75.000</span></p>
+            </div>
+        </div>
+        
+        <div class="counter-animation">
+            <div class="jpjp-label"></div>
+            <div class="rocket" id="rocket"></div>
+            <div class="counter" id="counter">x0</div>
+            <div class="cost-info">🤣di ketawain Budi</div>
+        </div>
+        
+        <div class="button-container">
+            <button class="manual-button" id="manual-button">MULAI JPJP</button>
+            <button class="auto-stop-button" id="auto-stop-button">AUTO</button>
+            <button class="reset-button" id="reset-button">RESET</button>
+        </div>
+    </div>
+    
+    <div class="message-box" id="message-box">
+        <h3 class="message-title" id="message-title">Diamond Tidak Cukup</h3>
+        <p class="message-content" id="message-content">Koin habis, silahkan reset untuk memulai kembali.</p>
+        <button class="message-button" id="message-button">RESET</button>
     </div>
 
-    <!-- Fallback untuk browser yang tidak support SVG -->
     <script>
-        if (typeof SVGRect === "undefined") {
-            document.querySelector('.mario').style.backgroundImage = 'none';
-            document.querySelector('.mario').innerHTML = 'M';
-            document.querySelector('.mario').style.color = '#e60000';
-            document.querySelector('.mario').style.textAlign = 'center';
-            document.querySelector('.mario').style.fontWeight = 'bold';
-            document.querySelector('.mario').style.fontSize = '24px';
-            document.querySelector('.mario').style.lineHeight = '80px';
+        // Prevent zooming
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Game elements
+        const counter = document.getElementById('counter');
+        const rocket = document.getElementById('rocket');
+        const starsContainer = document.getElementById('stars');
+        const diamondCount = document.getElementById('diamond-count');
+        const manualButton = document.getElementById('manual-button');
+        const autoStopButton = document.getElementById('auto-stop-button');
+        const resetButton = document.getElementById('reset-button');
+        const messageBox = document.getElementById('message-box');
+        const messageTitle = document.getElementById('message-title');
+        const messageContent = document.getElementById('message-content');
+        const messageButton = document.getElementById('message-button');
+        
+        // Game variables
+        let currentNumber = 0;
+        let diamonds = 75000;
+        let isAutoCounting = false;
+        let autoCountInterval;
+        let resetTimer;
+        
+        const winMultipliers = [
+            { multiplier: 10, probability: 0.10, text: "x10 Times", bigWin: false },
+            { multiplier: 20, probability: 0.03, text: "x20 Times", bigWin: false },
+            { multiplier: 50, probability: 0.03, text: "x50 Times", bigWin: false },
+            { multiplier: 100, probability: 0.003, text: "x100 Times", bigWin: false },
+            { multiplier: 500, probability: 0.06, text: "x500 Times", bigWin: true },
+            { multiplier: 650, probability: 0.006, text: "x650 Times", bigWin: true }
+        ];
+        
+        // Create stars background
+        function createStars() {
+            for (let i = 0; i < 100; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.height = star.style.width;
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                starsContainer.appendChild(star);
+            }
         }
+        
+        // Create diamond burst effect for big wins
+        function createDiamondBurst(x, y, amount) {
+            for (let i = 0; i < 50; i++) {
+                const diamond = document.createElement('div');
+                diamond.className = 'coin';
+                diamond.style.left = `${x}px`;
+                diamond.style.top = `${y}px`;
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 70 + Math.random() * 130;
+                const duration = 0.8 + Math.random() * 1.2;
+                
+                diamond.style.animation = `diamondMove-${i} ${duration}s forwards`;
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes diamondMove-${i} {
+                        0% { 
+                            transform: translate(0, 0) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% { 
+                            transform: translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(720deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(diamond);
+                
+                setTimeout(() => {
+                    diamond.remove();
+                    style.remove();
+                }, duration * 1000);
+            }
+            
+            diamonds += amount;
+            updateDiamondsDisplay();
+        }
+        
+        function createWinText(x, y, text, isBigWin, amount) {
+            const winText = document.createElement('div');
+            winText.className = `win-text ${isBigWin ? 'big-win' : 'small-win'}`;
+            winText.textContent = text;
+            winText.style.left = `${x}px`;
+            winText.style.top = `${y}px`;
+            
+            document.body.appendChild(winText);
+            
+            setTimeout(() => {
+                winText.remove();
+            }, isBigWin ? 2000 : 1000);
+            
+            if (isBigWin) {
+                createDiamondBurst(x, y, amount);
+            } else {
+                diamonds += amount;
+                updateDiamondsDisplay();
+            }
+        }
+        
+        function showMessage(title, content) {
+            messageTitle.textContent = title;
+            messageContent.textContent = content;
+            messageBox.style.display = 'block';
+        }
+        
+        function hideMessage() {
+            messageBox.style.display = 'none';
+        }
+        
+        function updateDiamondsDisplay() {
+            diamondCount.textContent = diamonds.toLocaleString();
+            
+            const diamondsElement = document.querySelector('.diamonds');
+            diamondsElement.style.transform = 'scale(1.2)';
+            diamondsElement.style.color = diamonds < 300 ? '#ff6b6b' : '#42b6e6';
+            
+            setTimeout(() => {
+                diamondsElement.style.transform = 'scale(1)';
+            }, 300);
+            
+            manualButton.disabled = diamonds < 300;
+            autoStopButton.disabled = diamonds < 300;
+            
+            if (diamonds < 300 && !isAutoCounting) {
+                resetButton.style.display = 'block';
+            } else {
+                resetButton.style.display = 'none';
+            }
+        }
+        
+        function checkForWin() {
+            if (Math.random() < 0.10) {
+                let random = Math.random();
+                let cumulativeProbability = 0;
+                
+                for (const win of winMultipliers) {
+                    cumulativeProbability += win.probability;
+                    if (random <= cumulativeProbability) {
+                        return win;
+                    }
+                }
+            }
+            return null;
+        }
+        
+        function countUp() {
+            if (diamonds < 300) {
+                if (isAutoCounting) {
+                    stopAutoCounting();
+                }
+                showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
+                return false;
+            }
+            
+            diamonds -= 300;
+            updateDiamondsDisplay();
+            
+            currentNumber++;
+            counter.textContent = `x${currentNumber}`;
+            
+            const win = checkForWin();
+            if (win) {
+                const rocketRect = rocket.getBoundingClientRect();
+                const x = rocketRect.left + rocketRect.width / 2;
+                const y = rocketRect.top + rocketRect.height / 2;
+                const winAmount = 300 * win.multiplier;
+                createWinText(x, y - 50, win.text, win.bigWin, winAmount);
+            }
+            
+            resetCounterTimer();
+            return true;
+        }
+
+        function resetCounterTimer() {
+            clearTimeout(resetTimer);
+            if (!isAutoCounting) {
+                resetTimer = setTimeout(() => {
+                    currentNumber = 0;
+                    counter.textContent = "x0";
+                }, 1000);
+            }
+        }
+
+        function manualPlay() {
+            if (diamonds < 300) return;
+            countUp();
+        }
+
+        function startAutoCounting() {
+            if (isAutoCounting || diamonds < 300) return;
+            
+            isAutoCounting = true;
+            autoStopButton.textContent = "STOP";
+            autoStopButton.classList.add('stop-mode');
+            manualButton.disabled = true;
+            
+            autoCountInterval = setInterval(() => {
+                if (!countUp()) {
+                    stopAutoCounting();
+                }
+            }, 600);
+        }
+
+        function stopAutoCounting() {
+            isAutoCounting = false;
+            clearInterval(autoCountInterval);
+            autoStopButton.textContent = "AUTO";
+            autoStopButton.classList.remove('stop-mode');
+            manualButton.disabled = false;
+            
+            if (diamonds < 300) {
+                resetButton.style.display = 'block';
+            }
+            
+            currentNumber = 0;
+            counter.textContent = "x0";
+        }
+
+        function toggleAutoCounting() {
+            if (isAutoCounting) {
+                stopAutoCounting();
+            } else {
+                startAutoCounting();
+            }
+        }
+
+        function resetGame() {
+            stopAutoCounting();
+            currentNumber = 0;
+            counter.textContent = "x0";
+            diamonds = 75000;
+            updateDiamondsDisplay();
+            hideMessage();
+            resetButton.style.display = 'none';
+        }
+
+        function init() {
+            createStars();
+            updateDiamondsDisplay();
+            
+            manualButton.addEventListener('click', manualPlay);
+            autoStopButton.addEventListener('click', toggleAutoCounting);
+            resetButton.addEventListener('click', resetGame);
+            messageButton.addEventListener('click', resetGame);
+
+            if (window.matchMedia("(hover: hover)").matches) {
+                document.addEventListener('mousemove', (e) => {
+                    const containerRect = document.querySelector('.counter-animation').getBoundingClientRect();
+                    const centerX = containerRect.left + containerRect.width / 2;
+                    const offsetX = (e.clientX - centerX) / 10;
+                    rocket.style.transform = `translateX(${offsetX}px)`;
+                });
+            }
+        }
+        
+        init();
     </script>
 </body>
 </html>
