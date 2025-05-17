@@ -2,82 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>1489781 | SodroN</title>
     <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background: #f5f5f5;
+        /* Reset CSS untuk browser lama */
+        body, div, span {
             margin: 0;
-            font-family: 'Playfair Display', serif;
-            padding: 20px;
-            box-sizing: border-box;
-            overflow: hidden;
-            cursor: pointer;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        
+        body {
+            font-family: 'Times New Roman', serif;
+            background: #f5f5f5;
+            height: 100%;
+            width: 100%;
+            display: table;
+            position: absolute;
         }
         
         .vakum-container {
-            position: relative;
+            display: table-cell;
             text-align: center;
-            max-width: 800px;
+            vertical-align: middle;
             width: 100%;
-            height: 300px;
+            position: relative;
+            padding: 20px;
+            box-sizing: border-box;
         }
         
         .vakum-text {
-            font-size: clamp(4rem, 12vw, 8rem);
-            font-weight: 700;
-            background: linear-gradient(135deg, #8e6eab 0%, #3b1d60 50%, #1a0a2e 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-size: 72px;
+            font-weight: bold;
+            color: #3b1d60;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
             letter-spacing: 2px;
             position: relative;
             display: inline-block;
-            margin-bottom: 1.5rem;
-            z-index: 1;
-            transform: translateY(0);
-            transition: transform 0.1s;
+            margin: 0 0 30px 0;
         }
         
-        .vakum-text::after {
+        /* Fallback untuk browser yang tidak support background-clip:text */
+        .vakum-text span {
+            background: #3b1d60;
+            color: #3b1d60;
+        }
+        
+        @supports (-webkit-background-clip: text) or (background-clip: text) {
+            .vakum-text {
+                background: linear-gradient(to bottom, #8e6eab, #3b1d60, #1a0a2e);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+        }
+        
+        .vakum-text:after {
             content: '';
             position: absolute;
             bottom: -10px;
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, #8e6eab, #3b1d60, #1a0a2e);
+            background: #8e6eab;
+            background: linear-gradient(to right, #8e6eab, #3b1d60, #1a0a2e);
             border-radius: 3px;
         }
         
-        .vakum-text span {
-            display: inline-block;
-            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform-origin: bottom center;
-        }
-        
         .subtext {
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-size: 18px;
             color: #555;
-            font-weight: 400;
+            font-weight: normal;
             letter-spacing: 1px;
             line-height: 1.6;
             max-width: 600px;
             margin: 0 auto;
             position: relative;
             padding: 20px 0;
-            z-index: 1;
         }
         
-        .subtext::before, .subtext::after {
+        .subtext:before, .subtext:after {
             content: '✻';
             color: #8e6eab;
-            font-size: 1.2rem;
+            font-size: 14px;
             margin: 0 10px;
             position: relative;
             top: -2px;
@@ -85,206 +96,92 @@
         
         .decoration {
             position: absolute;
-            width: clamp(50px, 15vw, 100px);
-            height: clamp(50px, 15vw, 100px);
+            width: 80px;
+            height: 80px;
             border: 2px solid #8e6eab;
             opacity: 0.3;
-            z-index: 0;
         }
         
         .decoration-1 {
-            top: -20px;
-            left: -20px;
+            top: 0;
+            left: 0;
             border-radius: 50% 50% 0 50%;
         }
         
         .decoration-2 {
-            bottom: -20px;
-            right: -20px;
+            bottom: 0;
+            right: 0;
             border-radius: 50% 50% 50% 0;
         }
         
-        /* Mario Animation */
+        /* Mario Animation - Kompatibel dengan browser lama */
         .mario {
             position: absolute;
             width: 60px;
             height: 80px;
             bottom: 30px;
             left: 50%;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="15" y="10" width="30" height="20" fill="%23e60000"/><rect x="15" y="30" width="30" height="30" fill="%23e60000"/><rect x="10" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="40" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="20" y="60" width="20" height="10" fill="%23b87333"/><circle cx="20" cy="15" r="5" fill="%23f2bc57"/><circle cx="40" cy="15" r="5" fill="%23f2bc57"/><rect x="25" y="25" width="10" height="5" fill="%23f2bc57"/><circle cx="25" cy="20" r="3" fill="%23333"/><circle cx="35" cy="20" r="3" fill="%23333"/><rect x="15" y="5" width="10" height="5" fill="%23e60000"/><rect x="35" y="5" width="10" height="5" fill="%23e60000"/></svg>');
-            background-repeat: no-repeat;
+            margin-left: -30px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="15" y="10" width="30" height="20" fill="%23e60000"/><rect x="15" y="30" width="30" height="30" fill="%23e60000"/><rect x="10" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="40" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="20" y="60" width="20" height="10" fill="%23b87333"/><circle cx="20" cy="15" r="5" fill="%23f2bc57"/><circle cx="40" cy="15" r="5" fill="%23f2bc57"/><rect x="25" y="25" width="10" height="5" fill="%23f2bc57"/><circle cx="25" cy="20" r="3" fill="%23333"/><circle cx="35" cy="20" r="3" fill="%23333"/><rect x="15" y="5" width="10" height="5" fill="%23e60000"/><rect x="35" y="5" width="10" height="5" fill="%23e60000"/></svg>') no-repeat;
             z-index: 2;
-            transform: translateX(-50%);
-            transition: transform 0.2s ease-out;
         }
         
-        .mario.jump {
-            animation: marioJump 0.5s ease-out;
+        /* Animasi sederhana yang kompatibel */
+        .mario-move {
+            animation: simpleMove 5s linear infinite;
         }
         
-        @keyframes marioJump {
-            0% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(-120px); }
-            100% { transform: translateX(-50%) translateY(0); }
+        @keyframes simpleMove {
+            0% { left: 10%; transform: translateY(0); }
+            25% { transform: translateY(-50px); }
+            50% { left: 50%; transform: translateY(0); }
+            75% { transform: translateY(-50px); }
+            100% { left: 90%; transform: translateY(0); }
         }
         
-        /* Particle Effects */
-        .particle {
-            position: absolute;
-            width: 15px;
-            height: 15px;
-            background-color: #f2bc57;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 3;
-            animation: particleFade 1s forwards;
-        }
-        
-        @keyframes particleFade {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-50px); opacity: 0; }
-        }
-        
-        /* Brick Hit Effect */
-        .brick-hit {
-            display: inline-block;
-            animation: brickBounce 0.5s;
-        }
-        
-        @keyframes brickBounce {
-            0% { transform: translateY(0) scaleY(1); }
-            50% { transform: translateY(-20px) scaleY(0.8); }
-            100% { transform: translateY(0) scaleY(1); }
-        }
-        
-        @media (max-width: 600px) {
+        /* Media Query dasar */
+        @media screen and (max-width: 600px) {
             .vakum-text {
-                margin-bottom: 1rem;
+                font-size: 48px;
+                margin-bottom: 20px;
             }
             
             .subtext {
+                font-size: 16px;
                 padding: 15px 0;
             }
             
-            .subtext::before, .subtext::after {
-                margin: 0 5px;
-            }
-            
             .mario {
-                width: 40px;
-                height: 60px;
+                width: 53px;
+                height: 81px;
                 bottom: 20px;
+                margin-left: -20px;
             }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="vakum-container">
         <div class="decoration decoration-1"></div>
-        <div class="vakum-text">V<span>A</span><span>K</span><span>U</span><span>M</span></div>
+        <div class="vakum-text">VAKUM</div>
         <div class="subtext">1489781 SodroN · see you next time ·</div>
         <div class="decoration decoration-2"></div>
         
-        <!-- Mario -->
-        <div class="mario" id="mario"></div>
+        <!-- Mario dengan animasi sederhana -->
+        <div class="mario mario-move"></div>
     </div>
 
+    <!-- Fallback untuk browser yang tidak support SVG -->
     <script>
-        const mario = document.getElementById('mario');
-        const vakumText = document.querySelector('.vakum-text');
-        const letters = document.querySelectorAll('.vakum-text span');
-        const container = document.querySelector('.vakum-container');
-        
-        let marioX = 50;
-        let isJumping = false;
-        
-        // Make letters interactive
-        letters.forEach((letter, index) => {
-            letter.style.cursor = 'pointer';
-            
-            letter.addEventListener('mouseover', () => {
-                if (!isJumping) {
-                    jumpToLetter(index);
-                }
-            });
-        });
-        
-        // Click anywhere to make Mario jump
-        document.addEventListener('click', (e) => {
-            if (!isJumping) {
-                // Calculate position relative to container
-                const rect = container.getBoundingClientRect();
-                const clickX = e.clientX - rect.left;
-                const targetX = (clickX / rect.width) * 100;
-                
-                jumpToPosition(targetX);
-            }
-        });
-        
-        function jumpToLetter(letterIndex) {
-            const letters = document.querySelectorAll('.vakum-text span');
-            if (letterIndex >= letters.length) return;
-            
-            const letter = letters[letterIndex];
-            const rect = letter.getBoundingClientRect();
-            const containerRect = container.getBoundingClientRect();
-            
-            // Calculate target position (center of letter)
-            const targetX = ((rect.left + rect.width/2) - containerRect.left) / containerRect.width * 100;
-            
-            jumpToPosition(targetX, () => {
-                // Hit effect
-                letter.classList.add('brick-hit');
-                
-                // Create particles
-                createParticles(rect.left + rect.width/2, rect.top);
-                
-                setTimeout(() => {
-                    letter.classList.remove('brick-hit');
-                }, 500);
-            });
+        if (typeof SVGRect === "undefined") {
+            document.querySelector('.mario').style.backgroundImage = 'none';
+            document.querySelector('.mario').innerHTML = 'M';
+            document.querySelector('.mario').style.color = '#e60000';
+            document.querySelector('.mario').style.textAlign = 'center';
+            document.querySelector('.mario').style.fontWeight = 'bold';
+            document.querySelector('.mario').style.fontSize = '24px';
+            document.querySelector('.mario').style.lineHeight = '80px';
         }
-        
-        function jumpToPosition(targetX, onComplete = () => {}) {
-            isJumping = true;
-            marioX = targetX;
-            
-            // Update Mario position
-            mario.style.left = `${targetX}%`;
-            mario.classList.add('jump');
-            
-            setTimeout(() => {
-                mario.classList.remove('jump');
-                isJumping = false;
-                onComplete();
-            }, 500);
-        }
-        
-        function createParticles(x, y) {
-            for (let i = 0; i < 5; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = `${x}px`;
-                particle.style.top = `${y}px`;
-                particle.style.animationDelay = `${i * 0.1}s`;
-                
-                document.body.appendChild(particle);
-                
-                // Remove after animation
-                setTimeout(() => {
-                    particle.remove();
-                }, 1000);
-            }
-        }
-        
-        // Auto-jump every 3 seconds if inactive
-        setInterval(() => {
-            if (!isJumping) {
-                const randomLetter = Math.floor(Math.random() * letters.length);
-                jumpToLetter(randomLetter);
-            }
-        }, 3000);
     </script>
 </body>
 </html>
