@@ -16,6 +16,7 @@
             padding: 20px;
             box-sizing: border-box;
             overflow: hidden;
+            cursor: pointer;
         }
         
         .vakum-container {
@@ -23,6 +24,7 @@
             text-align: center;
             max-width: 800px;
             width: 100%;
+            height: 300px;
         }
         
         .vakum-text {
@@ -38,6 +40,8 @@
             display: inline-block;
             margin-bottom: 1.5rem;
             z-index: 1;
+            transform: translateY(0);
+            transition: transform 0.1s;
         }
         
         .vakum-text::after {
@@ -49,6 +53,12 @@
             height: 3px;
             background: linear-gradient(90deg, #8e6eab, #3b1d60, #1a0a2e);
             border-radius: 3px;
+        }
+        
+        .vakum-text span {
+            display: inline-block;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-origin: bottom center;
         }
         
         .subtext {
@@ -100,81 +110,51 @@
             width: 60px;
             height: 80px;
             bottom: 30px;
-            left: -100px;
+            left: 50%;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80"><rect x="15" y="10" width="30" height="20" fill="%23e60000"/><rect x="15" y="30" width="30" height="30" fill="%23e60000"/><rect x="10" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="40" y="35" width="10" height="25" fill="%2342b6e6"/><rect x="20" y="60" width="20" height="10" fill="%23b87333"/><circle cx="20" cy="15" r="5" fill="%23f2bc57"/><circle cx="40" cy="15" r="5" fill="%23f2bc57"/><rect x="25" y="25" width="10" height="5" fill="%23f2bc57"/><circle cx="25" cy="20" r="3" fill="%23333"/><circle cx="35" cy="20" r="3" fill="%23333"/><rect x="15" y="5" width="10" height="5" fill="%23e60000"/><rect x="35" y="5" width="10" height="5" fill="%23e60000"/></svg>');
             background-repeat: no-repeat;
             z-index: 2;
-            animation: marioRun 8s linear infinite;
+            transform: translateX(-50%);
+            transition: transform 0.2s ease-out;
         }
         
-        @keyframes marioRun {
-            0% {
-                transform: translateX(-100px) translateY(0);
-            }
-            20% {
-                transform: translateX(100px) translateY(0);
-            }
-            25% {
-                transform: translateX(140px) translateY(-100px);
-            }
-            30% {
-                transform: translateX(180px) translateY(0);
-            }
-            50% {
-                transform: translateX(380px) translateY(0);
-            }
-            55% {
-                transform: translateX(420px) translateY(-100px);
-            }
-            60% {
-                transform: translateX(460px) translateY(0);
-            }
-            80% {
-                transform: translateX(660px) translateY(0);
-            }
-            85% {
-                transform: translateX(700px) translateY(-100px);
-            }
-            90% {
-                transform: translateX(740px) translateY(0);
-            }
-            100% {
-                transform: translateX(900px) translateY(0);
-            }
+        .mario.jump {
+            animation: marioJump 0.5s ease-out;
         }
         
-        /* Cloud decorations */
-        .cloud {
+        @keyframes marioJump {
+            0% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-120px); }
+            100% { transform: translateX(-50%) translateY(0); }
+        }
+        
+        /* Particle Effects */
+        .particle {
             position: absolute;
-            background: white;
+            width: 15px;
+            height: 15px;
+            background-color: #f2bc57;
             border-radius: 50%;
-            opacity: 0.7;
-            z-index: 0;
+            pointer-events: none;
+            z-index: 3;
+            animation: particleFade 1s forwards;
         }
         
-        .cloud-1 {
-            width: 60px;
-            height: 30px;
-            top: 20%;
-            left: 10%;
-            animation: cloudMove 30s linear infinite;
+        @keyframes particleFade {
+            0% { transform: translateY(0); opacity: 1; }
+            100% { transform: translateY(-50px); opacity: 0; }
         }
         
-        .cloud-2 {
-            width: 100px;
-            height: 50px;
-            top: 30%;
-            right: 10%;
-            animation: cloudMove 40s linear infinite reverse;
+        /* Brick Hit Effect */
+        .brick-hit {
+            display: inline-block;
+            animation: brickBounce 0.5s;
         }
         
-        @keyframes cloudMove {
-            from {
-                transform: translateX(-100px);
-            }
-            to {
-                transform: translateX(calc(100vw + 100px));
-            }
+        @keyframes brickBounce {
+            0% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-20px) scaleY(0.8); }
+            100% { transform: translateY(0) scaleY(1); }
         }
         
         @media (max-width: 600px) {
@@ -202,16 +182,109 @@
 <body>
     <div class="vakum-container">
         <div class="decoration decoration-1"></div>
-        <div class="vakum-text">VAKUM</div>
+        <div class="vakum-text">V<span>A</span><span>K</span><span>U</span><span>M</span></div>
         <div class="subtext">1489781 SodroN · see you next time ·</div>
         <div class="decoration decoration-2"></div>
         
         <!-- Mario -->
-        <div class="mario"></div>
-        
-        <!-- Clouds -->
-        <div class="cloud cloud-1"></div>
-        <div class="cloud cloud-2"></div>
+        <div class="mario" id="mario"></div>
     </div>
+
+    <script>
+        const mario = document.getElementById('mario');
+        const vakumText = document.querySelector('.vakum-text');
+        const letters = document.querySelectorAll('.vakum-text span');
+        const container = document.querySelector('.vakum-container');
+        
+        let marioX = 50;
+        let isJumping = false;
+        
+        // Make letters interactive
+        letters.forEach((letter, index) => {
+            letter.style.cursor = 'pointer';
+            
+            letter.addEventListener('mouseover', () => {
+                if (!isJumping) {
+                    jumpToLetter(index);
+                }
+            });
+        });
+        
+        // Click anywhere to make Mario jump
+        document.addEventListener('click', (e) => {
+            if (!isJumping) {
+                // Calculate position relative to container
+                const rect = container.getBoundingClientRect();
+                const clickX = e.clientX - rect.left;
+                const targetX = (clickX / rect.width) * 100;
+                
+                jumpToPosition(targetX);
+            }
+        });
+        
+        function jumpToLetter(letterIndex) {
+            const letters = document.querySelectorAll('.vakum-text span');
+            if (letterIndex >= letters.length) return;
+            
+            const letter = letters[letterIndex];
+            const rect = letter.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            // Calculate target position (center of letter)
+            const targetX = ((rect.left + rect.width/2) - containerRect.left) / containerRect.width * 100;
+            
+            jumpToPosition(targetX, () => {
+                // Hit effect
+                letter.classList.add('brick-hit');
+                
+                // Create particles
+                createParticles(rect.left + rect.width/2, rect.top);
+                
+                setTimeout(() => {
+                    letter.classList.remove('brick-hit');
+                }, 500);
+            });
+        }
+        
+        function jumpToPosition(targetX, onComplete = () => {}) {
+            isJumping = true;
+            marioX = targetX;
+            
+            // Update Mario position
+            mario.style.left = `${targetX}%`;
+            mario.classList.add('jump');
+            
+            setTimeout(() => {
+                mario.classList.remove('jump');
+                isJumping = false;
+                onComplete();
+            }, 500);
+        }
+        
+        function createParticles(x, y) {
+            for (let i = 0; i < 5; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.animationDelay = `${i * 0.1}s`;
+                
+                document.body.appendChild(particle);
+                
+                // Remove after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+        }
+        
+        // Auto-jump every 3 seconds if inactive
+        setInterval(() => {
+            if (!isJumping) {
+                const randomLetter = Math.floor(Math.random() * letters.length);
+                jumpToLetter(randomLetter);
+            }
+        }, 3000);
+    </script>
 </body>
 </html>
