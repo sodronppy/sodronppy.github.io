@@ -193,31 +193,6 @@
         .hidden {
             display: none;
         }
-
-          .infoo {
-              animation: blinker 1s linear infinite;
-}
-
-@keyframes blinker {
-  50% {
-    opacity: 0;
-  }
-}}
-      font-size: 12px;
-      font-style: italic;
-      color: #888888;
-    }
-       .moving-textt {
-      font-size: 14px;
-      font-style: italic;
-      color: #888888;
-      display: inline-block;
-      animation: move-left-right 3s infinite ease-in-out;
-    }
-    
-    
-    
-    
         
         /* Tambahkan style berikut untuk pesan proteksi */
         .protection-overlay {
@@ -325,6 +300,100 @@
             flex-wrap: wrap;
             margin-top: 20px;
         }
+
+ /* New styles for the improved text */
+        .life-message {
+            font-size: 1.5rem;
+            margin: 30px 0;
+            color: #0f0;
+            text-shadow: 0 0 8px #0f0;
+            position: relative;
+            padding: 20px;
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            border-radius: 5px;
+            background-color: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+            max-width: 80%;
+            margin-left: auto;
+            margin-right: auto;
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+                transform: scale(1);
+            }
+            100% {
+                box-shadow: 0 0 25px rgba(0, 255, 0, 0.4);
+                transform: scale(1.02);
+            }
+        }
+
+        .life-message::before, .life-message::after {
+            content: "❝";
+            position: absolute;
+            font-size: 3rem;
+            color: rgba(0, 255, 0, 0.5);
+            line-height: 1;
+        }
+
+        .life-message::before {
+            top: 0;
+            left: 10px;
+        }
+
+        .life-message::after {
+            bottom: -20px;
+            right: 10px;
+            transform: rotate(180deg);
+        }
+
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.8rem;
+            color: #0f0;
+            margin-top: 10px;
+            text-align: right;
+            padding-right: 30px;
+            position: relative;
+            animation: flicker 1.5s infinite alternate;
+        }
+
+        .signature::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            right: 30px;
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .life-message {
+                font-size: 1.3rem;
+                padding: 15px;
+            }
+            
+            .signature {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .life-message {
+                font-size: 1.1rem;
+                padding: 10px;
+            }
+            
+            .signature {
+                font-size: 1.3rem;
+            }
+        }
+
+            
     </style>
 </head>
 <body>
