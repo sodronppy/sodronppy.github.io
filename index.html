@@ -5,67 +5,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>1489781 |SodroN</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            min-height: -webkit-fill-available;
             background: #1a0a2e;
             margin: 0;
+            padding: 20px;
             font-family: Arial, sans-serif;
-            overflow: hidden;
+            overflow: auto;
             touch-action: pan-x pan-y;
         }
         
         .animation-container {
             position: relative;
             width: 100%;
-            max-width: 800px;
-            height: 450px;
+            max-width: 400px;
+            height: auto;
+            min-height: 500px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            padding: 20px 0;
+            margin: auto;
         }
         
         .profile {
             display: flex;
             align-items: center;
             background: rgba(30, 15, 60, 0.7);
-            padding: 15px 25px;
+            padding: 12px 20px;
             border-radius: 50px;
             box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
             border: 2px solid #feca57;
             z-index: 5;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 350px;
         }
         
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 12px;
             object-fit: cover;
             border: 2px solid #feca57;
-            pointer-events: none; /* Prevent pointer events on the image */
-            user-select: none; /* Prevent selection */
-            -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
         }
         
         .profile-info {
             text-align: left;
+            flex: 1;
+            min-width: 0;
         }
         
         .username {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: bold;
             color: #feca57;
             margin: 0;
             text-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .diamonds {
-            font-size: 1.2rem;
+            font-size: 1rem;
             color: #42b6e6;
             margin: 5px 0 0 0;
             display: flex;
@@ -73,7 +89,7 @@
         }
         
         .diamond-icon {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             margin-right: 5px;
         }
         
@@ -81,61 +97,93 @@
             position: relative;
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            justify-content: center;
+            width: 100%;
+            min-height: 120px;
+            overflow: hidden;
         }
         
         .rocket {
-            width: 80px;
-            height: 120px;
+            width: 70px;
+            height: 100px;
             background-image: url('https://png.pngtree.com/png-vector/20221208/ourmid/pngtree-cartoon-illustration-red-rocket-png-image_6515439.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
             position: relative;
-            animation: rocketFloat 2s ease-in-out infinite;
             z-index: 2;
             filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.7));
-            pointer-events: none; /* Prevent pointer events on the rocket */
-            user-select: none; /* Prevent selection */
-            -webkit-user-drag: none; /* Prevent dragging in WebKit browsers */
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            transform: translateX(-200%);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        
+        .rocket.active {
+            transform: translateX(0);
+            opacity: 1;
+            animation: rocketFloat 2s ease-in-out infinite;
+        }
+        
+        .rocket.hiding {
+            transform: translateX(-200%);
+            opacity: 0;
+            animation: none;
         }
         
         @keyframes rocketFloat {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
+            50% { transform: translateY(-15px); }
         }
         
         .counter {
-            font-size: 3rem;
+            font-size: 2.2rem;
             font-weight: bold;
             color: white;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-left: 20px;
-            min-width: 80px;
+            margin-left: 15px;
+            min-width: 70px;
             text-align: center;
+            transform: translateX(-200%);
+            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            opacity: 0;
+        }
+        
+        .counter.active {
+            transform: translateX(0);
+            opacity: 1;
             animation: pulse 1s infinite alternate;
+        }
+        
+        .counter.hiding {
+            transform: translateX(-200%);
+            opacity: 0;
+            animation: none;
         }
         
         @keyframes pulse {
             from { transform: scale(1); }
-            to { transform: scale(1.1); }
+            to { transform: scale(1.05); }
         }
         
         .jpjp-label {
             position: absolute;
-            top: -30px;
+            top: -25px;
             left: 50%;
             transform: translateX(-50%);
             color: #feca57;
-            font-size: 1.2rem;
+            font-size: 1rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }
         
         .coin {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%2342b6e6"/><circle cx="10" cy="10" r="5" fill="%2357d1ff"/></svg>');
             background-size: contain;
             opacity: 0;
@@ -154,12 +202,12 @@
         }
         
         .small-win {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             animation: smallWinAppear 1s forwards;
         }
         
         .big-win {
-            font-size: 2.5rem;
+            font-size: 2rem;
             text-shadow: 0 0 20px rgba(254, 202, 87, 0.9);
             animation: bigWinAppear 2s forwards;
         }
@@ -220,44 +268,81 @@
         
         .cost-info {
             position: absolute;
-            bottom: -25px;
+            bottom: -20px;
             left: 0;
             width: 100%;
             text-align: center;
             color: #ff6b6b;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         
         .button-container {
             display: flex;
-            gap: 15px;
+            flex-direction: column;
+            gap: 10px;
             margin-top: 15px;
-            flex-wrap: wrap;
-            justify-content: center;
+            width: 100%;
+            max-width: 300px;
         }
         
-        .manual-button, .auto-stop-button, .reset-button {
+        .launch-button, .auto-stop-button, .reset-button {
             background: linear-gradient(135deg, #feca57, #ff9f43);
             border: none;
             color: #1a0a2e;
-            padding: 12px 25px;
-            font-size: 1.1rem;
+            padding: 12px 20px;
+            font-size: 1rem;
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
             box-shadow: 0 0 15px rgba(254, 202, 87, 0.5);
             transition: all 0.3s ease;
             z-index: 5;
-            min-width: 120px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .launch-button:active {
+            transform: scale(0.95);
+        }
+        
+        .launch-button:active::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple 0.6s ease-out;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
         }
         
         .auto-stop-button {
             background: linear-gradient(135deg, #42b6e6, #2e86de);
             color: white;
+            display: none; /* Hidden by default */
         }
         
         .auto-stop-button.stop-mode {
             background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
+            animation: pulseRed 0.5s infinite alternate;
+            display: flex; /* Show when in stop mode */
+        }
+        
+        @keyframes pulseRed {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
         }
         
         .reset-button {
@@ -265,16 +350,16 @@
             color: white;
         }
         
-        .manual-button:hover, .auto-stop-button:hover, .reset-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(254, 202, 87, 0.8);
+        .auto-stop-button:active, .reset-button:active {
+            transform: scale(0.95);
         }
         
-        .manual-button:disabled, .auto-stop-button:disabled, .reset-button:disabled {
+        .launch-button:disabled, .auto-stop-button:disabled, .reset-button:disabled {
             background: #555;
             color: #888;
             cursor: not-allowed;
             box-shadow: none;
+            transform: none;
         }
         
         .message-box {
@@ -285,69 +370,115 @@
             background: rgba(30, 15, 60, 0.9);
             border: 2px solid #ff6b6b;
             border-radius: 15px;
-            padding: 30px;
+            padding: 20px;
             text-align: center;
             z-index: 100;
             display: none;
-            max-width: 80%;
+            width: 85%;
+            max-width: 300px;
             box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
         }
         
         .message-title {
             color: #ff6b6b;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
+            font-size: 1.3rem;
+            margin-bottom: 12px;
         }
         
         .message-content {
             color: #feca57;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
         }
         
         .message-button {
             background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
             border: none;
             color: white;
-            padding: 10px 25px;
-            font-size: 1rem;
+            padding: 10px 20px;
+            font-size: 0.9rem;
             border-radius: 50px;
             cursor: pointer;
             transition: all 0.3s ease;
+            width: 100%;
+            max-width: 150px;
         }
         
-        .message-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px rgba(255, 107, 107, 0.7);
+        .message-button:active {
+            transform: scale(0.95);
         }
         
-        @media (max-width: 768px) {
-            .animation-container {
-                height: auto;
-                padding: 20px;
-            }
-            
-            .profile {
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-            
-            .counter {
-                font-size: 2.5rem;
-            }
-            
-            .button-container {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-         .footer {
+        .footer {
             margin-top: 20px;
             color: #feca57;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-align: center;
             opacity: 0.7;
             padding: 10px;
+            width: 100%;
         }
+        
+        /* Landscape orientation adjustments */
+        @media screen and (orientation: landscape) {
+            .animation-container {
+                transform: scale(0.85);
+                padding: 10px 0;
+                min-height: auto;
+            }
+            
+            .profile {
+                padding: 8px 15px;
+                margin-bottom: 10px;
+            }
+            
+            .avatar {
+                width: 40px;
+                height: 40px;
+            }
+            
+            .username {
+                font-size: 1rem;
+            }
+            
+            .diamonds {
+                font-size: 0.9rem;
+            }
+            
+            .counter-animation {
+                min-height: 90px;
+                margin-bottom: 10px;
+            }
+            
+            .rocket {
+                width: 50px;
+                height: 70px;
+            }
+            
+            .counter {
+                font-size: 1.8rem;
+            }
+            
+            .button-container {
+                margin-top: 10px;
+                gap: 8px;
+            }
+            
+            .launch-button, .auto-stop-button, .reset-button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .footer {
+                margin-top: 10px;
+                font-size: 0.7rem;
+            }
+        }
+        
+        /* Small screens adjustments */
+        @media (max-width: 350px) {
+            .animation-container {
+                transform: scale(0.9);
+            }
         }
     </style>
 </head>
@@ -366,20 +497,22 @@
         <div class="counter-animation">
             <div class="jpjp-label"></div>
             <div class="rocket" id="rocket"></div>
-            <div class="counter" id="counter">x0</div><br>
-            
-            
-            <div class="cost-info">🤣di ketawain Budi</div><br>
+            <div class="counter" id="counter">x0</div>
+            <div class="cost-info">🤣di ketawain Budi</div>
         </div>
         
         <div class="button-container">
-            <button class="manual-button" id="manual-button">MULAI JPJP</button>
+            <button class="launch-button" id="launch-button">
+                <span class="rocket-icon">🚀</span> MULAI JPJP
+            </button>
             <button class="auto-stop-button" id="auto-stop-button">AUTO</button>
             <button class="reset-button" id="reset-button">RESET</button>
         </div>
+        
         <div class="footer">
-        😊2025 Made in SodroN <em>dibuat dengan cinta</em>
-    </div>
+            😊2025 Made in SodroN dibuat dengan cinta<br>
+            <em></em>
+        </div>
     </div>
     
     <div class="message-box" id="message-box">
@@ -388,7 +521,6 @@
         <button class="message-button" id="message-button">RESET</button>
     </div>
     
-
     <!-- Audio element for big wins -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
@@ -423,7 +555,7 @@
         const rocket = document.getElementById('rocket');
         const starsContainer = document.getElementById('stars');
         const diamondCount = document.getElementById('diamond-count');
-        const manualButton = document.getElementById('manual-button');
+        const launchButton = document.getElementById('launch-button');
         const autoStopButton = document.getElementById('auto-stop-button');
         const resetButton = document.getElementById('reset-button');
         const messageBox = document.getElementById('message-box');
@@ -439,6 +571,10 @@
         let isAutoCounting = false;
         let autoCountInterval;
         let resetTimer;
+        let isActive = false;
+        let hideTimeout;
+        let clickCount = 0;
+        let clickTimeout;
         
         const winMultipliers = [
             { multiplier: 10, probability: 0.10, text: "x10 Times", bigWin: false },
@@ -451,10 +587,10 @@
         
         // Create stars background
         function createStars() {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.width = `${Math.random() * 2 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
@@ -465,14 +601,14 @@
         
         // Create diamond burst effect for big wins
         function createDiamondBurst(x, y, amount) {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 40; i++) {
                 const diamond = document.createElement('div');
                 diamond.className = 'coin';
                 diamond.style.left = `${x}px`;
                 diamond.style.top = `${y}px`;
                 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 70 + Math.random() * 130;
+                const distance = 50 + Math.random() * 100;
                 const duration = 0.8 + Math.random() * 1.2;
                 
                 diamond.style.animation = `diamondMove-${i} ${duration}s forwards`;
@@ -542,14 +678,14 @@
             diamondCount.textContent = diamonds.toLocaleString();
             
             const diamondsElement = document.querySelector('.diamonds');
-            diamondsElement.style.transform = 'scale(1.2)';
+            diamondsElement.style.transform = 'scale(1.1)';
             diamondsElement.style.color = diamonds < 300 ? '#ff6b6b' : '#42b6e6';
             
             setTimeout(() => {
                 diamondsElement.style.transform = 'scale(1)';
             }, 300);
             
-            manualButton.disabled = diamonds < 300;
+            launchButton.disabled = diamonds < 300;
             autoStopButton.disabled = diamonds < 300;
             
             if (diamonds < 300 && !isAutoCounting) {
@@ -574,47 +710,94 @@
             return null;
         }
         
-        function countUp() {
-            if (diamonds < 300) {
-                if (isAutoCounting) {
-                    stopAutoCounting();
+        function toggleAnimation(show) {
+            if (show) {
+                // Show animation
+                isActive = true;
+                rocket.classList.remove('hiding');
+                counter.classList.remove('hiding');
+                rocket.classList.add('active');
+                counter.classList.add('active');
+                launchButton.innerHTML = '<span class="rocket-icon">🚀</span>click';
+                
+                // Show AUTO button when manual button is clicked
+                autoStopButton.style.display = 'flex';
+            } else {
+                // Hide animation
+                isActive = false;
+                rocket.classList.remove('active');
+                counter.classList.remove('active');
+                rocket.classList.add('hiding');
+                counter.classList.add('hiding');
+                launchButton.innerHTML = '<span class="rocket-icon">🚀</span> MULAI JPJP';
+                
+                // Hide AUTO button when stopping
+                if (!isAutoCounting) {
+                    autoStopButton.style.display = 'none';
                 }
-                showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
-                return false;
-            }
-            
-            diamonds -= 300;
-            updateDiamondsDisplay();
-            
-            currentNumber++;
-            counter.textContent = `x${currentNumber}`;
-            
-            const win = checkForWin();
-            if (win) {
-                const rocketRect = rocket.getBoundingClientRect();
-                const x = rocketRect.left + rocketRect.width / 2;
-                const y = rocketRect.top + rocketRect.height / 2;
-                const winAmount = 300 * win.multiplier;
-                createWinText(x, y - 50, win.text, win.bigWin, winAmount);
-            }
-            
-            resetCounterTimer();
-            return true;
-        }
-
-        function resetCounterTimer() {
-            clearTimeout(resetTimer);
-            if (!isAutoCounting) {
-                resetTimer = setTimeout(() => {
-                    currentNumber = 0;
-                    counter.textContent = "x0";
-                }, 1000);
+                
+                // Clear any pending hide timeout
+                clearTimeout(hideTimeout);
             }
         }
-
+        
         function manualPlay() {
             if (diamonds < 300) return;
-            countUp();
+            
+            // Reset timeout if exists
+            clearTimeout(clickTimeout);
+            
+            if (!isActive) {
+                // First click - show animation and start counter
+                toggleAnimation(true);
+                clickCount = 1;
+                counter.textContent = `x${clickCount}`;
+                
+                // Deduct diamonds
+                diamonds -= 300;
+                updateDiamondsDisplay();
+                
+                // Check for win
+                const win = checkForWin();
+                if (win) {
+                    const rocketRect = rocket.getBoundingClientRect();
+                    const x = rocketRect.left + rocketRect.width / 2;
+                    const y = rocketRect.top + rocketRect.height / 2;
+                    const winAmount = 300 * win.multiplier;
+                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
+                }
+                
+                // Set timeout to hide after 3 second if no more clicks
+                clickTimeout = setTimeout(() => {
+                    if (!isAutoCounting) {
+                        toggleAnimation(false);
+                        clickCount = 0;
+                    }
+                }, 3000);
+            } else {
+                // Subsequent clicks - increment counter
+                clickCount++;
+                counter.textContent = `x${clickCount}`;
+                
+                // Check for win on each click
+                const win = checkForWin();
+                if (win) {
+                    const rocketRect = rocket.getBoundingClientRect();
+                    const x = rocketRect.left + rocketRect.width / 2;
+                    const y = rocketRect.top + rocketRect.height / 2;
+                    const winAmount = 300 * win.multiplier;
+                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
+                }
+                
+                // Reset timeout on each click
+                clearTimeout(clickTimeout);
+                clickTimeout = setTimeout(() => {
+                    if (!isAutoCounting) {
+                        toggleAnimation(false);
+                        clickCount = 0;
+                    }
+                }, 3000);
+            }
         }
 
         function startAutoCounting() {
@@ -623,11 +806,37 @@
             isAutoCounting = true;
             autoStopButton.textContent = "STOP";
             autoStopButton.classList.add('stop-mode');
-            manualButton.disabled = true;
+            launchButton.disabled = true;
+            
+            // Show animation if not already active
+            if (!isActive) {
+                toggleAnimation(true);
+            }
+            
+            // Continue from current count
+            currentNumber = clickCount;
+            counter.textContent = `x${currentNumber}`;
             
             autoCountInterval = setInterval(() => {
-                if (!countUp()) {
+                if (diamonds < 300) {
                     stopAutoCounting();
+                    showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
+                    return;
+                }
+                
+                diamonds -= 300;
+                updateDiamondsDisplay();
+                
+                currentNumber++;
+                counter.textContent = `x${currentNumber}`;
+                
+                const win = checkForWin();
+                if (win) {
+                    const rocketRect = rocket.getBoundingClientRect();
+                    const x = rocketRect.left + rocketRect.width / 2;
+                    const y = rocketRect.top + rocketRect.height / 2;
+                    const winAmount = 300 * win.multiplier;
+                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
                 }
             }, 400);
         }
@@ -637,14 +846,17 @@
             clearInterval(autoCountInterval);
             autoStopButton.textContent = "AUTO";
             autoStopButton.classList.remove('stop-mode');
-            manualButton.disabled = false;
+            launchButton.disabled = false;
             
             if (diamonds < 300) {
                 resetButton.style.display = 'block';
             }
             
-            currentNumber = 0;
-            counter.textContent = "x0";
+            // Update clickCount with current number when stopping auto
+            clickCount = currentNumber;
+            
+            // Hide animation when stopping auto
+            toggleAnimation(false);
         }
 
         function toggleAutoCounting() {
@@ -657,12 +869,20 @@
 
         function resetGame() {
             stopAutoCounting();
+            if (isActive) {
+                toggleAnimation(false);
+            }
             currentNumber = 0;
+            clickCount = 0;
             counter.textContent = "x0";
             diamonds = 75000;
             updateDiamondsDisplay();
             hideMessage();
             resetButton.style.display = 'none';
+            clearTimeout(clickTimeout);
+            
+            // Hide AUTO button on reset
+            autoStopButton.style.display = 'none';
         }
 
         function init() {
@@ -680,23 +900,32 @@
                 e.stopPropagation();
             });
             
-            manualButton.addEventListener('click', manualPlay);
+            launchButton.addEventListener('click', manualPlay);
             autoStopButton.addEventListener('click', toggleAutoCounting);
             resetButton.addEventListener('click', resetGame);
             messageButton.addEventListener('click', resetGame);
 
+            // Disable mouse move effects on mobile
             if (window.matchMedia("(hover: hover)").matches) {
                 document.addEventListener('mousemove', (e) => {
-                    const containerRect = document.querySelector('.counter-animation').getBoundingClientRect();
-                    const centerX = containerRect.left + containerRect.width / 2;
-                    const offsetX = (e.clientX - centerX) / 10;
-                    rocket.style.transform = `translateX(${offsetX}px)`;
+                    if (isActive) {
+                        const containerRect = document.querySelector('.counter-animation').getBoundingClientRect();
+                        const centerX = containerRect.left + containerRect.width / 2;
+                        const offsetX = (e.clientX - centerX) / 10;
+                        rocket.style.transform = `translateX(${offsetX}px)`;
+                    }
                 });
             }
+            
+            // Handle orientation changes
+            window.addEventListener('orientationchange', function() {
+                setTimeout(function() {
+                    window.scrollTo(0, 0);
+                }, 100);
+            });
         }
         
         init();
     </script>
-    
 </body>
 </html>
