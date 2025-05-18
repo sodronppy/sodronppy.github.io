@@ -767,13 +767,13 @@
                     createWinText(x, y - 40, win.text, win.bigWin, winAmount);
                 }
                 
-                // Set timeout to hide after 3 second if no more clicks
+                // Set timeout to hide after 1,5 second if no more clicks
                 clickTimeout = setTimeout(() => {
                     if (!isAutoCounting) {
                         toggleAnimation(false);
                         clickCount = 0;
                     }
-                }, 3000);
+                }, 1500);
             } else {
                 // Subsequent clicks - increment counter
                 clickCount++;
@@ -796,7 +796,7 @@
                         toggleAnimation(false);
                         clickCount = 0;
                     }
-                }, 3000);
+                }, 1500);
             }
         }
 
