@@ -497,7 +497,7 @@
         
         <div class="button-container">
             <button class="launch-button" id="launch-button">
-                <span class="rocket-icon">🚀</span> MULAI JPJP
+                <span class="rocket-icon">🚀</span> Send x3 Hold Auto x1
             </button>
             <button class="reset-button" id="reset-button">RESET</button>
         </div>
@@ -711,7 +711,6 @@
                 counter.classList.remove('hiding');
                 rocket.classList.add('active');
                 counter.classList.add('active');
-                launchButton.innerHTML = '<span class="rocket-icon">🚀</span>Send';
             } else {
                 // Hide animation
                 isActive = false;
@@ -719,7 +718,6 @@
                 counter.classList.remove('active');
                 rocket.classList.add('hiding');
                 counter.classList.add('hiding');
-                launchButton.innerHTML = '<span class="rocket-icon">🚀</span> MULAI JPJP';
                 
                 // Clear any pending hide timeout
                 clearTimeout(hideTimeout);
@@ -837,7 +835,7 @@
             isAutoCounting = false;
             clearInterval(autoCountInterval);
             launchButton.classList.remove('auto-mode');
-            launchButton.innerHTML = '<span class="rocket-icon">🚀</span>Send';
+            launchButton.innerHTML = '<span class="rocket-icon">🚀</span> Send';
             
             if (diamonds < 300) {
                 resetButton.style.display = 'block';
@@ -893,6 +891,17 @@
             }
         }
 
+        function handleClick() {
+            if (isAutoCounting) {
+                // If in auto mode, treat click as stop
+                stopAutoCounting();
+            } else {
+                // If not in auto mode, treat as normal click
+                handleHoldStart();
+                handleHoldEnd();
+            }
+        }
+
         function init() {
             createStars();
             updateDiamondsDisplay();
@@ -914,6 +923,9 @@
             launchButton.addEventListener('mouseleave', handleHoldEnd);
             launchButton.addEventListener('touchstart', handleHoldStart, { passive: true });
             launchButton.addEventListener('touchend', handleHoldEnd);
+            
+            // Click handler for toggling auto mode
+            launchButton.addEventListener('click', handleClick);
             
             resetButton.addEventListener('click', resetGame);
             messageButton.addEventListener('click', resetGame);
