@@ -285,7 +285,7 @@
             max-width: 300px;
         }
         
-        .launch-button, .auto-stop-button, .reset-button {
+        .launch-button, .reset-button {
             background: linear-gradient(135deg, #feca57, #ff9f43);
             border: none;
             color: #1a0a2e;
@@ -304,6 +304,17 @@
             gap: 10px;
             position: relative;
             overflow: hidden;
+        }
+        
+        .launch-button.auto-mode {
+            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
+            color: white;
+            animation: pulseRed 0.5s infinite alternate;
+        }
+        
+        @keyframes pulseRed {
+            from { transform: scale(1); }
+            to { transform: scale(1.05); }
         }
         
         .launch-button:active {
@@ -328,33 +339,16 @@
             }
         }
         
-        .auto-stop-button {
-            background: linear-gradient(135deg, #42b6e6, #2e86de);
-            color: white;
-            display: none; /* Hidden by default */
-        }
-        
-        .auto-stop-button.stop-mode {
-            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
-            animation: pulseRed 0.5s infinite alternate;
-            display: flex; /* Show when in stop mode */
-        }
-        
-        @keyframes pulseRed {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-        
         .reset-button {
             background: linear-gradient(135deg, #8e6eab, #3b1d60);
             color: white;
         }
         
-        .auto-stop-button:active, .reset-button:active {
+        .reset-button:active {
             transform: scale(0.95);
         }
         
-        .launch-button:disabled, .auto-stop-button:disabled, .reset-button:disabled {
+        .launch-button:disabled, .reset-button:disabled {
             background: #555;
             color: #888;
             cursor: not-allowed;
@@ -463,7 +457,7 @@
                 gap: 8px;
             }
             
-            .launch-button, .auto-stop-button, .reset-button {
+            .launch-button, .reset-button {
                 padding: 10px 15px;
                 font-size: 0.9rem;
             }
@@ -505,7 +499,6 @@
             <button class="launch-button" id="launch-button">
                 <span class="rocket-icon">🚀</span> MULAI JPJP
             </button>
-            <button class="auto-stop-button" id="auto-stop-button">AUTO</button>
             <button class="reset-button" id="reset-button">RESET</button>
         </div>
         
@@ -556,7 +549,6 @@
         const starsContainer = document.getElementById('stars');
         const diamondCount = document.getElementById('diamond-count');
         const launchButton = document.getElementById('launch-button');
-        const autoStopButton = document.getElementById('auto-stop-button');
         const resetButton = document.getElementById('reset-button');
         const messageBox = document.getElementById('message-box');
         const messageTitle = document.getElementById('message-title');
@@ -575,6 +567,8 @@
         let hideTimeout;
         let clickCount = 0;
         let clickTimeout;
+        let holdTimeout;
+        let isHolding = false;
         
         const winMultipliers = [
             { multiplier: 10, probability: 0.10, text: "x10 Times", bigWin: false },
@@ -686,7 +680,6 @@
             }, 300);
             
             launchButton.disabled = diamonds < 300;
-            autoStopButton.disabled = diamonds < 300;
             
             if (diamonds < 300 && !isAutoCounting) {
                 resetButton.style.display = 'block';
@@ -718,10 +711,7 @@
                 counter.classList.remove('hiding');
                 rocket.classList.add('active');
                 counter.classList.add('active');
-                launchButton.innerHTML = '<span class="rocket-icon">🚀</span>click';
-                
-                // Show AUTO button when manual button is clicked
-                autoStopButton.style.display = 'flex';
+                launchButton.innerHTML = '<span class="rocket-icon">🚀</span>Send';
             } else {
                 // Hide animation
                 isActive = false;
@@ -730,11 +720,6 @@
                 rocket.classList.add('hiding');
                 counter.classList.add('hiding');
                 launchButton.innerHTML = '<span class="rocket-icon">🚀</span> MULAI JPJP';
-                
-                // Hide AUTO button when stopping
-                if (!isAutoCounting) {
-                    autoStopButton.style.display = 'none';
-                }
                 
                 // Clear any pending hide timeout
                 clearTimeout(hideTimeout);
@@ -779,6 +764,10 @@
                 clickCount++;
                 counter.textContent = `x${clickCount}`;
                 
+                // Deduct diamonds for each click
+                diamonds -= 300;
+                updateDiamondsDisplay();
+                
                 // Check for win on each click
                 const win = checkForWin();
                 if (win) {
@@ -804,18 +793,21 @@
             if (isAutoCounting || diamonds < 300) return;
             
             isAutoCounting = true;
-            autoStopButton.textContent = "STOP";
-            autoStopButton.classList.add('stop-mode');
-            launchButton.disabled = true;
+            launchButton.classList.add('auto-mode');
+            launchButton.innerHTML = '<span class="rocket-icon">🚀</span> STOP';
             
             // Show animation if not already active
             if (!isActive) {
                 toggleAnimation(true);
             }
             
-            // Continue from current count
-            currentNumber = clickCount;
+            // Start from 1
+            currentNumber = 1;
             counter.textContent = `x${currentNumber}`;
+            
+            // Deduct first diamond
+            diamonds -= 300;
+            updateDiamondsDisplay();
             
             autoCountInterval = setInterval(() => {
                 if (diamonds < 300) {
@@ -844,9 +836,8 @@
         function stopAutoCounting() {
             isAutoCounting = false;
             clearInterval(autoCountInterval);
-            autoStopButton.textContent = "AUTO";
-            autoStopButton.classList.remove('stop-mode');
-            launchButton.disabled = false;
+            launchButton.classList.remove('auto-mode');
+            launchButton.innerHTML = '<span class="rocket-icon">🚀</span>Send';
             
             if (diamonds < 300) {
                 resetButton.style.display = 'block';
@@ -880,9 +871,26 @@
             hideMessage();
             resetButton.style.display = 'none';
             clearTimeout(clickTimeout);
+        }
+
+        function handleHoldStart() {
+            if (diamonds < 300) return;
             
-            // Hide AUTO button on reset
-            autoStopButton.style.display = 'none';
+            isHolding = true;
+            holdTimeout = setTimeout(() => {
+                if (isHolding) {
+                    toggleAutoCounting();
+                }
+            }, 500); // 500ms hold to activate auto
+        }
+
+        function handleHoldEnd() {
+            isHolding = false;
+            clearTimeout(holdTimeout);
+            
+            if (!isAutoCounting) {
+                manualPlay();
+            }
         }
 
         function init() {
@@ -900,8 +908,13 @@
                 e.stopPropagation();
             });
             
-            launchButton.addEventListener('click', manualPlay);
-            autoStopButton.addEventListener('click', toggleAutoCounting);
+            // Touch and mouse events for hold functionality
+            launchButton.addEventListener('mousedown', handleHoldStart);
+            launchButton.addEventListener('mouseup', handleHoldEnd);
+            launchButton.addEventListener('mouseleave', handleHoldEnd);
+            launchButton.addEventListener('touchstart', handleHoldStart, { passive: true });
+            launchButton.addEventListener('touchend', handleHoldEnd);
+            
             resetButton.addEventListener('click', resetGame);
             messageButton.addEventListener('click', resetGame);
 
