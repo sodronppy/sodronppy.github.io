@@ -112,7 +112,7 @@
         }
         
         .game-button {
-            padding: 10px 20px;
+            padding: 12px 0;
             border: none;
             border-radius: 20px;
             font-weight: bold;
@@ -121,6 +121,7 @@
             flex: 1;
             max-width: 120px;
             text-align: center;
+            font-size: 1rem;
         }
         
         .game-button:active {
@@ -302,6 +303,49 @@
             z-index: 10;
         }
         
+        /* Sound wave effect */
+        .sound-wave {
+            position: absolute;
+            border: 2px solid #feca57;
+            border-radius: 50%;
+            pointer-events: none;
+            width: 0px;
+            height: 0px;
+            background-color: transparent;
+        }
+        
+        /* Gift selector */
+        .gift-selector {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .gift-option {
+            width: 100%;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+        }
+        
+        .gift-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .gift-option.selected {
+            border: 2px solid #feca57;
+            box-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+            background: rgba(254, 202, 87, 0.2);
+        }
+        
         /* Message box */
         .message-box {
             position: fixed;
@@ -340,50 +384,6 @@
             cursor: pointer;
         }
         
-        /* Gift selector */
-        .gift-selector {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .gift-option {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid transparent;
-        }
-        
-        .gift-option:hover {
-            transform: scale(1.1);
-        }
-        
-        .gift-option.selected {
-            border: 2px solid #feca57;
-            box-shadow: 0 0 15px rgba(254, 202, 87, 0.7);
-            transform: scale(1.1);
-        }
-        
-        /* Sound wave effect */
-        .sound-wave {
-            position: absolute;
-            border: 2px solid #feca57;
-            border-radius: 50%;
-            pointer-events: none;
-            width: 0px;
-            height: 0px;
-            background-color: transparent;
-        }
-        
         @media screen and (orientation: landscape) {
             .host-profile, .user-profile {
                 padding: 8px 15px;
@@ -411,9 +411,12 @@
             }
             
             .gift-option {
-                width: 40px;
-                height: 40px;
-                font-size: 1.5rem;
+                font-size: 1.2rem;
+            }
+            
+            .game-button {
+                padding: 8px 0;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -497,10 +500,14 @@
         const giftSelector = document.getElementById('gift-selector');
         const giftOptions = document.querySelectorAll('.gift-option');
         
-        // Audio elements
+        // Audio elements dengan volume default
         const bigWinSound = document.getElementById('bigWinSound');
         const giftSound = document.getElementById('giftSound');
         
+        // Set volume default
+        bigWinSound.volume = 1.0;    // 100%
+        giftSound.volume = 0.3;       // 30%
+
         // Game variables
         let currentNumber = 0;
         let userDiamonds = 75000;
@@ -874,6 +881,10 @@
         }
         
         function selectGift(gift, cost) {
+            // Reset counter when changing gift
+            currentNumber = 0;
+            counter.textContent = "x0";
+            
             currentGift = gift;
             currentGiftCost = cost;
             giftElement.textContent = gift;
