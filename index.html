@@ -7,37 +7,150 @@
     <style>
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
         
         body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             min-height: -webkit-fill-available;
             background: #1a0a2e;
-            margin: 0;
-            padding: 20px;
             font-family: Arial, sans-serif;
             overflow: auto;
             touch-action: pan-x pan-y;
-        }
-        
-        .animation-container {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-            min-height: 500px;
             display: flex;
             flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .host-profile {
+            display: flex;
             align-items: center;
-            justify-content: center;
-            padding: 20px 0;
-            margin: auto;
+            background: rgba(60, 15, 15, 0.7);
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 0 20px rgba(255, 50, 50, 0.3);
+            border: 2px solid #ff3e3e;
+            z-index: 5;
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 20px auto;
         }
         
-        .profile {
+        .center-stage {
+            flex: 1;
+            min-height: 150px;
+            position: relative;
+            margin: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(40, 20, 80, 0.3);
+            border-radius: 15px;
+            border: 1px dashed #feca57;
+            overflow: hidden;
+        }
+        
+        .game-controls {
+            background: rgba(40, 20, 80, 0.8);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 15px auto;
+            border: 1px solid #feca57;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .game-title {
+            color: #feca57;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+        }
+        
+        .counter-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #feca57;
+            text-align: center;
+            margin: 10px 0;
+            transition: all 0.3s ease-out;
+        }
+        
+        .counter-display.jackpot {
+            animation: jackpotEffect 1.5s infinite alternate;
+        }
+        
+        @keyframes jackpotEffect {
+            0% { 
+                transform: scale(1);
+                color: #feca57;
+                text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+            }
+            50% {
+                transform: scale(1.3);
+                color: #ff3e3e;
+                text-shadow: 0 0 20px rgba(255, 62, 62, 0.8);
+            }
+            100% {
+                transform: scale(1.1);
+                color: #42b6e6;
+                text-shadow: 0 0 15px rgba(66, 182, 230, 0.8);
+            }
+        }
+        
+        .buttons-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .game-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            max-width: 120px;
+            text-align: center;
+        }
+        
+        .game-button:active {
+            transform: scale(0.95);
+        }
+        
+        .manual-button {
+            background-color: #42b6e6;
+            color: white;
+        }
+        
+        .auto-button {
+            background-color: #feca57;
+            color: #1a0a2e;
+        }
+        
+        .auto-button.stop-mode {
+            background-color: #ff6b6b;
+            color: white;
+        }
+        
+        .reset-button {
+            background-color: #ff3e3e;
+            color: white;
+            display: none;
+            margin: 0 auto;
+            width: 80%;
+        }
+        
+        .user-profile {
             display: flex;
             align-items: center;
             background: rgba(30, 15, 60, 0.7);
@@ -46,9 +159,9 @@
             box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
             border: 2px solid #feca57;
             z-index: 5;
-            margin-bottom: 15px;
             width: 100%;
             max-width: 350px;
+            margin: 0 auto;
         }
         
         .avatar {
@@ -57,10 +170,17 @@
             border-radius: 50%;
             margin-right: 12px;
             object-fit: cover;
-            border: 2px solid #feca57;
             pointer-events: none;
             user-select: none;
             -webkit-user-drag: none;
+        }
+        
+        .host-avatar {
+            border: 2px solid #ff3e3e;
+        }
+        
+        .user-avatar {
+            border: 2px solid #feca57;
         }
         
         .profile-info {
@@ -69,7 +189,18 @@
             min-width: 0;
         }
         
-        .username {
+        .host-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(255, 50, 50, 0.5);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .user-name {
             font-size: 1.2rem;
             font-weight: bold;
             color: #feca57;
@@ -82,10 +213,17 @@
         
         .diamonds {
             font-size: 1rem;
-            color: #42b6e6;
             margin: 5px 0 0 0;
             display: flex;
             align-items: center;
+        }
+        
+        .host-diamonds {
+            color: #ffcc00;
+        }
+        
+        .user-diamonds {
+            color: #42b6e6;
         }
         
         .diamond-icon {
@@ -93,336 +231,118 @@
             margin-right: 5px;
         }
         
-        .counter-animation {
-            position: relative;
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            justify-content: center;
-            width: 100%;
-            min-height: 120px;
-            overflow: hidden;
-        }
-        
-        .rocket {
-            width: 70px;
-            height: 100px;
-            background-image: url('https://png.pngtree.com/png-vector/20221208/ourmid/pngtree-cartoon-illustration-red-rocket-png-image_6515439.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.7));
-            pointer-events: none;
-            user-select: none;
-            -webkit-user-drag: none;
-            transform: translateX(-200%);
-            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-            opacity: 0;
-        }
-        
-        .rocket.active {
-            transform: translateX(0);
-            opacity: 1;
-            animation: rocketFloat 2s ease-in-out infinite;
-        }
-        
-        .rocket.hiding {
-            transform: translateX(-200%);
-            opacity: 0;
-            animation: none;
-        }
-        
-        @keyframes rocketFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-        
-        .counter {
-            font-size: 2.2rem;
-            font-weight: bold;
+        .host-badge {
+            background-color: #ff3e3e;
             color: white;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
-            margin-left: 15px;
-            min-width: 70px;
-            text-align: center;
-            transform: translateX(-200%);
-            transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-            opacity: 0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            margin-left: 5px;
+            vertical-align: middle;
         }
         
-        .counter.active {
-            transform: translateX(0);
-            opacity: 1;
-            animation: pulse 1s infinite alternate;
-        }
-        
-        .counter.hiding {
-            transform: translateX(-200%);
-            opacity: 0;
-            animation: none;
-        }
-        
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
-        }
-        
-        .jpjp-label {
-            position: absolute;
-            top: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #feca57;
-            font-size: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .coin {
-            position: absolute;
-            width: 18px;
-            height: 18px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%2342b6e6"/><circle cx="10" cy="10" r="5" fill="%2357d1ff"/></svg>');
-            background-size: contain;
-            opacity: 0;
+        /* Game elements */
+        .rocket {
+            font-size: 3rem;
+            position: relative;
             z-index: 10;
-        }
-        
-        .win-text {
-            position: absolute;
-            font-weight: bold;
-            color: #feca57;
-            text-shadow: 0 0 10px rgba(254, 202, 87, 0.8);
-            opacity: 0;
-            z-index: 10;
-            animation: winAppear 1.5s forwards;
-            text-align: center;
-        }
-        
-        .small-win {
-            font-size: 1.1rem;
-            animation: smallWinAppear 1s forwards;
-        }
-        
-        .big-win {
-            font-size: 2rem;
-            text-shadow: 0 0 20px rgba(254, 202, 87, 0.9);
-            animation: bigWinAppear 2s forwards;
-        }
-        
-        @keyframes smallWinAppear {
-            0% { 
-                transform: translate(-50%, -50%) scale(0.8);
-                opacity: 0;
-            }
-            50% { 
-                transform: translate(-50%, -50%) scale(1.1);
-                opacity: 1;
-            }
-            100% { 
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0;
-            }
-        }
-        
-        @keyframes bigWinAppear {
-            0% { 
-                transform: translate(-50%, -50%) scale(0.5);
-                opacity: 0;
-            }
-            20% { 
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 1;
-            }
-            80% { 
-                transform: translate(-50%, -50%) scale(1.1);
-                opacity: 1;
-            }
-            100% { 
-                transform: translate(-50%, -50%) scale(1.5);
-                opacity: 0;
-            }
-        }
-        
-        .stars {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
+            transition: transform 0.2s;
         }
         
         .star {
             position: absolute;
             background-color: white;
             border-radius: 50%;
-            animation: twinkle 1s infinite alternate;
+            animation: twinkle 2s infinite alternate;
         }
         
         @keyframes twinkle {
-            from { opacity: 0.2; }
-            to { opacity: 1; }
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
         }
         
-        .cost-info {
+        /* Win effects */
+        .win-text {
             position: absolute;
-            bottom: -20px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            color: #ff6b6b;
-            font-size: 0.8rem;
-        }
-        
-        .button-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 15px;
-            width: 100%;
-            max-width: 300px;
-        }
-        
-        .launch-button, .reset-button {
-            background: linear-gradient(135deg, #feca57, #ff9f43);
-            border: none;
-            color: #1a0a2e;
-            padding: 12px 20px;
-            font-size: 1rem;
             font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(254, 202, 87, 0.5);
-            transition: all 0.3s ease;
-            z-index: 5;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            position: relative;
-            overflow: hidden;
+            z-index: 20;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
         
-        .launch-button.auto-mode {
-            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
-            color: white;
-            animation: pulseRed 0.5s infinite alternate;
+        .small-win {
+            color: #feca57;
+            font-size: 1.5rem;
+            animation: smallWin 1s forwards;
         }
         
-        @keyframes pulseRed {
-            from { transform: scale(1); }
-            to { transform: scale(1.05); }
+        .big-win {
+            color: #ff3e3e;
+            font-size: 2.5rem;
+            animation: bigWin 2s forwards;
         }
         
-        .launch-button:active {
-            transform: scale(0.95);
+        @keyframes smallWin {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(1); opacity: 0; }
         }
         
-        .launch-button:active::after {
-            content: '';
+        @keyframes bigWin {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { transform: scale(1.5); opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+        
+        .coin {
             position: absolute;
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            transform: scale(0);
-            animation: ripple 0.6s ease-out;
+            width: 20px;
+            height: 20px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%2342b6e6"/><circle cx="10" cy="10" r="5" fill="%2357d1ff"/></svg>');
+            background-size: contain;
+            z-index: 10;
         }
         
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-        
-        .reset-button {
-            background: linear-gradient(135deg, #8e6eab, #3b1d60);
-            color: white;
-        }
-        
-        .reset-button:active {
-            transform: scale(0.95);
-        }
-        
-        .launch-button:disabled, .reset-button:disabled {
-            background: #555;
-            color: #888;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-        
+        /* Message box */
         .message-box {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(30, 15, 60, 0.9);
-            border: 2px solid #ff6b6b;
+            background: rgba(40, 20, 80, 0.95);
+            border: 2px solid #feca57;
             border-radius: 15px;
             padding: 20px;
-            text-align: center;
-            z-index: 100;
-            display: none;
-            width: 85%;
+            width: 80%;
             max-width: 300px;
-            box-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
+            z-index: 1000;
+            display: none;
+            text-align: center;
         }
         
         .message-title {
             color: #ff6b6b;
             font-size: 1.3rem;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
         
         .message-content {
-            color: #feca57;
+            color: white;
             margin-bottom: 15px;
-            font-size: 0.9rem;
         }
         
         .message-button {
-            background: linear-gradient(135deg, #ff6b6b, #ff3d3d);
+            background-color: #feca57;
+            color: #1a0a2e;
             border: none;
-            color: white;
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            border-radius: 50px;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 150px;
         }
         
-        .message-button:active {
-            transform: scale(0.95);
-        }
-        
-        .footer {
-            margin-top: 20px;
-            color: #feca57;
-            font-size: 0.8rem;
-            text-align: center;
-            opacity: 0.7;
-            padding: 10px;
-            width: 100%;
-        }
-        
-        /* Landscape orientation adjustments */
         @media screen and (orientation: landscape) {
-            .animation-container {
-                transform: scale(0.85);
-                padding: 10px 0;
-                min-height: auto;
-            }
-            
-            .profile {
+            .host-profile, .user-profile {
                 padding: 8px 15px;
-                margin-bottom: 10px;
             }
             
             .avatar {
@@ -430,7 +350,7 @@
                 height: 40px;
             }
             
-            .username {
+            .host-name, .user-name {
                 font-size: 1rem;
             }
             
@@ -438,117 +358,69 @@
                 font-size: 0.9rem;
             }
             
-            .counter-animation {
-                min-height: 90px;
-                margin-bottom: 10px;
+            .game-controls {
+                padding: 10px;
             }
             
-            .rocket {
-                width: 50px;
-                height: 70px;
-            }
-            
-            .counter {
-                font-size: 1.8rem;
-            }
-            
-            .button-container {
-                margin-top: 10px;
-                gap: 8px;
-            }
-            
-            .launch-button, .reset-button {
-                padding: 10px 15px;
-                font-size: 0.9rem;
-            }
-            
-            .footer {
-                margin-top: 10px;
-                font-size: 0.7rem;
-            }
-        }
-        
-        /* Small screens adjustments */
-        @media (max-width: 350px) {
-            .animation-container {
-                transform: scale(0.9);
+            .center-stage {
+                min-height: 100px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="animation-container">
-        <div class="stars" id="stars"></div>
-        
-        <div class="profile">
-            <img class="avatar" src="https://s14.gifyu.com/images/bsQ25.png" alt="Player Avatar">
-            <div class="profile-info">
-                <h2 class="username">🐒SodroN</h2>
-                <p class="diamonds"><span class="diamond-icon">💎</span><span id="diamond-count">75.000</span></p>
-            </div>
-        </div>
-        
-        <div class="counter-animation">
-            <div class="jpjp-label"></div>
-            <div class="rocket" id="rocket"></div>
-            <div class="counter" id="counter">x0</div>
-            <div class="cost-info">🤣di ketawain Budi</div>
-        </div>
-        
-        <div class="button-container">
-            <button class="launch-button" id="launch-button">
-                <span class="rocket-icon">🚀</span> Send x3 Hold Auto x1
-            </button>
-            <button class="reset-button" id="reset-button">RESET</button>
-        </div>
-        
-        <div class="footer">
-            😊2025 Made in SodroN dibuat dengan cinta<br>
-            <em>MASIH DI PROGRAM DALAM PROSES PENGEMBANGAN BIAR SEMAKIN GOKIL</em>
+    <div class="host-profile">
+        <img class="avatar host-avatar" src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Host Avatar">
+        <div class="profile-info">
+            <h2 class="host-name">🎤 Host <span class="host-badge">LIVE</span></h2>
+            <p class="diamonds host-diamonds"><span class="diamond-icon">💎</span><span id="host-diamond-count">0</span></p>
         </div>
     </div>
-    
+
+    <div class="center-stage" id="center-stage">
+        <div id="stars"></div>
+        <div id="rocket" class="rocket">🚀</div>
+    </div>
+
+    <div class="game-controls">
+        <h3 class="game-title">GIFT ROCKET 🚀 300</h3>
+        <div class="counter-display" id="counter">x0</div>
+        <div class="buttons-container">
+            <button class="game-button manual-button" id="manual-button">SEND</button>
+            <button class="game-button auto-button" id="auto-stop-button">AUTO</button>
+        </div>
+        <button class="game-button reset-button" id="reset-button">RESET</button>
+    </div>
+
+    <div class="user-profile">
+        <img class="avatar user-avatar" src="https://s14.gifyu.com/images/bsQ25.png" alt="Player Avatar">
+        <div class="profile-info">
+            <h2 class="user-name">🐒SodroN</h2>
+            <p class="diamonds user-diamonds"><span class="diamond-icon">💎</span><span id="user-diamond-count">75,000</span></p>
+        </div>
+    </div>
+
+    <!-- Message Box -->
     <div class="message-box" id="message-box">
-        <h3 class="message-title" id="message-title">Diamond Tidak Cukup</h3>
-        <p class="message-content" id="message-content">Koin habis, silahkan reset untuk memulai kembali.</p>
-        <button class="message-button" id="message-button">RESET</button>
+        <h3 class="message-title" id="message-title">Title</h3>
+        <p class="message-content" id="message-content">Message content goes here</p>
+        <button class="message-button" id="message-button">OK</button>
     </div>
-    
+
     <!-- Audio element for big wins -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Prevent zooming
-        document.addEventListener('gesturestart', function(e) {
-            e.preventDefault();
-        });
-        
-        document.addEventListener('dblclick', function(e) {
-            e.preventDefault();
-        }, { passive: false });
-
-        // Prevent image dragging and context menu
-        document.addEventListener('contextmenu', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
-            }
-        });
-
-        // Prevent image dragging
-        document.addEventListener('dragstart', function(e) {
-            if (e.target.tagName === 'IMG') {
-                e.preventDefault();
-            }
-        });
-
         // Game elements
         const counter = document.getElementById('counter');
         const rocket = document.getElementById('rocket');
         const starsContainer = document.getElementById('stars');
-        const diamondCount = document.getElementById('diamond-count');
-        const launchButton = document.getElementById('launch-button');
+        const userDiamondCount = document.getElementById('user-diamond-count');
+        const hostDiamondCount = document.getElementById('host-diamond-count');
+        const manualButton = document.getElementById('manual-button');
+        const autoStopButton = document.getElementById('auto-stop-button');
         const resetButton = document.getElementById('reset-button');
         const messageBox = document.getElementById('message-box');
         const messageTitle = document.getElementById('message-title');
@@ -559,32 +431,27 @@
         
         // Game variables
         let currentNumber = 0;
-        let diamonds = 75000;
+        let userDiamonds = 75000;
+        let hostDiamonds = 0;
         let isAutoCounting = false;
         let autoCountInterval;
         let resetTimer;
-        let isActive = false;
-        let hideTimeout;
-        let clickCount = 0;
-        let clickTimeout;
-        let holdTimeout;
-        let isHolding = false;
         
         const winMultipliers = [
-            { multiplier: 10, probability: 0.10, text: "x10 Times", bigWin: false },
+            { multiplier: 10, probability: 0.14, text: "x10 Times", bigWin: false },
             { multiplier: 20, probability: 0.03, text: "x20 Times", bigWin: false },
             { multiplier: 50, probability: 0.03, text: "x50 Times", bigWin: false },
             { multiplier: 100, probability: 0.003, text: "x100 Times", bigWin: false },
-            { multiplier: 500, probability: 0.06, text: "x500 Times", bigWin: true },
+            { multiplier: 500, probability: 0.02, text: "x500 Times", bigWin: true },
             { multiplier: 650, probability: 0.006, text: "x650 Times", bigWin: true }
         ];
         
         // Create stars background
         function createStars() {
-            for (let i = 0; i < 80; i++) {
+            for (let i = 0; i < 100; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.width = `${Math.random() * 2 + 1}px`;
+                star.style.width = `${Math.random() * 3 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
@@ -593,16 +460,16 @@
             }
         }
         
-        // Create diamond burst effect for big wins
-        function createDiamondBurst(x, y, amount) {
-            for (let i = 0; i < 40; i++) {
+        // Create diamond burst effect
+        function createDiamondBurst(x, y, amount, isPlayerWin = false) {
+            for (let i = 0; i < 50; i++) {
                 const diamond = document.createElement('div');
                 diamond.className = 'coin';
                 diamond.style.left = `${x}px`;
                 diamond.style.top = `${y}px`;
                 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 50 + Math.random() * 100;
+                const distance = 70 + Math.random() * 130;
                 const duration = 0.8 + Math.random() * 1.2;
                 
                 diamond.style.animation = `diamondMove-${i} ${duration}s forwards`;
@@ -630,8 +497,13 @@
                 }, duration * 1000);
             }
             
-            diamonds += amount;
-            updateDiamondsDisplay();
+            if (isPlayerWin) {
+                userDiamonds += amount;
+                userDiamondCount.textContent = userDiamonds.toLocaleString();
+            } else {
+                hostDiamonds += amount;
+                hostDiamondCount.textContent = hostDiamonds.toLocaleString();
+            }
         }
         
         function createWinText(x, y, text, isBigWin, amount) {
@@ -651,10 +523,16 @@
                 // Play big win sound
                 bigWinSound.currentTime = 0;
                 bigWinSound.play();
-                createDiamondBurst(x, y, amount);
+                createDiamondBurst(x, y, amount, true); // Player gets the win
+                
+                // Add special jackpot effect to counter
+                counter.classList.add('jackpot');
+                setTimeout(() => {
+                    counter.classList.remove('jackpot');
+                }, 3000);
             } else {
-                diamonds += amount;
-                updateDiamondsDisplay();
+                userDiamonds += amount; // Player gets the win
+                userDiamondCount.textContent = userDiamonds.toLocaleString();
             }
         }
         
@@ -669,19 +547,16 @@
         }
         
         function updateDiamondsDisplay() {
-            diamondCount.textContent = diamonds.toLocaleString();
+            userDiamondCount.textContent = userDiamonds.toLocaleString();
+            hostDiamondCount.textContent = hostDiamonds.toLocaleString();
             
-            const diamondsElement = document.querySelector('.diamonds');
-            diamondsElement.style.transform = 'scale(1.1)';
-            diamondsElement.style.color = diamonds < 300 ? '#ff6b6b' : '#42b6e6';
+            const userDiamondsElement = document.querySelector('.user-diamonds');
+            userDiamondsElement.style.color = userDiamonds < 300 ? '#ff6b6b' : '#42b6e6';
             
-            setTimeout(() => {
-                diamondsElement.style.transform = 'scale(1)';
-            }, 300);
+            manualButton.disabled = userDiamonds < 300;
+            autoStopButton.disabled = userDiamonds < 300;
             
-            launchButton.disabled = diamonds < 300;
-            
-            if (diamonds < 300 && !isAutoCounting) {
+            if (userDiamonds < 300 && !isAutoCounting) {
                 resetButton.style.display = 'block';
             } else {
                 resetButton.style.display = 'none';
@@ -703,130 +578,70 @@
             return null;
         }
         
-        function toggleAnimation(show) {
-            if (show) {
-                // Show animation
-                isActive = true;
-                rocket.classList.remove('hiding');
-                counter.classList.remove('hiding');
-                rocket.classList.add('active');
-                counter.classList.add('active');
-            } else {
-                // Hide animation
-                isActive = false;
-                rocket.classList.remove('active');
-                counter.classList.remove('active');
-                rocket.classList.add('hiding');
-                counter.classList.add('hiding');
-                
-                // Clear any pending hide timeout
-                clearTimeout(hideTimeout);
+        function countUp() {
+            if (userDiamonds < 300) {
+                if (isAutoCounting) {
+                    stopAutoCounting();
+                }
+                showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
+                return false;
             }
+            
+            // Player spends 300 diamonds
+            userDiamonds -= 300;
+            // Host gets the 300 diamonds spent by player
+            hostDiamonds += 300;
+            
+            updateDiamondsDisplay();
+            
+            currentNumber++;
+            counter.textContent = `x${currentNumber}`;
+            
+            // Add bounce effect to counter
+            counter.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                counter.style.transform = 'scale(1)';
+            }, 300);
+            
+            const win = checkForWin();
+            if (win) {
+                const rocketRect = rocket.getBoundingClientRect();
+                const x = rocketRect.left + rocketRect.width / 2;
+                const y = rocketRect.top + rocketRect.height / 2;
+                const winAmount = 300 * win.multiplier;
+                createWinText(x, y - 50, win.text, win.bigWin, winAmount);
+            }
+            
+            resetCounterTimer();
+            return true;
         }
-        
-        function manualPlay() {
-            if (diamonds < 300) return;
-            
-            // Reset timeout if exists
-            clearTimeout(clickTimeout);
-            
-            if (!isActive) {
-                // First click - show animation and start counter
-                toggleAnimation(true);
-                clickCount = 1;
-                counter.textContent = `x${clickCount}`;
-                
-                // Deduct diamonds
-                diamonds -= 300;
-                updateDiamondsDisplay();
-                
-                // Check for win
-                const win = checkForWin();
-                if (win) {
-                    const rocketRect = rocket.getBoundingClientRect();
-                    const x = rocketRect.left + rocketRect.width / 2;
-                    const y = rocketRect.top + rocketRect.height / 2;
-                    const winAmount = 300 * win.multiplier;
-                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
-                }
-                
-                // Set timeout to hide after 1,5 second if no more clicks
-                clickTimeout = setTimeout(() => {
-                    if (!isAutoCounting) {
-                        toggleAnimation(false);
-                        clickCount = 0;
-                    }
-                }, 1500);
-            } else {
-                // Subsequent clicks - increment counter
-                clickCount++;
-                counter.textContent = `x${clickCount}`;
-                
-                // Deduct diamonds for each click
-                diamonds -= 300;
-                updateDiamondsDisplay();
-                
-                // Check for win on each click
-                const win = checkForWin();
-                if (win) {
-                    const rocketRect = rocket.getBoundingClientRect();
-                    const x = rocketRect.left + rocketRect.width / 2;
-                    const y = rocketRect.top + rocketRect.height / 2;
-                    const winAmount = 300 * win.multiplier;
-                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
-                }
-                
-                // Reset timeout on each click
-                clearTimeout(clickTimeout);
-                clickTimeout = setTimeout(() => {
-                    if (!isAutoCounting) {
-                        toggleAnimation(false);
-                        clickCount = 0;
-                    }
-                }, 1500);
+
+        function resetCounterTimer() {
+            clearTimeout(resetTimer);
+            if (!isAutoCounting) {
+                resetTimer = setTimeout(() => {
+                    currentNumber = 0;
+                    counter.textContent = "x0";
+                }, 1000);
             }
         }
 
+        function manualPlay() {
+            if (userDiamonds < 300) return;
+            countUp();
+        }
+
         function startAutoCounting() {
-            if (isAutoCounting || diamonds < 300) return;
+            if (isAutoCounting || userDiamonds < 300) return;
             
             isAutoCounting = true;
-            launchButton.classList.add('auto-mode');
-            launchButton.innerHTML = '<span class="rocket-icon">🚀</span> STOP';
-            
-            // Show animation if not already active
-            if (!isActive) {
-                toggleAnimation(true);
-            }
-            
-            // Start from 1
-            currentNumber = 1;
-            counter.textContent = `x${currentNumber}`;
-            
-            // Deduct first diamond
-            diamonds -= 300;
-            updateDiamondsDisplay();
+            autoStopButton.textContent = "STOP";
+            autoStopButton.classList.add('stop-mode');
+            manualButton.disabled = true;
             
             autoCountInterval = setInterval(() => {
-                if (diamonds < 300) {
+                if (!countUp()) {
                     stopAutoCounting();
-                    showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
-                    return;
-                }
-                
-                diamonds -= 300;
-                updateDiamondsDisplay();
-                
-                currentNumber++;
-                counter.textContent = `x${currentNumber}`;
-                
-                const win = checkForWin();
-                if (win) {
-                    const rocketRect = rocket.getBoundingClientRect();
-                    const x = rocketRect.left + rocketRect.width / 2;
-                    const y = rocketRect.top + rocketRect.height / 2;
-                    const winAmount = 300 * win.multiplier;
-                    createWinText(x, y - 40, win.text, win.bigWin, winAmount);
                 }
             }, 400);
         }
@@ -834,18 +649,16 @@
         function stopAutoCounting() {
             isAutoCounting = false;
             clearInterval(autoCountInterval);
-            launchButton.classList.remove('auto-mode');
-            launchButton.innerHTML = '<span class="rocket-icon">🚀</span> Send';
+            autoStopButton.textContent = "AUTO";
+            autoStopButton.classList.remove('stop-mode');
+            manualButton.disabled = false;
             
-            if (diamonds < 300) {
+            if (userDiamonds < 300) {
                 resetButton.style.display = 'block';
             }
             
-            // Update clickCount with current number when stopping auto
-            clickCount = currentNumber;
-            
-            // Hide animation when stopping auto
-            toggleAnimation(false);
+            currentNumber = 0;
+            counter.textContent = "x0";
         }
 
         function toggleAutoCounting() {
@@ -858,48 +671,13 @@
 
         function resetGame() {
             stopAutoCounting();
-            if (isActive) {
-                toggleAnimation(false);
-            }
             currentNumber = 0;
-            clickCount = 0;
             counter.textContent = "x0";
-            diamonds = 75000;
+            userDiamonds = 75000;
+            hostDiamonds = 0;
             updateDiamondsDisplay();
             hideMessage();
             resetButton.style.display = 'none';
-            clearTimeout(clickTimeout);
-        }
-
-        function handleHoldStart() {
-            if (diamonds < 300) return;
-            
-            isHolding = true;
-            holdTimeout = setTimeout(() => {
-                if (isHolding) {
-                    toggleAutoCounting();
-                }
-            }, 500); // 500ms hold to activate auto
-        }
-
-        function handleHoldEnd() {
-            isHolding = false;
-            clearTimeout(holdTimeout);
-            
-            if (!isAutoCounting) {
-                manualPlay();
-            }
-        }
-
-        function handleClick() {
-            if (isAutoCounting) {
-                // If in auto mode, treat click as stop
-                stopAutoCounting();
-            } else {
-                // If not in auto mode, treat as normal click
-                handleHoldStart();
-                handleHoldEnd();
-            }
         }
 
         function init() {
@@ -917,40 +695,52 @@
                 e.stopPropagation();
             });
             
-            // Touch and mouse events for hold functionality
-            launchButton.addEventListener('mousedown', handleHoldStart);
-            launchButton.addEventListener('mouseup', handleHoldEnd);
-            launchButton.addEventListener('mouseleave', handleHoldEnd);
-            launchButton.addEventListener('touchstart', handleHoldStart, { passive: true });
-            launchButton.addEventListener('touchend', handleHoldEnd);
-            
-            // Click handler for toggling auto mode
-            launchButton.addEventListener('click', handleClick);
-            
+            manualButton.addEventListener('click', manualPlay);
+            autoStopButton.addEventListener('click', toggleAutoCounting);
             resetButton.addEventListener('click', resetGame);
-            messageButton.addEventListener('click', resetGame);
+            messageButton.addEventListener('click', hideMessage);
 
-            // Disable mouse move effects on mobile
             if (window.matchMedia("(hover: hover)").matches) {
                 document.addEventListener('mousemove', (e) => {
-                    if (isActive) {
-                        const containerRect = document.querySelector('.counter-animation').getBoundingClientRect();
-                        const centerX = containerRect.left + containerRect.width / 2;
-                        const offsetX = (e.clientX - centerX) / 10;
-                        rocket.style.transform = `translateX(${offsetX}px)`;
-                    }
+                    const containerRect = document.querySelector('.center-stage').getBoundingClientRect();
+                    const centerX = containerRect.left + containerRect.width / 2;
+                    const offsetX = (e.clientX - centerX) / 10;
+                    rocket.style.transform = `translateX(${offsetX}px)`;
                 });
             }
-            
-            // Handle orientation changes
-            window.addEventListener('orientationchange', function() {
-                setTimeout(function() {
-                    window.scrollTo(0, 0);
-                }, 100);
-            });
         }
         
         init();
+
+        // Prevent zooming
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Prevent image dragging and context menu
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Prevent image dragging
+        document.addEventListener('dragstart', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+
+        // Handle orientation changes
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                window.scrollTo(0, 0);
+            }, 100);
+        });
     </script>
 </body>
 </html>
