@@ -242,7 +242,7 @@
         }
         
         /* Game elements */
-        .rocket {
+        .gift-element {
             font-size: 3rem;
             position: relative;
             z-index: 10;
@@ -340,6 +340,50 @@
             cursor: pointer;
         }
         
+        /* Gift selector */
+        .gift-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .gift-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid transparent;
+        }
+        
+        .gift-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .gift-option.selected {
+            border: 2px solid #feca57;
+            box-shadow: 0 0 15px rgba(254, 202, 87, 0.7);
+            transform: scale(1.1);
+        }
+        
+        /* Sound wave effect */
+        .sound-wave {
+            position: absolute;
+            border: 2px solid #feca57;
+            border-radius: 50%;
+            pointer-events: none;
+            width: 0px;
+            height: 0px;
+            background-color: transparent;
+        }
+        
         @media screen and (orientation: landscape) {
             .host-profile, .user-profile {
                 padding: 8px 15px;
@@ -365,6 +409,12 @@
             .center-stage {
                 min-height: 100px;
             }
+            
+            .gift-option {
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
         }
     </style>
 </head>
@@ -379,16 +429,29 @@
 
     <div class="center-stage" id="center-stage">
         <div id="stars"></div>
-        <div id="rocket" class="rocket">🚀</div>
+        <div id="gift-element" class="gift-element">🌹</div>
         <div class="counter-display" id="counter">x0</div>
     </div>
 
     <div class="game-controls">
-        <h3 class="game-title">GIFT ROCKET 🚀 300</h3>
+        <div class="gift-selector" id="gift-selector">
+            <div class="gift-option selected" data-gift="🌹" data-cost="1">🌹</div>
+            <div class="gift-option" data-gift="🌞" data-cost="2">🌞</div>
+            <div class="gift-option" data-gift="🧹" data-cost="3">🧹</div>
+            <div class="gift-option" data-gift="🐖" data-cost="5">🐖</div>
+            <div class="gift-option" data-gift="🚁" data-cost="10">🚁</div>
+            <div class="gift-option" data-gift="🎤" data-cost="20">🎤</div>
+            <div class="gift-option" data-gift="🛶" data-cost="50">🛶</div>
+            <div class="gift-option" data-gift="👑" data-cost="100">👑</div>
+            <div class="gift-option" data-gift="✈️" data-cost="200">✈️</div>
+            <div class="gift-option" data-gift="🚀" data-cost="300">🚀</div>
+        </div>
+        
+        <h3 class="game-title" id="game-title">GIFT MAWAR 🌹 1</h3>
         
         <div class="buttons-container">
             <button class="game-button manual-button" id="manual-button">SEND</button>
-            <button class="game-button auto-button" id="auto-stop-button">AUTO</button></div>
+            <button class="game-button auto-button" id="auto-stop-button">AUTO</button>
         </div>
         <button class="game-button reset-button" id="reset-button">RESET</button>
     </div>
@@ -408,15 +471,18 @@
         <button class="message-button" id="message-button">OK</button>
     </div>
 
-    <!-- Audio element for big wins -->
+    <!-- Audio elements -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="giftSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/556/556-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
         // Game elements
         const counter = document.getElementById('counter');
-        const rocket = document.getElementById('rocket');
+        const giftElement = document.getElementById('gift-element');
         const starsContainer = document.getElementById('stars');
         const userDiamondCount = document.getElementById('user-diamond-count');
         const hostDiamondCount = document.getElementById('host-diamond-count');
@@ -427,8 +493,13 @@
         const messageTitle = document.getElementById('message-title');
         const messageContent = document.getElementById('message-content');
         const messageButton = document.getElementById('message-button');
+        const gameTitle = document.getElementById('game-title');
+        const giftSelector = document.getElementById('gift-selector');
+        const giftOptions = document.querySelectorAll('.gift-option');
+        
+        // Audio elements
         const bigWinSound = document.getElementById('bigWinSound');
-        const avatar = document.querySelector('.avatar');
+        const giftSound = document.getElementById('giftSound');
         
         // Game variables
         let currentNumber = 0;
@@ -437,6 +508,8 @@
         let isAutoCounting = false;
         let autoCountInterval;
         let resetTimer;
+        let currentGift = "🌹";
+        let currentGiftCost = 1;
         
         const winMultipliers = [
             { multiplier: 10, probability: 0.14, text: "x10 Times", bigWin: false },
@@ -446,6 +519,70 @@
             { multiplier: 500, probability: 0.02, text: "x500 Times", bigWin: true },
             { multiplier: 650, probability: 0.006, text: "x650 Times", bigWin: true }
         ];
+        
+        // Gift configurations - all use the same mic effect
+        const gifts = {
+            "🌹": {
+                name: "MAWAR",
+                cost: 1,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🌞": {
+                name: "SUN",
+                cost: 2,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🧹": {
+                name: "SAPU",
+                cost: 3,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🐖": {
+                name: "BABI",
+                cost: 5,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🚁": {
+                name: "HELI",
+                cost: 10,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🎤": {
+                name: "MIC",
+                cost: 20,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🛶": {
+                name: "PERAHU",
+                cost: 50,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "👑": {
+                name: "CROWN",
+                cost: 100,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "✈️": {
+                name: "PESAWAT",
+                cost: 200,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            },
+            "🚀": {
+                name: "ROCKET",
+                cost: 300,
+                winMultipliers: winMultipliers,
+                effect: createMicEffect
+            }
+        };
         
         // Create stars background
         function createStars() {
@@ -507,6 +644,57 @@
             }
         }
         
+        // Create mic effect (sound waves)
+        function createMicEffect(x, y) {
+            giftSound.currentTime = 0;
+            giftSound.play();
+            
+            for (let i = 0; i < 5; i++) {
+                const soundWave = document.createElement('div');
+                soundWave.className = 'sound-wave';
+                soundWave.style.left = `${x}px`;
+                soundWave.style.top = `${y}px`;
+                soundWave.style.borderColor = getRandomColor();
+                
+                const size = 30 + i * 30;
+                const duration = 0.5 + i * 0.2;
+                
+                soundWave.style.animation = `micMove-${i} ${duration}s forwards`;
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes micMove-${i} {
+                        0% { 
+                            width: 0px;
+                            height: 0px;
+                            opacity: 1;
+                        }
+                        100% { 
+                            width: ${size}px;
+                            height: ${size}px;
+                            margin-left: -${size/2}px;
+                            margin-top: -${size/2}px;
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(soundWave);
+                
+                setTimeout(() => {
+                    soundWave.remove();
+                    style.remove();
+                }, duration * 1000);
+            }
+        }
+        
+        // Helper function to get random bright color
+        function getRandomColor() {
+            const colors = ['#feca57', '#ff6b6b', '#42b6e6', '#9b59b6', '#2ecc71', '#1abc9c', '#e74c3c'];
+            return colors[Math.floor(Math.random() * colors.length)];
+        }
+        
         function createWinText(x, y, text, isBigWin, amount) {
             const winText = document.createElement('div');
             winText.className = `win-text ${isBigWin ? 'big-win' : 'small-win'}`;
@@ -552,12 +740,12 @@
             hostDiamondCount.textContent = hostDiamonds.toLocaleString();
             
             const userDiamondsElement = document.querySelector('.user-diamonds');
-            userDiamondsElement.style.color = userDiamonds < 300 ? '#ff6b6b' : '#42b6e6';
+            userDiamondsElement.style.color = userDiamonds < currentGiftCost ? '#ff6b6b' : '#42b6e6';
             
-            manualButton.disabled = userDiamonds < 300;
-            autoStopButton.disabled = userDiamonds < 300;
+            manualButton.disabled = userDiamonds < currentGiftCost;
+            autoStopButton.disabled = userDiamonds < currentGiftCost;
             
-            if (userDiamonds < 300 && !isAutoCounting) {
+            if (userDiamonds < currentGiftCost && !isAutoCounting) {
                 resetButton.style.display = 'block';
             } else {
                 resetButton.style.display = 'none';
@@ -565,11 +753,12 @@
         }
         
         function checkForWin() {
+            const giftConfig = gifts[currentGift];
             if (Math.random() < 0.10) {
                 let random = Math.random();
                 let cumulativeProbability = 0;
                 
-                for (const win of winMultipliers) {
+                for (const win of giftConfig.winMultipliers) {
                     cumulativeProbability += win.probability;
                     if (random <= cumulativeProbability) {
                         return win;
@@ -580,18 +769,18 @@
         }
         
         function countUp() {
-            if (userDiamonds < 300) {
+            if (userDiamonds < currentGiftCost) {
                 if (isAutoCounting) {
                     stopAutoCounting();
                 }
-                showMessage("Diamond Tidak Cukup", "Koin habis, silahkan reset untuk memulai kembali.");
+                showMessage("Diamond Tidak Cukup", `Koin habis, silahkan reset untuk memulai kembali. Dibutuhkan ${currentGiftCost} koin.`);
                 return false;
             }
             
-            // Player spends 300 diamonds
-            userDiamonds -= 300;
-            // Host gets the 300 diamonds spent by player
-            hostDiamonds += 300;
+            // Player spends diamonds
+            userDiamonds -= currentGiftCost;
+            // Host gets the diamonds spent by player
+            hostDiamonds += currentGiftCost;
             
             updateDiamondsDisplay();
             
@@ -604,12 +793,15 @@
                 counter.style.transform = 'scale(1)';
             }, 300);
             
+            // Play gift effect (all use mic effect)
+            const giftRect = giftElement.getBoundingClientRect();
+            const x = giftRect.left + giftRect.width / 2;
+            const y = giftRect.top + giftRect.height / 2;
+            gifts[currentGift].effect(x, y);
+            
             const win = checkForWin();
             if (win) {
-                const rocketRect = rocket.getBoundingClientRect();
-                const x = rocketRect.left + rocketRect.width / 2;
-                const y = rocketRect.top + rocketRect.height / 2;
-                const winAmount = 300 * win.multiplier;
+                const winAmount = currentGiftCost * win.multiplier;
                 createWinText(x, y - 50, win.text, win.bigWin, winAmount);
             }
             
@@ -628,12 +820,12 @@
         }
 
         function manualPlay() {
-            if (userDiamonds < 300) return;
+            if (userDiamonds < currentGiftCost) return;
             countUp();
         }
 
         function startAutoCounting() {
-            if (isAutoCounting || userDiamonds < 300) return;
+            if (isAutoCounting || userDiamonds < currentGiftCost) return;
             
             isAutoCounting = true;
             autoStopButton.textContent = "STOP";
@@ -654,7 +846,7 @@
             autoStopButton.classList.remove('stop-mode');
             manualButton.disabled = false;
             
-            if (userDiamonds < 300) {
+            if (userDiamonds < currentGiftCost) {
                 resetButton.style.display = 'block';
             }
             
@@ -680,12 +872,44 @@
             hideMessage();
             resetButton.style.display = 'none';
         }
+        
+        function selectGift(gift, cost) {
+            currentGift = gift;
+            currentGiftCost = cost;
+            giftElement.textContent = gift;
+            
+            // Update UI
+            giftOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.gift === gift) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            gameTitle.textContent = `GIFT ${gifts[gift].name} ${gift} ${cost}`;
+            
+            // Stop auto counting if changing gift while auto is on
+            if (isAutoCounting) {
+                stopAutoCounting();
+            }
+            
+            // Check if user has enough diamonds for new gift
+            updateDiamondsDisplay();
+        }
 
         function init() {
             createStars();
             updateDiamondsDisplay();
             
+            // Set up gift selection
+            giftOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    selectGift(option.dataset.gift, parseInt(option.dataset.cost));
+                });
+            });
+            
             // Prevent image clicking and dragging
+            const avatar = document.querySelector('.avatar');
             avatar.addEventListener('click', function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -706,7 +930,7 @@
                     const containerRect = document.querySelector('.center-stage').getBoundingClientRect();
                     const centerX = containerRect.left + containerRect.width / 2;
                     const offsetX = (e.clientX - centerX) / 10;
-                    rocket.style.transform = `translateX(${offsetX}px)`;
+                    giftElement.style.transform = `translateX(${offsetX}px)`;
                 });
             }
         }
