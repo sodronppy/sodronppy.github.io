@@ -9,6 +9,7 @@
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
@@ -21,65 +22,65 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 20px;
+            padding: 15px;
         }
 
         .host-profile {
             display: flex;
             align-items: center;
             background: rgba(60, 15, 15, 0.7);
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 50px;
-            box-shadow: 0 0 20px rgba(255, 50, 50, 0.3);
+            box-shadow: 0 0 15px rgba(255, 50, 50, 0.3);
             border: 2px solid #ff3e3e;
             z-index: 5;
             width: 100%;
             max-width: 350px;
-            margin: 0 auto 20px auto;
+            margin: 0 auto 15px auto;
         }
         
         .center-stage {
             flex: 1;
-            min-height: 150px;
+            min-height: 120px;
             position: relative;
-            margin: 15px 0;
+            margin: 10px 0;
             display: flex;
             justify-content: center;
             align-items: center;
             background: rgba(40, 20, 80, 0.3);
-            border-radius: 15px;
+            border-radius: 12px;
             border: 1px dashed #feca57;
             overflow: hidden;
         }
         
         .game-controls {
             background: rgba(40, 20, 80, 0.8);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 12px;
             width: 100%;
             max-width: 350px;
-            margin: 0 auto 15px auto;
+            margin: 0 auto 12px auto;
             border: 1px solid #feca57;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
         
         .game-title {
             color: #feca57;
             text-align: center;
-            margin-bottom: 10px;
-            font-size: 1.2rem;
-            text-shadow: 0 0 5px rgba(254, 202, 87, 0.5);
+            margin-bottom: 8px;
+            font-size: 1.1rem;
+            text-shadow: 0 0 4px rgba(254, 202, 87, 0.5);
         }
         
         .counter-display {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
             color: #feca57;
             text-align: center;
-            margin: 10px 0;
+            margin: 8px 0;
             transition: all 0.3s ease-out;
         }
         
@@ -96,36 +97,36 @@
             50% {
                 transform: scale(1.3);
                 color: #ff3e3e;
-                text-shadow: 0 0 20px rgba(255, 62, 62, 0.8);
+                text-shadow: 0 0 15px rgba(255, 62, 62, 0.8);
             }
             100% {
                 transform: scale(1.1);
                 color: #42b6e6;
-                text-shadow: 0 0 15px rgba(66, 182, 230, 0.8);
+                text-shadow: 0 0 10px rgba(66, 182, 230, 0.8);
             }
         }
         
         .buttons-container {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
         }
         
         .game-button {
-            padding: 12px 0;
+            padding: 10px 0;
             border: none;
-            border-radius: 20px;
+            border-radius: 18px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.2s;
             flex: 1;
-            max-width: 120px;
+            max-width: 110px;
             text-align: center;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
         
         .game-button:active {
-            transform: scale(0.95);
+            transform: scale(0.96);
         }
         
         .manual-button {
@@ -155,9 +156,9 @@
             display: flex;
             align-items: center;
             background: rgba(30, 15, 60, 0.7);
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 50px;
-            box-shadow: 0 0 20px rgba(254, 202, 87, 0.3);
+            box-shadow: 0 0 15px rgba(254, 202, 87, 0.3);
             border: 2px solid #feca57;
             z-index: 5;
             width: 100%;
@@ -166,10 +167,10 @@
         }
         
         .avatar {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
-            margin-right: 12px;
+            margin-right: 10px;
             object-fit: cover;
             pointer-events: none;
             user-select: none;
@@ -191,30 +192,30 @@
         }
         
         .host-name {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #ff6b6b;
             margin: 0;
-            text-shadow: 0 0 10px rgba(255, 50, 50, 0.5);
+            text-shadow: 0 0 8px rgba(255, 50, 50, 0.5);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .user-name {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #feca57;
             margin: 0;
-            text-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+            text-shadow: 0 0 8px rgba(254, 202, 87, 0.5);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
         .diamonds {
-            font-size: 1rem;
-            margin: 5px 0 0 0;
+            font-size: 0.95rem;
+            margin: 4px 0 0 0;
             display: flex;
             align-items: center;
         }
@@ -228,23 +229,23 @@
         }
         
         .diamond-icon {
-            font-size: 1.2rem;
-            margin-right: 5px;
+            font-size: 1.1rem;
+            margin-right: 4px;
         }
         
         .host-badge {
             background-color: #ff3e3e;
             color: white;
-            padding: 2px 8px;
-            border-radius: 10px;
-            font-size: 0.7rem;
-            margin-left: 5px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-size: 0.65rem;
+            margin-left: 4px;
             vertical-align: middle;
         }
         
         /* Game elements */
         .gift-element {
-            font-size: 3rem;
+            font-size: 2.5rem;
             position: relative;
             z-index: 10;
             transition: transform 0.2s;
@@ -272,32 +273,32 @@
         
         .small-win {
             color: #feca57;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             animation: smallWin 1s forwards;
         }
         
         .big-win {
             color: #ff3e3e;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             animation: bigWin 2s forwards;
         }
         
         @keyframes smallWin {
             0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.2); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 1; }
             100% { transform: scale(1); opacity: 0; }
         }
         
         @keyframes bigWin {
             0% { transform: scale(0.5); opacity: 0; }
-            50% { transform: scale(1.5); opacity: 1; }
-            100% { transform: scale(1.2); opacity: 0; }
+            50% { transform: scale(1.3); opacity: 1; }
+            100% { transform: scale(1.1); opacity: 0; }
         }
         
         .coin {
             position: absolute;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" fill="%2342b6e6"/><circle cx="10" cy="10" r="5" fill="%2357d1ff"/></svg>');
             background-size: contain;
             z-index: 10;
@@ -314,35 +315,51 @@
             background-color: transparent;
         }
         
-        /* Gift selector */
+        /* Gift selector - updated for better compatibility */
         .gift-selector {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-bottom: 15px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 12px;
         }
         
         .gift-option {
-            width: 100%;
-            aspect-ratio: 1/1;
-            border-radius: 10px;
+            width: 18%;
+            min-width: 45px;
+            height: 45px;
+            border-radius: 8px;
+            display: -webkit-box;
+            display: -ms-flexbox;
             display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
             justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             cursor: pointer;
+            -webkit-transition: all 0.2s;
             transition: all 0.2s;
             background: rgba(255, 255, 255, 0.1);
             border: 2px solid transparent;
         }
         
         .gift-option:hover {
+            -webkit-transform: scale(1.05);
             transform: scale(1.05);
         }
         
         .gift-option.selected {
             border: 2px solid #feca57;
-            box-shadow: 0 0 10px rgba(254, 202, 87, 0.5);
+            -webkit-box-shadow: 0 0 8px rgba(254, 202, 87, 0.5);
+            box-shadow: 0 0 8px rgba(254, 202, 87, 0.5);
             background: rgba(254, 202, 87, 0.2);
         }
         
@@ -351,13 +368,14 @@
             position: fixed;
             top: 50%;
             left: 50%;
+            -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
             background: rgba(40, 20, 80, 0.95);
             border: 2px solid #feca57;
-            border-radius: 15px;
-            padding: 20px;
+            border-radius: 12px;
+            padding: 15px;
             width: 80%;
-            max-width: 300px;
+            max-width: 280px;
             z-index: 1000;
             display: none;
             text-align: center;
@@ -365,41 +383,95 @@
         
         .message-title {
             color: #ff6b6b;
-            font-size: 1.3rem;
-            margin-bottom: 10px;
+            font-size: 1.2rem;
+            margin-bottom: 8px;
         }
         
         .message-content {
             color: white;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
         
         .message-button {
             background-color: #feca57;
             color: #1a0a2e;
             border: none;
-            padding: 8px 20px;
-            border-radius: 20px;
+            padding: 7px 18px;
+            border-radius: 18px;
             font-weight: bold;
             cursor: pointer;
+            font-size: 0.95rem;
         }
         
+        /* Music player button */
+        .music-button {
+            background-color: #ff5500;
+            color: white;
+            border: none;
+            padding: 9px 14px;
+            border-radius: 50px;
+            font-weight: bold;
+            cursor: pointer;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            gap: 7px;
+            margin: 8px auto;
+            width: 100%;
+            max-width: 350px;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+        
+        .music-button:hover {
+            background-color: #ff6b20;
+        }
+        
+        .music-button:active {
+            -webkit-transform: scale(0.96);
+            transform: scale(0.96);
+        }
+        
+        .music-button.playing {
+            background-color: #ff3e3e;
+        }
+        
+        .music-icon {
+            font-size: 1.1rem;
+        }
+        
+        /* Hidden iframe for SoundCloud */
+        .hidden-iframe {
+            display: none;
+            width: 0;
+            height: 0;
+            border: 0;
+        }
+
         @media screen and (orientation: landscape) {
             .host-profile, .user-profile {
-                padding: 8px 15px;
+                padding: 8px 12px;
             }
             
             .avatar {
-                width: 40px;
-                height: 40px;
+                width: 38px;
+                height: 38px;
             }
             
             .host-name, .user-name {
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
             
             .diamonds {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
             }
             
             .game-controls {
@@ -407,16 +479,28 @@
             }
             
             .center-stage {
-                min-height: 100px;
+                min-height: 90px;
             }
             
             .gift-option {
+                width: 16%;
+                min-width: 40px;
+                height: 40px;
                 font-size: 1.2rem;
             }
             
             .game-button {
                 padding: 8px 0;
-                font-size: 0.9rem;
+                font-size: 0.85rem;
+                max-width: 100px;
+            }
+            
+            .counter-display {
+                font-size: 1.5rem;
+            }
+            
+            .gift-element {
+                font-size: 2rem;
             }
         }
     </style>
@@ -429,6 +513,12 @@
             <p class="diamonds host-diamonds"><span class="diamond-icon">💸</span><span id="host-diamond-count">0</span></p>
         </div>
     </div>
+    
+    <!-- Music Player Button -->
+    <button class="music-button" id="music-button">
+        <span class="music-icon" id="music-icon">🎵</span>
+        <span id="music-button-text">Play Music</span>
+    </button>
 
     <div class="center-stage" id="center-stage">
         <div id="stars"></div>
@@ -474,6 +564,12 @@
         <button class="message-button" id="message-button">OK</button>
     </div>
 
+    <!-- Hidden iframe for SoundCloud player -->
+    <iframe id="soundcloud-player" class="hidden-iframe" 
+            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2022249918&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
+            allow="autoplay">
+    </iframe>
+
     <!-- Audio elements -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
@@ -499,14 +595,17 @@
         const gameTitle = document.getElementById('game-title');
         const giftSelector = document.getElementById('gift-selector');
         const giftOptions = document.querySelectorAll('.gift-option');
+        const musicButton = document.getElementById('music-button');
+        const musicIcon = document.getElementById('music-icon');
+        const musicButtonText = document.getElementById('music-button-text');
         
-        // Audio elements dengan volume default
+        // Audio elements with default volume
         const bigWinSound = document.getElementById('bigWinSound');
         const giftSound = document.getElementById('giftSound');
         
-        // Set volume default
-        bigWinSound.volume = 0.7;    // 70%
-        giftSound.volume = 0.03;       // 3%
+        // Set default volumes
+        bigWinSound.volume = 0.5;    // 50%
+        giftSound.volume = 0.03;     // 3%
 
         // Game variables
         let currentNumber = 0;
@@ -517,6 +616,8 @@
         let resetTimer;
         let currentGift = "🌹";
         let currentGiftCost = 1;
+        let isMusicPlaying = false;
+        let soundcloudWidget;
         
         const winMultipliers = [
             { multiplier: 10, probability: 0.14, text: "x10 Times", bigWin: false },
@@ -527,76 +628,26 @@
             { multiplier: 650, probability: 0.006, text: "x650 Times", bigWin: true }
         ];
         
-        // Gift configurations - all use the same mic effect
+        // Gift configurations
         const gifts = {
-            "🌹": {
-                name: "MAWAR",
-                cost: 1,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🌞": {
-                name: "SUN",
-                cost: 2,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🧹": {
-                name: "SAPU",
-                cost: 3,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🐖": {
-                name: "BABI",
-                cost: 5,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🚁": {
-                name: "HELI",
-                cost: 10,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🎤": {
-                name: "MIC",
-                cost: 20,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🛶": {
-                name: "PERAHU",
-                cost: 50,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "👑": {
-                name: "CROWN",
-                cost: 100,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "✈️": {
-                name: "PESAWAT",
-                cost: 200,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            },
-            "🚀": {
-                name: "ROCKET",
-                cost: 300,
-                winMultipliers: winMultipliers,
-                effect: createMicEffect
-            }
+            "🌹": { name: "MAWAR", cost: 1, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🌞": { name: "SUN", cost: 2, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🧹": { name: "SAPU", cost: 3, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🐖": { name: "BABI", cost: 5, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🚁": { name: "HELI", cost: 10, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🎤": { name: "MIC", cost: 20, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🛶": { name: "PERAHU", cost: 50, winMultipliers: winMultipliers, effect: createMicEffect },
+            "👑": { name: "CROWN", cost: 100, winMultipliers: winMultipliers, effect: createMicEffect },
+            "✈️": { name: "PESAWAT", cost: 200, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🚀": { name: "ROCKET", cost: 300, winMultipliers: winMultipliers, effect: createMicEffect }
         };
         
         // Create stars background
         function createStars() {
-            for (let i = 0; i < 100; i++) {
+            for (let i = 0; i < 80; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
-                star.style.width = `${Math.random() * 3 + 1}px`;
+                star.style.width = `${Math.random() * 2 + 1}px`;
                 star.style.height = star.style.width;
                 star.style.left = `${Math.random() * 100}%`;
                 star.style.top = `${Math.random() * 100}%`;
@@ -607,15 +658,15 @@
         
         // Create diamond burst effect
         function createDiamondBurst(x, y, amount, isPlayerWin = false) {
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < 40; i++) {
                 const diamond = document.createElement('div');
                 diamond.className = 'coin';
                 diamond.style.left = `${x}px`;
                 diamond.style.top = `${y}px`;
                 
                 const angle = Math.random() * Math.PI * 2;
-                const distance = 70 + Math.random() * 130;
-                const duration = 0.8 + Math.random() * 1.2;
+                const distance = 60 + Math.random() * 100;
+                const duration = 0.7 + Math.random() * 1;
                 
                 diamond.style.animation = `diamondMove-${i} ${duration}s forwards`;
                 
@@ -644,11 +695,16 @@
             
             if (isPlayerWin) {
                 userDiamonds += amount;
-                userDiamondCount.textContent = userDiamonds.toLocaleString();
+                userDiamondCount.textContent = formatNumber(userDiamonds);
             } else {
                 hostDiamonds += amount;
-                hostDiamondCount.textContent = hostDiamonds.toLocaleString();
+                hostDiamondCount.textContent = formatNumber(hostDiamonds);
             }
+        }
+        
+        // Format number with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
         
         // Create mic effect (sound waves)
@@ -656,15 +712,15 @@
             giftSound.currentTime = 0;
             giftSound.play();
             
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < 4; i++) {
                 const soundWave = document.createElement('div');
                 soundWave.className = 'sound-wave';
                 soundWave.style.left = `${x}px`;
                 soundWave.style.top = `${y}px`;
                 soundWave.style.borderColor = getRandomColor();
                 
-                const size = 30 + i * 30;
-                const duration = 0.5 + i * 0.2;
+                const size = 25 + i * 25;
+                const duration = 0.4 + i * 0.15;
                 
                 soundWave.style.animation = `micMove-${i} ${duration}s forwards`;
                 
@@ -698,7 +754,7 @@
         
         // Helper function to get random bright color
         function getRandomColor() {
-            const colors = ['#feca57', '#ff6b6b', '#42b6e6', '#9b59b6', '#2ecc71', '#1abc9c', '#e74c3c'];
+            const colors = ['#feca57', '#ff6b6b', '#42b6e6', '#9b59b6', '#2ecc71', '#1abc9c'];
             return colors[Math.floor(Math.random() * colors.length)];
         }
         
@@ -716,19 +772,17 @@
             }, isBigWin ? 2000 : 1000);
             
             if (isBigWin) {
-                // Play big win sound
                 bigWinSound.currentTime = 0;
                 bigWinSound.play();
-                createDiamondBurst(x, y, amount, true); // Player gets the win
+                createDiamondBurst(x, y, amount, true);
                 
-                // Add special jackpot effect to counter
                 counter.classList.add('jackpot');
                 setTimeout(() => {
                     counter.classList.remove('jackpot');
                 }, 3000);
             } else {
-                userDiamonds += amount; // Player gets the win
-                userDiamondCount.textContent = userDiamonds.toLocaleString();
+                userDiamonds += amount;
+                userDiamondCount.textContent = formatNumber(userDiamonds);
             }
         }
         
@@ -743,8 +797,8 @@
         }
         
         function updateDiamondsDisplay() {
-            userDiamondCount.textContent = userDiamonds.toLocaleString();
-            hostDiamondCount.textContent = hostDiamonds.toLocaleString();
+            userDiamondCount.textContent = formatNumber(userDiamonds);
+            hostDiamondCount.textContent = formatNumber(hostDiamonds);
             
             const userDiamondsElement = document.querySelector('.user-diamonds');
             userDiamondsElement.style.color = userDiamonds < currentGiftCost ? '#ff6b6b' : '#42b6e6';
@@ -784,9 +838,7 @@
                 return false;
             }
             
-            // Player spends diamonds
             userDiamonds -= currentGiftCost;
-            // Host gets the diamonds spent by player
             hostDiamonds += currentGiftCost;
             
             updateDiamondsDisplay();
@@ -794,13 +846,11 @@
             currentNumber++;
             counter.textContent = `x${currentNumber}`;
             
-            // Add bounce effect to counter
             counter.style.transform = 'scale(1.2)';
             setTimeout(() => {
                 counter.style.transform = 'scale(1)';
             }, 300);
             
-            // Play gift effect (all use mic effect)
             const giftRect = giftElement.getBoundingClientRect();
             const x = giftRect.left + giftRect.width / 2;
             const y = giftRect.top + giftRect.height / 2;
@@ -881,7 +931,6 @@
         }
         
         function selectGift(gift, cost) {
-            // Reset counter when changing gift
             currentNumber = 0;
             counter.textContent = "x0";
             
@@ -889,7 +938,6 @@
             currentGiftCost = cost;
             giftElement.textContent = gift;
             
-            // Update UI
             giftOptions.forEach(option => {
                 option.classList.remove('selected');
                 if (option.dataset.gift === gift) {
@@ -899,27 +947,68 @@
             
             gameTitle.textContent = `GIFT ${gifts[gift].name} ${gift} ${cost}`;
             
-            // Stop auto counting if changing gift while auto is on
             if (isAutoCounting) {
                 stopAutoCounting();
             }
             
-            // Check if user has enough diamonds for new gift
             updateDiamondsDisplay();
+        }
+        
+        // Music player functions
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                soundcloudWidget.pause();
+                musicIcon.textContent = '🎵';
+                musicButtonText.textContent = 'Play Music';
+                musicButton.classList.remove('playing');
+            } else {
+                soundcloudWidget.play();
+                musicIcon.textContent = '🔊';
+                musicButtonText.textContent = 'Stop Music';
+                musicButton.classList.add('playing');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        }
+
+        function initSoundCloud() {
+            const iframeElement = document.getElementById('soundcloud-player');
+            soundcloudWidget = SC.Widget(iframeElement);
+            
+            soundcloudWidget.bind(SC.Widget.Events.READY, function() {
+                soundcloudWidget.setVolume(100);
+                soundcloudWidget.setLoop(true);
+            });
+            
+            soundcloudWidget.bind(SC.Widget.Events.PLAY, function() {
+                isMusicPlaying = true;
+                musicIcon.textContent = '🔊';
+                musicButtonText.textContent = 'Stop Music';
+                musicButton.classList.add('playing');
+            });
+            
+            soundcloudWidget.bind(SC.Widget.Events.PAUSE, function() {
+                isMusicPlaying = false;
+                musicIcon.textContent = '🎵';
+                musicButtonText.textContent = 'Play Music';
+                musicButton.classList.remove('playing');
+            });
         }
 
         function init() {
             createStars();
             updateDiamondsDisplay();
             
-            // Set up gift selection
+            // Initialize SoundCloud
+            initSoundCloud();
+            
+            // Gift selection
             giftOptions.forEach(option => {
                 option.addEventListener('click', () => {
                     selectGift(option.dataset.gift, parseInt(option.dataset.cost));
                 });
             });
             
-            // Prevent image clicking and dragging
+            // Prevent image dragging
             const avatar = document.querySelector('.avatar');
             avatar.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -931,11 +1020,14 @@
                 e.stopPropagation();
             });
             
+            // Button events
             manualButton.addEventListener('click', manualPlay);
             autoStopButton.addEventListener('click', toggleAutoCounting);
             resetButton.addEventListener('click', resetGame);
             messageButton.addEventListener('click', hideMessage);
+            musicButton.addEventListener('click', toggleMusic);
 
+            // Mouse move effect
             if (window.matchMedia("(hover: hover)").matches) {
                 document.addEventListener('mousemove', (e) => {
                     const containerRect = document.querySelector('.center-stage').getBoundingClientRect();
@@ -946,9 +1038,18 @@
             }
         }
         
-        init();
+        // Load SoundCloud API and initialize
+        function loadSoundCloudAPI() {
+            const script = document.createElement('script');
+            script.src = 'https://w.soundcloud.com/player/api.js';
+            script.onload = init;
+            document.body.appendChild(script);
+        }
+        
+        // Start loading everything
+        loadSoundCloudAPI();
 
-        // Prevent zooming
+        // Prevent zooming and other default behaviors
         document.addEventListener('gesturestart', function(e) {
             e.preventDefault();
         });
@@ -957,21 +1058,18 @@
             e.preventDefault();
         }, { passive: false });
 
-        // Prevent image dragging and context menu
         document.addEventListener('contextmenu', function(e) {
             if (e.target.tagName === 'IMG') {
                 e.preventDefault();
             }
         });
 
-        // Prevent image dragging
         document.addEventListener('dragstart', function(e) {
             if (e.target.tagName === 'IMG') {
                 e.preventDefault();
             }
         });
 
-        // Handle orientation changes
         window.addEventListener('orientationchange', function() {
             setTimeout(function() {
                 window.scrollTo(0, 0);
