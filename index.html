@@ -570,12 +570,16 @@
             allow="autoplay">
     </iframe>
 
-    <!-- Audio elements -->
+    <!-- Audio elements with improved compatibility -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
     </audio>
     <audio id="giftSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/556/556-preview.mp3" type="audio/mpeg">
+        <source src="https://assets.mixkit.co/active_storage/sfx/556/556-preview.ogg" type="audio/ogg">
+        Your browser does not support the audio element.
     </audio>
 
     <script>
@@ -599,13 +603,17 @@
         const musicIcon = document.getElementById('music-icon');
         const musicButtonText = document.getElementById('music-button-text');
         
-        // Audio elements with default volume
+        // Audio elements with improved compatibility
         const bigWinSound = document.getElementById('bigWinSound');
         const giftSound = document.getElementById('giftSound');
         
-        // Set default volumes
-        bigWinSound.volume = 0.5;    // 50%
-        giftSound.volume = 0.03;     // 3%
+        // Set default volumes with fallback
+        try {
+            bigWinSound.volume = 0.5;    // 50%
+            giftSound.volume = 0.03;     // 3%
+        } catch (e) {
+            console.log("Audio volume adjustment not supported in this browser");
+        }
 
         // Game variables
         let currentNumber = 0;
@@ -709,8 +717,19 @@
         
         // Create mic effect (sound waves)
         function createMicEffect(x, y) {
-            giftSound.currentTime = 0;
-            giftSound.play();
+            try {
+                giftSound.currentTime = 0;
+                giftSound.play().catch(e => {
+                    console.log("Autoplay prevented, trying fallback");
+                    // Fallback for browsers that block autoplay
+                    document.body.addEventListener('click', function playSoundOnce() {
+                        giftSound.play();
+                        document.body.removeEventListener('click', playSoundOnce);
+                    });
+                });
+            } catch (e) {
+                console.log("Error playing sound:", e);
+            }
             
             for (let i = 0; i < 4; i++) {
                 const soundWave = document.createElement('div');
@@ -772,8 +791,20 @@
             }, isBigWin ? 2000 : 1000);
             
             if (isBigWin) {
-                bigWinSound.currentTime = 0;
-                bigWinSound.play();
+                try {
+                    bigWinSound.currentTime = 0;
+                    bigWinSound.play().catch(e => {
+                        console.log("Autoplay prevented, trying fallback");
+                        // Fallback for browsers that block autoplay
+                        document.body.addEventListener('click', function playSoundOnce() {
+                            bigWinSound.play();
+                            document.body.removeEventListener('click', playSoundOnce);
+                        });
+                    });
+                } catch (e) {
+                    console.log("Error playing big win sound:", e);
+                }
+                
                 createDiamondBurst(x, y, amount, true);
                 
                 counter.classList.add('jackpot');
@@ -1076,5 +1107,10 @@
             }, 100);
         });
     </script>
+
+  <br>
+   <center>
+  <p style="color:white;">
+   <em>  </em></p></center>
 </body>
 </html>
