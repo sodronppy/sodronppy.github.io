@@ -362,6 +362,85 @@
             box-shadow: 0 0 8px rgba(254, 202, 87, 0.5);
             background: rgba(254, 202, 87, 0.2);
         }
+
+        /* Special Gift Selector */
+        .special-gift-selector {
+            display: none;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .special-gift-option {
+            width: 30%;
+            min-width: 80px;
+            height: 60px;
+            border-radius: 8px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            font-size: 1.8rem;
+            cursor: pointer;
+            -webkit-transition: all 0.2s;
+            transition: all 0.2s;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid transparent;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .special-gift-option:hover {
+            -webkit-transform: scale(1.05);
+            transform: scale(1.05);
+        }
+
+        .special-gift-option.selected {
+            border: 2px solid gold;
+            -webkit-box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        .special-gift-price {
+            position: absolute;
+            bottom: 5px;
+            font-size: 0.7rem;
+            color: gold;
+        }
+
+        /* Gift type selector */
+        .gift-type-selector {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            gap: 10px;
+        }
+
+        .gift-type-button {
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .gift-type-button.active {
+            background: #feca57;
+            color: #1a0a2e;
+        }
         
         /* Message box */
         .message-box {
@@ -403,57 +482,46 @@
             cursor: pointer;
             font-size: 0.95rem;
         }
-        
-        /* Music player button */
-        .music-button {
-            background-color: #ff5500;
-            color: white;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            display: -webkit-box;
-            display: -ms-flexbox;
-            display: flex;
-            -webkit-box-align: center;
-            -ms-flex-align: center;
-            align-items: center;
-            -webkit-box-pack: center;
-            -ms-flex-pack: center;
-            justify-content: center;
-            gap: 7px;
-            margin: 8px auto;
+
+        /* Music player */
+        .music-player {
             width: 100%;
             max-width: 350px;
-            -webkit-transition: all 0.2s;
-            transition: all 0.2s;
-            font-size: 0.95rem;
+            margin: 0 auto 15px auto;
+            display: flex;
+            justify-content: center;
         }
-        
-        .music-button:hover {
-            background-color: #ff6b20;
-        }
-        
-        .music-button:active {
-            -webkit-transform: scale(0.96);
-            transform: scale(0.96);
-        }
-        
-        .music-button.playing {
+
+        .music-button {
             background-color: #ff3e3e;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 0 10px rgba(255, 62, 62, 0.5);
+            transition: all 0.2s;
         }
-        
-        .music-icon {
-            font-size: 1.1rem;
+
+        .music-button:active {
+            transform: scale(0.95);
         }
-        
-        /* Hidden iframe for SoundCloud */
-        .hidden-iframe {
+
+        .music-button .icon {
+            font-size: 1.2rem;
+        }
+
+        .soundcloud-player {
             display: none;
-            width: 0;
-            height: 0;
-            border: 0;
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto 15px auto;
+            border-radius: 12px;
+            overflow: hidden;
         }
 
         @media screen and (orientation: landscape) {
@@ -488,6 +556,13 @@
                 height: 40px;
                 font-size: 1.2rem;
             }
+
+            .special-gift-option {
+                width: 28%;
+                min-width: 70px;
+                height: 50px;
+                font-size: 1.6rem;
+            }
             
             .game-button {
                 padding: 8px 0;
@@ -513,12 +588,18 @@
             <p class="diamonds host-diamonds"><span class="diamond-icon">💸</span><span id="host-diamond-count">0</span></p>
         </div>
     </div>
-    
-    <!-- Music Player Button -->
-    <button class="music-button" id="music-button">
-        <span class="music-icon" id="music-icon">🎵</span>
-        <span id="music-button-text">Play Music</span>
-    </button>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <button class="music-button" id="music-toggle">
+            <span class="icon">🎵</span>
+            <span id="music-button-text">Play Music</span>
+        </button>
+    </div>
+    <div class="soundcloud-player" id="soundcloud-player">
+     <iframe id="soundcloud-iframe" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" 
+        src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2022249918&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"></iframe>
+    </div>
 
     <div class="center-stage" id="center-stage">
         <div id="stars"></div>
@@ -527,7 +608,14 @@
     </div>
 
     <div class="game-controls">
-        <div class="gift-selector" id="gift-selector">
+        <!-- Gift Type Selector -->
+        <div class="gift-type-selector">
+            <button class="gift-type-button active" id="regular-gift-button">Lucky Player</button>
+            <button class="gift-type-button" id="special-gift-button">Special Gift x10 to Host</button>
+        </div>
+
+        <!-- Regular Gift Selector -->
+        <div class="gift-selector" id="regular-gift-selector">
             <div class="gift-option selected" data-gift="🌹" data-cost="1">🌹</div>
             <div class="gift-option" data-gift="🌞" data-cost="2">🌞</div>
             <div class="gift-option" data-gift="🧹" data-cost="3">🧹</div>
@@ -538,6 +626,47 @@
             <div class="gift-option" data-gift="👑" data-cost="100">👑</div>
             <div class="gift-option" data-gift="✈️" data-cost="200">✈️</div>
             <div class="gift-option" data-gift="🚀" data-cost="300">🚀</div>
+        </div>
+        
+        <!-- Special Gift Selector -->
+        <div class="special-gift-selector" id="special-gift-selector">
+             <div class="special-gift-option" data-gift="🔖" data-cost="100">
+                🔖
+                <span class="special-gift-price">100</span>
+            </div>
+            <div class="special-gift-option" data-gift="🔕" data-cost="500">
+                🔕
+                <span class="special-gift-price">500</span>
+            </div>
+            <div class="special-gift-option" data-gift="🧸" data-cost="5000">
+                🧸
+                <span class="special-gift-price">5000</span>
+            </div>
+            
+            <div class="special-gift-option" data-gift="🎁" data-cost="10000">
+                🎁
+                <span class="special-gift-price">10.000</span>
+            </div>
+             <div class="special-gift-option" data-gift="🐅" data-cost="20000">
+                🐅
+                <span class="special-gift-price">20.000</span>
+            </div>
+            <div class="special-gift-option" data-gift="🐒" data-cost="35000">
+                🐒
+                <span class="special-gift-price">35.000</span>
+            </div>
+             <div class="special-gift-option" data-gift="🐖" data-cost="50000">
+                🐖
+                <span class="special-gift-price">50.000</span>
+            </div>
+             <div class="special-gift-option" data-gift="🐕" data-cost="100000">
+                🐕
+                <span class="special-gift-price">100.000</span>
+            </div>
+             <div class="special-gift-option" data-gift="🐘" data-cost="150000">
+                🐘
+                <span class="special-gift-price">150.000</span>
+            </div>
         </div>
         
         <h3 class="game-title" id="game-title">GIFT MAWAR 🌹 1</h3>
@@ -564,22 +693,12 @@
         <button class="message-button" id="message-button">OK</button>
     </div>
 
-    <!-- Hidden iframe for SoundCloud player -->
-    <iframe id="soundcloud-player" class="hidden-iframe" 
-            src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/playlists/2022249918&color=%23ff5500&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false"
-            allow="autoplay">
-    </iframe>
-
-    <!-- Audio elements with improved compatibility -->
+    <!-- Audio Elements -->
     <audio id="bigWinSound" preload="auto">
         <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.mp3" type="audio/mpeg">
-        <source src="https://assets.mixkit.co/active_storage/sfx/510/510-preview.ogg" type="audio/ogg">
-        Your browser does not support the audio element.
     </audio>
-    <audio id="giftSound" preload="auto">
-        <source src="https://assets.mixkit.co/active_storage/sfx/556/556-preview.mp3" type="audio/mpeg">
-        <source src="https://assets.mixkit.co/active_storage/sfx/556/556-preview.ogg" type="audio/ogg">
-        Your browser does not support the audio element.
+    <audio id="specialGiftSound" preload="auto">
+        <source src="https://assets.mixkit.co/active_storage/sfx/1510/1510-preview.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -597,24 +716,18 @@
         const messageContent = document.getElementById('message-content');
         const messageButton = document.getElementById('message-button');
         const gameTitle = document.getElementById('game-title');
-        const giftSelector = document.getElementById('gift-selector');
+        const regularGiftSelector = document.getElementById('regular-gift-selector');
+        const specialGiftSelector = document.getElementById('special-gift-selector');
+        const regularGiftButton = document.getElementById('regular-gift-button');
+        const specialGiftButton = document.getElementById('special-gift-button');
         const giftOptions = document.querySelectorAll('.gift-option');
-        const musicButton = document.getElementById('music-button');
-        const musicIcon = document.getElementById('music-icon');
+        const specialGiftOptions = document.querySelectorAll('.special-gift-option');
+        const musicToggle = document.getElementById('music-toggle');
         const musicButtonText = document.getElementById('music-button-text');
-        
-        // Audio elements with improved compatibility
+        const soundcloudPlayer = document.getElementById('soundcloud-player');
         const bigWinSound = document.getElementById('bigWinSound');
-        const giftSound = document.getElementById('giftSound');
+        const specialGiftSound = document.getElementById('specialGiftSound');
         
-        // Set default volumes with fallback
-        try {
-            bigWinSound.volume = 0.5;    // 50%
-            giftSound.volume = 0.03;     // 3%
-        } catch (e) {
-            console.log("Audio volume adjustment not supported in this browser");
-        }
-
         // Game variables
         let currentNumber = 0;
         let userDiamonds = 75000;
@@ -624,17 +737,20 @@
         let resetTimer;
         let currentGift = "🌹";
         let currentGiftCost = 1;
+        let isSpecialGift = false;
         let isMusicPlaying = false;
-        let soundcloudWidget;
         
-        const winMultipliers = [
-    { multiplier: 10, probability: 0.029, text: "x10 Times", bigWin: false, color: "#feca57" },
-    { multiplier: 20, probability: 0.003, text: "x20 Times", bigWin: false, color: "#42b6e6" },
-    { multiplier: 50, probability: 0.0001, text: "x50 Times", bigWin: false, color: "#9b59b6" },
-    { multiplier: 100, probability: 0.0002, text: "x100 Times", bigWin: false, color: "#2ecc71" },
-    { multiplier: 500, probability: 0.0006, text: "x500 Times", bigWin: true, color: "#ff6b6b" },
-    { multiplier: 650, probability: 0.0003, text: "x650 Times", bigWin: true, color: "#ff3e3e" }
+       // Win multipliers configuration - you can change these values
+       const winMultipliers = [
+    { multiplier: 0, probability: 0.010, text: "", bigWin: false, color: "#feca57" },
+    { multiplier: 10, probability: 0.0092, text: "x10 Times", bigWin: false, color: "#feca57" },
+    { multiplier: 20, probability: 0.0058, text: "x20 Times", bigWin: false, color: "#42b6e6" },
+    { multiplier: 50, probability: 0.0021, text: "x50 Times", bigWin: false, color: "#9b59b6" },
+    { multiplier: 100, probability: 0.0011, text: "x100 Times", bigWin: false, color: "#2ecc71" },
+    { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true, color: "#ff6b6b" },
+    { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }
 ];
+  
         
         // Gift configurations
         const gifts = {
@@ -647,7 +763,17 @@
             "🛶": { name: "PERAHU", cost: 50, winMultipliers: winMultipliers, effect: createMicEffect },
             "👑": { name: "CROWN", cost: 100, winMultipliers: winMultipliers, effect: createMicEffect },
             "✈️": { name: "PESAWAT", cost: 200, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🚀": { name: "ROCKET", cost: 300, winMultipliers: winMultipliers, effect: createMicEffect }
+            "🚀": { name: "ROCKET", cost: 300, winMultipliers: winMultipliers, effect: createMicEffect },
+              "🔖": { name: "LABEL", cost: 100, effect: createSpecialEffect, special: true },
+              "🔕": { name: "LONCENG", cost: 500, effect: createSpecialEffect, special: true },
+            "🧸": { name: "BONEKA", cost: 5000, effect: createSpecialEffect, special: true },
+            "🎁": { name: "KADO", cost: 10.000, effect: createSpecialEffect, special: true },
+            "🐅": { name: "TIGER", cost: 15.000, effect: createSpecialEffect, special: true },
+            "🐒": { name: "MONYET", cost: 35.000, effect: createSpecialEffect, special: true },
+            "🐖": { name: "BABI", cost: 50.000, effect: createSpecialEffect, special: true },
+            "🐕": { name: "ANJING", cost: 100.000, effect: createSpecialEffect, special: true },
+            
+            "🐘": { name: "GAJAH", cost: 150.000, effect: createSpecialEffect, special: true }
         };
         
         // Create stars background
@@ -717,20 +843,6 @@
         
         // Create mic effect (sound waves)
         function createMicEffect(x, y) {
-            try {
-                giftSound.currentTime = 0;
-                giftSound.play().catch(e => {
-                    console.log("Autoplay prevented, trying fallback");
-                    // Fallback for browsers that block autoplay
-                    document.body.addEventListener('click', function playSoundOnce() {
-                        giftSound.play();
-                        document.body.removeEventListener('click', playSoundOnce);
-                    });
-                });
-            } catch (e) {
-                console.log("Error playing sound:", e);
-            }
-            
             for (let i = 0; i < 4; i++) {
                 const soundWave = document.createElement('div');
                 soundWave.className = 'sound-wave';
@@ -770,6 +882,55 @@
                 }, duration * 1000);
             }
         }
+
+        // Create special gift effect
+        function createSpecialEffect(x, y) {
+            // Play special gift sound
+            specialGiftSound.currentTime = 0;
+            specialGiftSound.play();
+            
+            // Create bigger and more colorful burst
+            for (let i = 0; i < 60; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'coin';
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.width = `${20 + Math.random() * 10}px`;
+                particle.style.height = particle.style.width;
+                
+                // Random color for special effect
+                const colors = ['gold', '#ff3e3e', '#42b6e6', '#feca57', '#9b59b6'];
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 100 + Math.random() * 150;
+                const duration = 1 + Math.random() * 1.5;
+                
+                particle.style.animation = `specialParticleMove-${i} ${duration}s forwards`;
+                
+                const style = document.createElement('style');
+                style.innerHTML = `
+                    @keyframes specialParticleMove-${i} {
+                        0% { 
+                            transform: translate(0, 0) rotate(0deg);
+                            opacity: 1;
+                        }
+                        100% { 
+                            transform: translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) rotate(1080deg);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                document.body.appendChild(particle);
+                
+                setTimeout(() => {
+                    particle.remove();
+                    style.remove();
+                }, duration * 1000);
+            }
+        }
         
         // Helper function to get random bright color
         function getRandomColor() {
@@ -791,19 +952,9 @@
             }, isBigWin ? 2000 : 1000);
             
             if (isBigWin) {
-                try {
-                    bigWinSound.currentTime = 0;
-                    bigWinSound.play().catch(e => {
-                        console.log("Autoplay prevented, trying fallback");
-                        // Fallback for browsers that block autoplay
-                        document.body.addEventListener('click', function playSoundOnce() {
-                            bigWinSound.play();
-                            document.body.removeEventListener('click', playSoundOnce);
-                        });
-                    });
-                } catch (e) {
-                    console.log("Error playing big win sound:", e);
-                }
+                // Play big win sound
+                bigWinSound.currentTime = 0;
+                bigWinSound.play();
                 
                 createDiamondBurst(x, y, amount, true);
                 
@@ -814,6 +965,7 @@
             } else {
                 userDiamonds += amount;
                 userDiamondCount.textContent = formatNumber(userDiamonds);
+                saveGame();
             }
         }
         
@@ -846,7 +998,7 @@
         
         function checkForWin() {
             const giftConfig = gifts[currentGift];
-            if (Math.random() < 0.4) {
+            if (Math.random() < 0.45 && !giftConfig.special) { // No win check for special gifts
                 let random = Math.random();
                 let cumulativeProbability = 0;
                 
@@ -869,10 +1021,14 @@
                 return false;
             }
             
+            // Calculate host gain (multiply by 10 for special gifts)
+            const hostGain = gifts[currentGift].special ? currentGiftCost * 10 : currentGiftCost;
+            
             userDiamonds -= currentGiftCost;
-            hostDiamonds += currentGiftCost;
+            hostDiamonds += hostGain;
             
             updateDiamondsDisplay();
+            saveGame();
             
             currentNumber++;
             counter.textContent = `x${currentNumber}`;
@@ -887,10 +1043,13 @@
             const y = giftRect.top + giftRect.height / 2;
             gifts[currentGift].effect(x, y);
             
-            const win = checkForWin();
-            if (win) {
-                const winAmount = currentGiftCost * win.multiplier;
-                createWinText(x, y - 50, win.text, win.bigWin, winAmount);
+            // Only check for wins on regular gifts
+            if (!gifts[currentGift].special) {
+                const win = checkForWin();
+                if (win) {
+                    const winAmount = currentGiftCost * win.multiplier;
+                    createWinText(x, y - 50, win.text, win.bigWin, winAmount);
+                }
             }
             
             resetCounterTimer();
@@ -924,7 +1083,7 @@
                 if (!countUp()) {
                     stopAutoCounting();
                 }
-            }, 400);
+            }, isSpecialGift ? 1000 : 400); // Slower for special gifts
         }
 
         function stopAutoCounting() {
@@ -959,6 +1118,7 @@
             updateDiamondsDisplay();
             hideMessage();
             resetButton.style.display = 'none';
+            saveGame();
         }
         
         function selectGift(gift, cost) {
@@ -969,7 +1129,16 @@
             currentGiftCost = cost;
             giftElement.textContent = gift;
             
+            // Update selected state for regular gifts
             giftOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.gift === gift) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            // Update selected state for special gifts
+            specialGiftOptions.forEach(option => {
                 option.classList.remove('selected');
                 if (option.dataset.gift === gift) {
                     option.classList.add('selected');
@@ -983,54 +1152,120 @@
             }
             
             updateDiamondsDisplay();
-        }
-        
-        // Music player functions
-        function toggleMusic() {
-            if (isMusicPlaying) {
-                soundcloudWidget.pause();
-                musicIcon.textContent = '🎵';
-                musicButtonText.textContent = 'Play Music';
-                musicButton.classList.remove('playing');
-            } else {
-                soundcloudWidget.play();
-                musicIcon.textContent = '🔊';
-                musicButtonText.textContent = 'Stop Music';
-                musicButton.classList.add('playing');
-            }
-            isMusicPlaying = !isMusicPlaying;
+            saveGame();
         }
 
-        function initSoundCloud() {
-            const iframeElement = document.getElementById('soundcloud-player');
-            soundcloudWidget = SC.Widget(iframeElement);
+        function toggleGiftType(isSpecial) {
+            isSpecialGift = isSpecial;
             
-            soundcloudWidget.bind(SC.Widget.Events.READY, function() {
-                soundcloudWidget.setVolume(100);
-                soundcloudWidget.setLoop(true);
-            });
+            if (isSpecial) {
+                regularGiftSelector.style.display = 'none';
+                specialGiftSelector.style.display = 'flex';
+                regularGiftButton.classList.remove('active');
+                specialGiftButton.classList.add('active');
+            } else {
+                regularGiftSelector.style.display = 'flex';
+                specialGiftSelector.style.display = 'none';
+                regularGiftButton.classList.add('active');
+                specialGiftButton.classList.remove('active');
+            }
             
-            soundcloudWidget.bind(SC.Widget.Events.PLAY, function() {
-                isMusicPlaying = true;
-                musicIcon.textContent = '🔊';
-                musicButtonText.textContent = 'Stop Music';
-                musicButton.classList.add('playing');
-            });
+            // Select first gift of the type
+            const firstGift = isSpecial ? 
+                document.querySelector('.special-gift-option') : 
+                document.querySelector('.gift-option');
             
-            soundcloudWidget.bind(SC.Widget.Events.PAUSE, function() {
-                isMusicPlaying = false;
-                musicIcon.textContent = '🎵';
-                musicButtonText.textContent = 'Play Music';
-                musicButton.classList.remove('playing');
-            });
+            if (firstGift) {
+                selectGift(firstGift.dataset.gift, parseInt(firstGift.dataset.cost));
+            }
         }
+        
+      function toggleMusic() {
+    isMusicPlaying = !isMusicPlaying;
+    
+    if (isMusicPlaying) {
+        musicButtonText.textContent = "Stop Music";
+        soundcloudPlayer.style.display = 'block';
+        
+        // Dapatkan widget SoundCloud dan play
+        const iframe = document.getElementById('soundcloud-iframe');
+        const widget = SC.Widget(iframe);
+        widget.play();
+    } else {
+        musicButtonText.textContent = "Play Music";
+        soundcloudPlayer.style.display = 'none';
+        
+        // Dapatkan widget SoundCloud dan pause
+        const iframe = document.getElementById('soundcloud-iframe');
+        const widget = SC.Widget(iframe);
+        widget.pause();
+    }
+    
+    saveGame();
+}
+        
+        
+       // Save game state to localStorage
+           function saveGame() {
+              const gameState = {
+               diamonds: userDiamonds,
+               hostDiamonds: hostDiamonds,
+               selectedGift: currentGift,
+               isSpecialGift: isSpecialGift,
+          
+          };
+           localStorage.setItem('giftGameSave', JSON.stringify(gameState));
+       }
+        
+       function loadGame() {
+    const savedGame = localStorage.getItem('giftGameSave');
+    if (savedGame) {
+        const gameState = JSON.parse(savedGame);
+        userDiamonds = gameState.diamonds || 75000;
+        hostDiamonds = gameState.hostDiamonds || 0;
+        isSpecialGift = gameState.isSpecialGift || false;
+        isMusicPlaying = gameState.musicPlaying || false;
+        
+        // Update UI based on loaded state
+        toggleGiftType(isSpecialGift);
+        
+        // Select saved gift or default
+        if (gameState.selectedGift && gifts[gameState.selectedGift]) {
+            selectGift(gameState.selectedGift, gifts[gameState.selectedGift].cost);
+        } else {
+            selectGift('🌹', 1);
+        }
+        
+        // Set music state
+        if (isMusicPlaying) {
+            musicButtonText.textContent = "Stop Music";
+            soundcloudPlayer.style.display = 'block';
+            
+            // Delay sedikit untuk memastikan iframe sudah siap
+            setTimeout(() => {
+                const iframe = document.getElementById('soundcloud-iframe');
+                const widget = SC.Widget(iframe);
+                widget.play();
+            }, 500);
+        } else {
+            musicButtonText.textContent = "Play Music";
+            soundcloudPlayer.style.display = 'none';
+        }
+    } else {
+        // Default values for new players
+        userDiamonds = 75000;
+        hostDiamonds = 0;
+        selectGift('🌹', 1);
+        musicButtonText.textContent = "Play Music";
+        soundcloudPlayer.style.display = 'none';
+    }
+    
+    updateDiamondsDisplay();
+}
 
         function init() {
             createStars();
-            updateDiamondsDisplay();
-            
-            // Initialize SoundCloud
-            initSoundCloud();
+            loadGame(); // Load saved game instead of setting defaults
             
             // Gift selection
             giftOptions.forEach(option => {
@@ -1038,6 +1273,20 @@
                     selectGift(option.dataset.gift, parseInt(option.dataset.cost));
                 });
             });
+            
+            // Special gift selection
+            specialGiftOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    selectGift(option.dataset.gift, parseInt(option.dataset.cost));
+                });
+            });
+            
+            // Gift type toggle
+            regularGiftButton.addEventListener('click', () => toggleGiftType(false));
+            specialGiftButton.addEventListener('click', () => toggleGiftType(true));
+            
+            // Music toggle
+            musicToggle.addEventListener('click', toggleMusic);
             
             // Prevent image dragging
             const avatar = document.querySelector('.avatar');
@@ -1056,7 +1305,6 @@
             autoStopButton.addEventListener('click', toggleAutoCounting);
             resetButton.addEventListener('click', resetGame);
             messageButton.addEventListener('click', hideMessage);
-            musicButton.addEventListener('click', toggleMusic);
 
             // Mouse move effect
             if (window.matchMedia("(hover: hover)").matches) {
@@ -1069,16 +1317,8 @@
             }
         }
         
-        // Load SoundCloud API and initialize
-        function loadSoundCloudAPI() {
-            const script = document.createElement('script');
-            script.src = 'https://w.soundcloud.com/player/api.js';
-            script.onload = init;
-            document.body.appendChild(script);
-        }
-        
-        // Start loading everything
-        loadSoundCloudAPI();
+        // Start the game
+        init();
 
         // Prevent zooming and other default behaviors
         document.addEventListener('gesturestart', function(e) {
@@ -1107,7 +1347,7 @@
             }, 100);
         });
     </script>
-
+<script src="https://w.soundcloud.com/player/api.js"></script>
   <br>
    <center>
   <p style="color:white;">
