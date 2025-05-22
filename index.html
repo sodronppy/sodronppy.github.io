@@ -515,13 +515,14 @@
             font-size: 1.2rem;
         }
 
-        .soundcloud-player {
-            display: none;
+        .audio-player {
             width: 100%;
             max-width: 350px;
             margin: 0 auto 15px auto;
+            display: none;
             border-radius: 12px;
             overflow: hidden;
+            background: rgba(40, 20, 80, 0.8);
         }
 
         @media screen and (orientation: landscape) {
@@ -579,26 +580,25 @@
             }
             
             #tips-button {
-    background: rgba(254, 202, 87, 0.2);
-    color: #feca57;
-    border: 1px solid #feca57;
-    border-radius: 20px;
-    padding: 8px 15px;
-    margin-top: 10px;
-    font-size: 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-}
+                background: rgba(254, 202, 87, 0.2);
+                color: #feca57;
+                border: 1px solid #feca57;
+                border-radius: 20px;
+                padding: 8px 15px;
+                margin-top: 10px;
+                font-size: 12px;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
 
-#tips-button:hover {
-    background: rgba(254, 202, 87, 0.4);
-    transform: scale(1.05);
-}
+            #tips-button:hover {
+                background: rgba(254, 202, 87, 0.4);
+                transform: scale(1.05);
+            }
 
-#tips-button:active {
-    transform: scale(0.95);
-}
-            
+            #tips-button:active {
+                transform: scale(0.95);
+            }
         }
     </style>
 </head>
@@ -618,10 +618,11 @@
             <span id="music-button-text">Play Music</span>
         </button>
     </div>
-    <div class="soundcloud-player" id="soundcloud-player">
-     <iframe id="soundcloud-iframe" width="0" height="0" scrolling="no" frameborder="no" allow="autoplay" 
-        src="https://lq.denger.in"></iframe>
-    </div>
+    
+    <audio id="audio-player" class="audio-player" controls>
+        <source src="https://lq.denger.in" type="audio/mpeg">
+        Browser Anda tidak mendukung pemutar audio.
+    </audio>
 
     <div class="center-stage" id="center-stage">
         <div id="stars"></div>
@@ -746,7 +747,7 @@
         const specialGiftOptions = document.querySelectorAll('.special-gift-option');
         const musicToggle = document.getElementById('music-toggle');
         const musicButtonText = document.getElementById('music-button-text');
-        const soundcloudPlayer = document.getElementById('soundcloud-player');
+        const audioPlayer = document.getElementById('audio-player');
         const bigWinSound = document.getElementById('bigWinSound');
         const specialGiftSound = document.getElementById('specialGiftSound');
         
@@ -762,18 +763,17 @@
         let isSpecialGift = false;
         let isMusicPlaying = false;
         
-       // Win multipliers configuration - you can change these values
-       const winMultipliers = [
-    { multiplier: 0, probability: 0.010, text: "", bigWin: false, color: "#feca57" },
-    { multiplier: 10, probability: 0.0092, text: "x10 Times", bigWin: false, color: "#feca57" },
-    { multiplier: 20, probability: 0.0058, text: "x20 Times", bigWin: false, color: "#42b6e6" },
-    { multiplier: 50, probability: 0.0021, text: "x50 Times", bigWin: false, color: "#9b59b6" },
-    { multiplier: 100, probability: 0.0011, text: "x100 Times", bigWin: false, color: "#2ecc71" },
-    { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true, color: "#ff6b6b" },
-    { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }
-];
+        // Win multipliers configuration - you can change these values
+        const winMultipliers = [
+            { multiplier: 0, probability: 0.010, text: "", bigWin: false, color: "#feca57" },
+            { multiplier: 10, probability: 0.0092, text: "x10 Times", bigWin: false, color: "#feca57" },
+            { multiplier: 20, probability: 0.0058, text: "x20 Times", bigWin: false, color: "#42b6e6" },
+            { multiplier: 50, probability: 0.0021, text: "x50 Times", bigWin: false, color: "#9b59b6" },
+            { multiplier: 100, probability: 0.0011, text: "x100 Times", bigWin: false, color: "#2ecc71" },
+            { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true, color: "#ff6b6b" },
+            { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }
+        ];
   
-        
         // Gift configurations
         const gifts = {
             "🌹": { name: "MAWAR", cost: 1, winMultipliers: winMultipliers, effect: createMicEffect },
@@ -786,16 +786,15 @@
             "👑": { name: "CROWN", cost: 100, winMultipliers: winMultipliers, effect: createMicEffect },
             "✈️": { name: "PESAWAT", cost: 200, winMultipliers: winMultipliers, effect: createMicEffect },
             "🚀": { name: "ROCKET", cost: 300, winMultipliers: winMultipliers, effect: createMicEffect },
-              "🔖": { name: "LABEL", cost: 100, effect: createSpecialEffect, special: true },
-              "🔕": { name: "LONCENG", cost: 500, effect: createSpecialEffect, special: true },
+            "🔖": { name: "LABEL", cost: 100, effect: createSpecialEffect, special: true },
+            "🔕": { name: "LONCENG", cost: 500, effect: createSpecialEffect, special: true },
             "🧸": { name: "BONEKA", cost: 5000, effect: createSpecialEffect, special: true },
-            "🎁": { name: "KADO", cost: 10.000, effect: createSpecialEffect, special: true },
-            "🐅": { name: "TIGER", cost: 15.000, effect: createSpecialEffect, special: true },
-            "🐒": { name: "MONYET", cost: 35.000, effect: createSpecialEffect, special: true },
-            "🐖": { name: "BABI", cost: 50.000, effect: createSpecialEffect, special: true },
-            "🐕": { name: "ANJING", cost: 100.000, effect: createSpecialEffect, special: true },
-            
-            "🐘": { name: "GAJAH", cost: 150.000, effect: createSpecialEffect, special: true }
+            "🎁": { name: "KADO", cost: 10000, effect: createSpecialEffect, special: true },
+            "🐅": { name: "TIGER", cost: 20000, effect: createSpecialEffect, special: true },
+            "🐒": { name: "MONYET", cost: 35000, effect: createSpecialEffect, special: true },
+            "🐖": { name: "BABI", cost: 50000, effect: createSpecialEffect, special: true },
+            "🐕": { name: "ANJING", cost: 100000, effect: createSpecialEffect, special: true },
+            "🐘": { name: "GAJAH", cost: 150000, effect: createSpecialEffect, special: true }
         };
         
         // Create stars background
@@ -1202,103 +1201,85 @@
             }
         }
         
-      function toggleMusic() {
-    isMusicPlaying = !isMusicPlaying;
-    
-    if (isMusicPlaying) {
-        musicButtonText.textContent = "Stop Music";
-        soundcloudPlayer.style.display = 'block';
-        
-        // Dapatkan widget SoundCloud dan play
-        const iframe = document.getElementById('soundcloud-iframe');
-        const widget = SC.Widget(iframe);
-        
-        // Atur volume ke 100 (maksimum) sebelum memainkan musik
-        widget.bind(SC.Widget.Events.READY, function() {
-            widget.setVolume(100); // Volume 100%
-            widget.play();
-        });
-        
-    } else {
-        musicButtonText.textContent = "Play Music";
-        soundcloudPlayer.style.display = 'none';
-        
-        // Dapatkan widget SoundCloud dan pause
-        const iframe = document.getElementById('soundcloud-iframe');
-        const widget = SC.Widget(iframe);
-        widget.pause();
-    }
-    
-    saveGame();
-}
-        
-        
-       // Save game state to localStorage
-           function saveGame() {
-              const gameState = {
-               diamonds: userDiamonds,
-               hostDiamonds: hostDiamonds,
-               selectedGift: currentGift,
-               isSpecialGift: isSpecialGift,
-          
-          };
-           localStorage.setItem('giftGameSave', JSON.stringify(gameState));
-       }
-        
-       function loadGame() {
-    const savedGame = localStorage.getItem('giftGameSave');
-    if (savedGame) {
-        const gameState = JSON.parse(savedGame);
-        userDiamonds = gameState.diamonds || 75000;
-        hostDiamonds = gameState.hostDiamonds || 0;
-        isSpecialGift = gameState.isSpecialGift || false;
-        isMusicPlaying = gameState.musicPlaying || false;
-        
-        // Update UI based on loaded state
-        toggleGiftType(isSpecialGift);
-        
-        // Select saved gift or default
-        if (gameState.selectedGift && gifts[gameState.selectedGift]) {
-            selectGift(gameState.selectedGift, gifts[gameState.selectedGift].cost);
-        } else {
-            selectGift('🌹', 1);
+        function toggleMusic() {
+            if (audioPlayer.paused) {
+                audioPlayer.play()
+                    .then(() => {
+                        isMusicPlaying = true;
+                        musicButtonText.textContent = "Stop Music";
+                        audioPlayer.style.display = 'block';
+                        saveGame();
+                    })
+                    .catch(error => {
+                        console.error("Gagal memutar audio:", error);
+                        showMessage("Error", "Tidak dapat memutar musik. Coba lagi nanti.");
+                    });
+            } else {
+                audioPlayer.pause();
+                isMusicPlaying = false;
+                musicButtonText.textContent = "Play Music";
+                audioPlayer.style.display = 'none';
+                saveGame();
+            }
         }
         
-        // Set music state
-        if (isMusicPlaying) {
-            musicButtonText.textContent = "Stop Music";
-            soundcloudPlayer.style.display = 'block';
+        // Save game state to localStorage
+        function saveGame() {
+            const gameState = {
+                diamonds: userDiamonds,
+                hostDiamonds: hostDiamonds,
+                selectedGift: currentGift,
+                isSpecialGift: isSpecialGift,
+                isMusicPlaying: isMusicPlaying
+            };
+            localStorage.setItem('giftGameSave', JSON.stringify(gameState));
+        }
+        
+        function loadGame() {
+            const savedGame = localStorage.getItem('giftGameSave');
+            if (savedGame) {
+                const gameState = JSON.parse(savedGame);
+                userDiamonds = gameState.diamonds || 75000;
+                hostDiamonds = gameState.hostDiamonds || 0;
+                isSpecialGift = gameState.isSpecialGift || false;
+                isMusicPlaying = gameState.isMusicPlaying || false;
+                
+                // Set music state
+                if (isMusicPlaying) {
+                    musicButtonText.textContent = "Stop Music";
+                    audioPlayer.style.display = 'block';
+                    audioPlayer.play().catch(e => console.log("Autoplay prevented:", e));
+                } else {
+                    musicButtonText.textContent = "Play Music";
+                    audioPlayer.style.display = 'none';
+                    audioPlayer.pause();
+                }
+                
+                // Update UI based on loaded state
+                toggleGiftType(isSpecialGift);
+                
+                // Select saved gift or default
+                if (gameState.selectedGift && gifts[gameState.selectedGift]) {
+                    selectGift(gameState.selectedGift, gifts[gameState.selectedGift].cost);
+                } else {
+                    selectGift('🌹', 1);
+                }
+            } else {
+                // Default values for new players
+                userDiamonds = 75000;
+                hostDiamonds = 0;
+                selectGift('🌹', 1);
+                musicButtonText.textContent = "Play Music";
+                isMusicPlaying = false;
+                audioPlayer.style.display = 'none';
+            }
             
-            // Delay sedikit untuk memastikan iframe sudah siap
-           setTimeout(() => {
-                const iframe = document.getElementById('soundcloud-iframe');
-                const widget = SC.Widget(iframe);
-                widget.bind(SC.Widget.Events.READY, function() {
-                    widget.setVolume(100); // Volume 100%
-                    widget.play();
-                });
-            }, 500);
-        } else {
-            musicButtonText.textContent = "Play Music";
-            soundcloudPlayer.style.display = 'none';
+            updateDiamondsDisplay();
         }
-    } else {
-        // Default values for new players
-        userDiamonds = 75000;
-        hostDiamonds = 0;
-        selectGift('🌹', 1);
-        musicButtonText.textContent = "Play Music";
-        soundcloudPlayer.style.display = 'none';
-    }
-    
-    updateDiamondsDisplay();
-}
 
         function init() {
             createStars();
-            loadGame(); // Load saved game instead of setting defaults
-            
-            
+            loadGame();
             
             // Gift selection
             giftOptions.forEach(option => {
@@ -1379,64 +1360,60 @@
                 window.scrollTo(0, 0);
             }, 100);
         });
-        
-      
     </script>
-<script src="https://w.soundcloud.com/player/api.js"></script>
 
- <button onclick="toggleTips()" id="tipsButton" style="
-    background: #feca57;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin: 0 auto;
-    display: block;
-    cursor: pointer;
-    color: #281450;
-    font-weight: bold;
-    transition: opacity 0.3s ease;
-">Sembunyikan Tips</button>
+    <button onclick="toggleTips()" id="tipsButton" style="
+        background: #feca57;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 0 auto;
+        display: block;
+        cursor: pointer;
+        color: #281450;
+        font-weight: bold;
+        transition: opacity 0.3s ease;
+    ">Sembunyikan Tips</button>
 
- <div style="
-    background: rgba(40, 20, 80, 0.7);
-    border: 1px solid #feca57;
-    border-radius: 10px;
-    padding: 10px;
-    margin: 15px auto;
-    max-width: 350px;
-    font-size: 12px;
-    color: white;
-    text-align: left;
-    display: block;
-" id="tipsBox">
-   <center> <b style="color: #feca57;">💡 TIPS DIAMONDS PLAYER:</b></center><br>
-    Saat Tombol Reset muncul, jika di klik Reset maka semua pendapatan Host akan kembali 💸0.<br><br>
-    Kalau diamond Player Habis dan ingin pendapatan Host masih utuh:<br><left>
-    1. Buang dulu semua diamonds pada Player menjadi 💎0<br>
-    2. Jangan tekan Reset<br>
-    3. Cukup Refresh Halaman Web<br>
-    Maka diamonds akan bertambah 💎75.000
-    </left>
-</div>
+    <div style="
+        background: rgba(40, 20, 80, 0.7);
+        border: 1px solid #feca57;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 15px auto;
+        max-width: 350px;
+        font-size: 12px;
+        color: white;
+        text-align: left;
+        display: block;
+    " id="tipsBox">
+        <center> <b style="color: #feca57;">💡 TIPS DIAMONDS PLAYER:</b></center><br>
+        Saat Tombol Reset muncul, jika di klik Reset maka semua pendapatan Host akan kembali 💸0.<br><br>
+        Kalau diamond Player Habis dan ingin pendapatan Host masih utuh:<br><left>
+        1. Buang dulu semua diamonds pada Player menjadi 💎0<br>
+        2. Jangan tekan Reset<br>
+        3. Cukup Refresh Halaman Web<br>
+        Maka diamonds akan bertambah 💎75.000
+        </left>
+    </div>
 
-<script>
-    function toggleTips() {
-        var tipsBox = document.getElementById('tipsBox');
-        var tipsButton = document.getElementById('tipsButton');
-        
-        if (tipsBox.style.display === 'none') {
-            // Tampilkan tips dan buat tombol normal
-            tipsBox.style.display = 'block';
-            tipsButton.textContent = 'Sembunyikan Tips';
-            tipsButton.style.opacity = '1';
-        } else {
-            // Sembunyikan tips dan buat tombol transparan
-            tipsBox.style.display = 'none';
-            tipsButton.textContent = 'Tampilkan Tips';
-            tipsButton.style.opacity = '0.4'; // Ubah nilai ini (0.1-0.9) untuk tingkat transparansi
+    <script>
+        function toggleTips() {
+            var tipsBox = document.getElementById('tipsBox');
+            var tipsButton = document.getElementById('tipsButton');
+            
+            if (tipsBox.style.display === 'none') {
+                // Tampilkan tips dan buat tombol normal
+                tipsBox.style.display = 'block';
+                tipsButton.textContent = 'Sembunyikan Tips';
+                tipsButton.style.opacity = '1';
+            } else {
+                // Sembunyikan tips dan buat tombol transparan
+                tipsBox.style.display = 'none';
+                tipsButton.textContent = 'Tampilkan Tips';
+                tipsButton.style.opacity = '0.4'; // Ubah nilai ini (0.1-0.9) untuk tingkat transparansi
+            }
         }
-    }
-</script>
- 
+    </script>
 </body>
 </html>
