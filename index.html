@@ -577,6 +577,28 @@
             .gift-element {
                 font-size: 2rem;
             }
+            
+            #tips-button {
+    background: rgba(254, 202, 87, 0.2);
+    color: #feca57;
+    border: 1px solid #feca57;
+    border-radius: 20px;
+    padding: 8px 15px;
+    margin-top: 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#tips-button:hover {
+    background: rgba(254, 202, 87, 0.4);
+    transform: scale(1.05);
+}
+
+#tips-button:active {
+    transform: scale(0.95);
+}
+            
         }
     </style>
 </head>
@@ -1276,6 +1298,8 @@
             createStars();
             loadGame(); // Load saved game instead of setting defaults
             
+            
+            
             // Gift selection
             giftOptions.forEach(option => {
                 option.addEventListener('click', () => {
@@ -1355,11 +1379,64 @@
                 window.scrollTo(0, 0);
             }, 100);
         });
+        
+      
     </script>
 <script src="https://w.soundcloud.com/player/api.js"></script>
-  <br>
-      <center>
-<a style="color:white;">
-   <em> <b>TIPS:</b>&nbsp;Saat Tombol Reset muncul, jika di tekan Reset maka semua diamonds Host akan kembali 💎0, kalau diamond Player Habis dan ingin Diamond Host masih Utuh, maka buang dulu semua diamonds pada Player menjadi 💎0 Lalu jangan tekan Reset, Namun cukup Refresh Halaman Web, maka diamonds akan bertambah 💎75.000</em></a></center>
+
+ <button onclick="toggleTips()" id="tipsButton" style="
+    background: #feca57;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 0 auto;
+    display: block;
+    cursor: pointer;
+    color: #281450;
+    font-weight: bold;
+    transition: opacity 0.3s ease;
+">Sembunyikan Tips</button>
+
+ <div style="
+    background: rgba(40, 20, 80, 0.7);
+    border: 1px solid #feca57;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 15px auto;
+    max-width: 350px;
+    font-size: 12px;
+    color: white;
+    text-align: left;
+    display: block;
+" id="tipsBox">
+   <center> <b style="color: #feca57;">💡 TIPS DIAMONDS PLAYER:</b></center><br>
+    Saat Tombol Reset muncul, jika di klik Reset maka semua pendapatan Host akan kembali 💸0.<br><br>
+    Kalau diamond Player Habis dan ingin pendapatan Host masih utuh:<br><left>
+    1. Buang dulu semua diamonds pada Player menjadi 💎0<br>
+    2. Jangan tekan Reset<br>
+    3. Cukup Refresh Halaman Web<br>
+    Maka diamonds akan bertambah 💎75.000
+    </left>
+</div>
+
+<script>
+    function toggleTips() {
+        var tipsBox = document.getElementById('tipsBox');
+        var tipsButton = document.getElementById('tipsButton');
+        
+        if (tipsBox.style.display === 'none') {
+            // Tampilkan tips dan buat tombol normal
+            tipsBox.style.display = 'block';
+            tipsButton.textContent = 'Sembunyikan Tips';
+            tipsButton.style.opacity = '1';
+        } else {
+            // Sembunyikan tips dan buat tombol transparan
+            tipsBox.style.display = 'none';
+            tipsButton.textContent = 'Tampilkan Tips';
+            tipsButton.style.opacity = '0.4'; // Ubah nilai ini (0.1-0.9) untuk tingkat transparansi
+        }
+    }
+</script>
+ 
 </body>
 </html>
