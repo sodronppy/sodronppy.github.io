@@ -1230,7 +1230,7 @@
                 hostDiamonds: hostDiamonds,
                 selectedGift: currentGift,
                 isSpecialGift: isSpecialGift,
-                isMusicPlaying: isMusicPlaying
+                
             };
             localStorage.setItem('giftGameSave', JSON.stringify(gameState));
         }
@@ -1242,7 +1242,7 @@
                 userDiamonds = gameState.diamonds || 75000;
                 hostDiamonds = gameState.hostDiamonds || 0;
                 isSpecialGift = gameState.isSpecialGift || false;
-                isMusicPlaying = gameState.isMusicPlaying || false;
+                
                 
                 // Set music state
                 if (isMusicPlaying) {
