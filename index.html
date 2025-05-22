@@ -1190,7 +1190,13 @@
         // Dapatkan widget SoundCloud dan play
         const iframe = document.getElementById('soundcloud-iframe');
         const widget = SC.Widget(iframe);
-        widget.play();
+        
+        // Atur volume ke 100 (maksimum) sebelum memainkan musik
+        widget.bind(SC.Widget.Events.READY, function() {
+            widget.setVolume(100); // Volume 100%
+            widget.play();
+        });
+        
     } else {
         musicButtonText.textContent = "Play Music";
         soundcloudPlayer.style.display = 'none';
@@ -1242,10 +1248,13 @@
             soundcloudPlayer.style.display = 'block';
             
             // Delay sedikit untuk memastikan iframe sudah siap
-            setTimeout(() => {
+           setTimeout(() => {
                 const iframe = document.getElementById('soundcloud-iframe');
                 const widget = SC.Widget(iframe);
-                widget.play();
+                widget.bind(SC.Widget.Events.READY, function() {
+                    widget.setVolume(100); // Volume 100%
+                    widget.play();
+                });
             }, 500);
         } else {
             musicButtonText.textContent = "Play Music";
