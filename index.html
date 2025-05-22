@@ -628,12 +628,12 @@
         let soundcloudWidget;
         
         const winMultipliers = [
-            { multiplier: 10, probability: 0.20, text: "x10 Times", bigWin: false },
-            { multiplier: 20, probability: 0.02, text: "x20 Times", bigWin: false },
-            { multiplier: 50, probability: 0.03, text: "x50 Times", bigWin: false },
-            { multiplier: 100, probability: 0.003, text: "x100 Times", bigWin: false },
-            { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true },
-            { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true }
+            { multiplier: 10, probability: 0.14, text: "x10 Times", bigWin: false },
+            { multiplier: 20, probability: 0.05, text: "x20 Times", bigWin: false },
+            { multiplier: 50, probability: 0.02, text: "x50 Times", bigWin: false },
+            { multiplier: 100, probability: 0.0024, text: "x100 Times", bigWin: false },
+            { multiplier: 500, probability: 0.0015, text: "x500 Times", bigWin: true },
+            { multiplier: 650, probability: 0.0014, text: "x650 Times", bigWin: true }
         ];
         
         // Gift configurations
@@ -846,7 +846,7 @@
         
         function checkForWin() {
             const giftConfig = gifts[currentGift];
-            if (Math.random() < 0.25) {
+            if (Math.random() < 0.2) {
                 let random = Math.random();
                 let cumulativeProbability = 0;
                 
