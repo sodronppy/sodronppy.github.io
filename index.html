@@ -442,6 +442,31 @@
             color: #1a0a2e;
         }
         
+        /* Combo selector */
+        .combo-selector {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 8px;
+        }
+
+        .combo-option {
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: 1px solid #feca57;
+            background: rgba(254, 202, 87, 0.1);
+            color: #feca57;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+
+        .combo-option.selected {
+            background: #feca57;
+            color: #1a0a2e;
+            font-weight: bold;
+        }
+        
         /* Message box */
         .message-box {
             position: fixed;
@@ -634,7 +659,7 @@
         <!-- Gift Type Selector -->
         <div class="gift-type-selector">
             <button class="gift-type-button active" id="regular-gift-button">Lucky Player</button>
-            <button class="gift-type-button" id="special-gift-button">Special Gift x10 to Host</button>
+            <button class="gift-type-button" id="special-gift-button">Special Gift</button>
         </div>
 
         <!-- Regular Gift Selector -->
@@ -690,6 +715,14 @@
                 🐘
                 <span class="special-gift-price">150.000</span>
             </div>
+        </div>
+        
+        <!-- Combo Selector -->
+        <div class="combo-selector" id="combo-selector">
+            <div class="combo-option" data-multiplier="1">x1</div>
+            <div class="combo-option selected" data-multiplier="10">x10</div>
+            <div class="combo-option" data-multiplier="20">x20</div>
+            <div class="combo-option" data-multiplier="50">x50</div>
         </div>
         
         <h3 class="game-title" id="game-title">GIFT MAWAR 🌹 1</h3>
@@ -750,6 +783,8 @@
         const audioPlayer = document.getElementById('audio-player');
         const bigWinSound = document.getElementById('bigWinSound');
         const specialGiftSound = document.getElementById('specialGiftSound');
+        const comboSelector = document.getElementById('combo-selector');
+        const comboOptions = document.querySelectorAll('.combo-option');
         
         // Game variables
         let currentNumber = 0;
@@ -762,17 +797,19 @@
         let currentGiftCost = 1;
         let isSpecialGift = false;
         let isMusicPlaying = false;
+        let currentCombo = 10; // Default combo multiplier
         
-        // Win multipliers configuration - you can change these values
-        const winMultipliers = [
-            { multiplier: 0, probability: 0.010, text: "", bigWin: false, color: "#feca57" },
-            { multiplier: 10, probability: 0.0092, text: "x10 Times", bigWin: false, color: "#feca57" },
-            { multiplier: 20, probability: 0.0058, text: "x20 Times", bigWin: false, color: "#42b6e6" },
-            { multiplier: 50, probability: 0.0021, text: "x50 Times", bigWin: false, color: "#9b59b6" },
-            { multiplier: 100, probability: 0.0011, text: "x100 Times", bigWin: false, color: "#2ecc71" },
-            { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true, color: "#ff6b6b" },
-            { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }
-        ];
+        // Updated professional win probabilities
+    const winMultipliers = [
+        { multiplier: 0, probability: 0.88, text: "", bigWin: false, color: "#feca57" },        // 65% chance no win
+        { multiplier: 10, probability: 0.06, text: "x10 Times", bigWin: false, color: "#feca57" },  // 24% chance
+        { multiplier: 20, probability: 0.01, text: "x20 Times", bigWin: false, color: "#42b6e6" },  // 8% chance
+        { multiplier: 50, probability: 0.01, text: "x50 Times", bigWin: false, color: "#9b59b6" },  // 1% chance
+        { multiplier: 100, probability: 0.007, text: "x100 Times", bigWin: false, color: "#2ecc71" }, // 0.7% chance
+        { multiplier: 500, probability: 0.04, text: "x500 Times", bigWin: true, color: "#ff6b6b" }, // 1% chance
+        { multiplier: 650, probability: 0.002, text: "x650 Times", bigWin: true, color: "#ff3e3e" }  // 0.2% chance
+    ];
+                    // Total probability sums to 1.0 (100%)
   
         // Gift configurations
         const gifts = {
@@ -1005,21 +1042,21 @@
             hostDiamondCount.textContent = formatNumber(hostDiamonds);
             
             const userDiamondsElement = document.querySelector('.user-diamonds');
-            userDiamondsElement.style.color = userDiamonds < currentGiftCost ? '#ff6b6b' : '#42b6e6';
+            userDiamondsElement.style.color = userDiamonds < currentGiftCost * currentCombo ? '#ff6b6b' : '#42b6e6';
             
-            manualButton.disabled = userDiamonds < currentGiftCost;
-            autoStopButton.disabled = userDiamonds < currentGiftCost;
+            manualButton.disabled = userDiamonds < currentGiftCost * currentCombo;
+            autoStopButton.disabled = userDiamonds < currentGiftCost * currentCombo;
             
-            if (userDiamonds < currentGiftCost && !isAutoCounting) {
+            if (userDiamonds < currentGiftCost * currentCombo && !isAutoCounting) {
                 resetButton.style.display = 'block';
             } else {
                 resetButton.style.display = 'none';
             }
         }
         
-        function checkForWin() {
+      function checkForWin() {
             const giftConfig = gifts[currentGift];
-            if (Math.random() < 0.45 && !giftConfig.special) { // No win check for special gifts
+            if (Math.random() < 0.65 && !giftConfig.special) { // No win check for special gifts
                 let random = Math.random();
                 let cumulativeProbability = 0;
                 
@@ -1034,24 +1071,26 @@
         }
         
         function countUp() {
-            if (userDiamonds < currentGiftCost) {
+            const totalCost = currentGiftCost * currentCombo;
+            
+            if (userDiamonds < totalCost) {
                 if (isAutoCounting) {
                     stopAutoCounting();
                 }
-                showMessage("Diamond Tidak Cukup", `Koin habis, silahkan reset untuk memulai kembali. Dibutuhkan ${currentGiftCost} koin.`);
+                showMessage("Diamond Tidak Cukup", `Koin habis, silahkan reset untuk memulai kembali. Dibutuhkan ${totalCost} koin.`);
                 return false;
             }
             
             // Calculate host gain (multiply by 10 for special gifts)
-            const hostGain = gifts[currentGift].special ? currentGiftCost * 10 : currentGiftCost;
+            const hostGain = gifts[currentGift].special ? totalCost * 10 : totalCost;
             
-            userDiamonds -= currentGiftCost;
+            userDiamonds -= totalCost;
             hostDiamonds += hostGain;
             
             updateDiamondsDisplay();
             saveGame();
             
-            currentNumber++;
+            currentNumber += currentCombo;
             counter.textContent = `x${currentNumber}`;
             
             counter.style.transform = 'scale(1.2)';
@@ -1062,12 +1101,19 @@
             const giftRect = giftElement.getBoundingClientRect();
             const x = giftRect.left + giftRect.width / 2;
             const y = giftRect.top + giftRect.height / 2;
-            gifts[currentGift].effect(x, y);
+            
+            // Create multiple effects based on combo
+            for (let i = 0; i < Math.min(currentCombo, 10); i++) {
+                setTimeout(() => {
+                    gifts[currentGift].effect(x, y);
+                }, i * 100);
+            }
             
             // Only check for wins on regular gifts
             if (!gifts[currentGift].special) {
                 const win = checkForWin();
                 if (win) {
+                    // MODIFIED: Win amount is multiplier x gift price (not total cost)
                     const winAmount = currentGiftCost * win.multiplier;
                     createWinText(x, y - 50, win.text, win.bigWin, winAmount);
                 }
@@ -1088,12 +1134,12 @@
         }
 
         function manualPlay() {
-            if (userDiamonds < currentGiftCost) return;
+            if (userDiamonds < currentGiftCost * currentCombo) return;
             countUp();
         }
 
         function startAutoCounting() {
-            if (isAutoCounting || userDiamonds < currentGiftCost) return;
+            if (isAutoCounting || userDiamonds < currentGiftCost * currentCombo) return;
             
             isAutoCounting = true;
             autoStopButton.textContent = "STOP";
@@ -1114,7 +1160,7 @@
             autoStopButton.classList.remove('stop-mode');
             manualButton.disabled = false;
             
-            if (userDiamonds < currentGiftCost) {
+            if (userDiamonds < currentGiftCost * currentCombo) {
                 resetButton.style.display = 'block';
             }
             
@@ -1201,6 +1247,19 @@
             }
         }
         
+        function selectCombo(multiplier) {
+            currentCombo = parseInt(multiplier);
+            
+            comboOptions.forEach(option => {
+                option.classList.remove('selected');
+                if (option.dataset.multiplier === multiplier) {
+                    option.classList.add('selected');
+                }
+            });
+            
+            updateDiamondsDisplay();
+        }
+        
         function toggleMusic() {
             if (audioPlayer.paused) {
                 audioPlayer.play()
@@ -1228,8 +1287,7 @@
             const gameState = {
                 diamonds: userDiamonds,
                 hostDiamonds: hostDiamonds,
-                selectedGift: currentGift,
-                isSpecialGift: isSpecialGift,
+                
                 
             };
             localStorage.setItem('giftGameSave', JSON.stringify(gameState));
@@ -1242,7 +1300,8 @@
                 userDiamonds = gameState.diamonds || 75000;
                 hostDiamonds = gameState.hostDiamonds || 0;
                 isSpecialGift = gameState.isSpecialGift || false;
-                
+                currentCombo = gameState.currentCombo || 1;
+                isMusicPlaying = gameState.isMusicPlaying || false;
                 
                 // Set music state
                 if (isMusicPlaying) {
@@ -1264,11 +1323,15 @@
                 } else {
                     selectGift('🌹', 1);
                 }
+                
+                // Select saved combo
+                selectCombo(currentCombo.toString());
             } else {
                 // Default values for new players
                 userDiamonds = 75000;
                 hostDiamonds = 0;
                 selectGift('🌹', 1);
+                selectCombo('1');
                 musicButtonText.textContent = "Play Music";
                 isMusicPlaying = false;
                 audioPlayer.style.display = 'none';
@@ -1292,6 +1355,13 @@
             specialGiftOptions.forEach(option => {
                 option.addEventListener('click', () => {
                     selectGift(option.dataset.gift, parseInt(option.dataset.cost));
+                });
+            });
+            
+            // Combo selection
+            comboOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    selectCombo(option.dataset.multiplier);
                 });
             });
             
@@ -1417,3 +1487,4 @@
     </script>
 </body>
 </html>
+
