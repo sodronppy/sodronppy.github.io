@@ -801,13 +801,13 @@
         
         // Updated professional win probabilities
     const winMultipliers = [
-        { multiplier: 0, probability: 0.88, text: "", bigWin: false, color: "#feca57" },        // 65% chance no win
-        { multiplier: 10, probability: 0.06, text: "x10 Times", bigWin: false, color: "#feca57" },  // 24% chance
+        { multiplier: 0, probability: 0.90, text: "", bigWin: false, color: "#feca57" },        // 65% chance no win
+        { multiplier: 10, probability: 0.07, text: "x10 Times", bigWin: false, color: "#feca57" },  // 24% chance
         { multiplier: 20, probability: 0.01, text: "x20 Times", bigWin: false, color: "#42b6e6" },  // 8% chance
         { multiplier: 50, probability: 0.01, text: "x50 Times", bigWin: false, color: "#9b59b6" },  // 1% chance
         { multiplier: 100, probability: 0.007, text: "x100 Times", bigWin: false, color: "#2ecc71" }, // 0.7% chance
-        { multiplier: 500, probability: 0.04, text: "x500 Times", bigWin: true, color: "#ff6b6b" }, // 1% chance
-        { multiplier: 650, probability: 0.002, text: "x650 Times", bigWin: true, color: "#ff3e3e" }  // 0.2% chance
+        { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true, color: "#ff6b6b" }, // 1% chance
+        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }  // 0.2% chance
     ];
                     // Total probability sums to 1.0 (100%)
   
@@ -1056,7 +1056,7 @@
         
       function checkForWin() {
             const giftConfig = gifts[currentGift];
-            if (Math.random() < 0.65 && !giftConfig.special) { // No win check for special gifts
+            if (Math.random() < 0.35 && !giftConfig.special) { // No win check for special gifts
                 let random = Math.random();
                 let cumulativeProbability = 0;
                 
