@@ -1056,7 +1056,7 @@
                         { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
                         { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
                         { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.02,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 500, probability: 0.03,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
                         { multiplier: 650, probability: 0.0002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
                 } else {
@@ -1067,7 +1067,7 @@
                         { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
                         { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
                         { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.00008, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 500, probability: 0.003, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
                         { multiplier: 650, probability: 0.00001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
                 }
@@ -1075,11 +1075,11 @@
                 // Tentukan bonus probabilitas berdasarkan combo
                 let comboBonus = 0;
                 if (currentCombo === 10) {
-                    comboBonus = 0.04; // +6 untuk combo x10
+                    comboBonus = 0.02; // +6 untuk combo x10
                 } else if (currentCombo === 20) {
                     comboBonus = 0.07; // +7 untuk combo x20
                 } else if (currentCombo === 50) {
-                    comboBonus = 0.2; // +10 untuk combo x50
+                    comboBonus = 0.4; // +10 untuk combo x50
                 }
 
                 // Scale probabilities dengan combo bonus
@@ -1089,7 +1089,7 @@
                     // Hitung bonus khusus untuk big wins (x500 dan x650)
                     let bonus = 0;
                     if (win.multiplier >= 500) {
-                        bonus = comboBonus * 0.00001; // Konversi bonus ke desimal (6 -> 0.006)
+                        bonus = comboBonus * 0.002; // Konversi bonus ke desimal (6 -> 0.006)
                     }
                     
                     return {
