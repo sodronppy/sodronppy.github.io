@@ -799,33 +799,6 @@
         let isMusicPlaying = false;
         let currentCombo = 1; // Default combo multiplier
         
-        // Base win probabilities (for x1 combo)
-        const baseWinMultipliers = [
-  { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
-  { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
-  { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-  { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-  { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-  { multiplier: 500, probability: 0.0008, text: "x500 Times", bigWin: true,  color: "#ff6b6b" }, 
-  { multiplier: 650, probability: 0.0002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
-];
-
-
-        function getWinMultipliersForCombo(combo) {
-            // Scale probabilities based on combo (higher combos get better odds)
-            const scaleFactor = 1 + (combo / 50); // Linear scaling (x50 combo doubles the base chance)
-            
-            return baseWinMultipliers.map(win => {
-                // Don't scale the "no win" probability
-                if (win.multiplier === 0) return win;
-                
-                return {
-                    ...win,
-                    probability: win.probability * scaleFactor
-                };
-            });
-        }
-  
         // Gift configurations
         const gifts = {
             "🌹": { name: "MAWAR", cost: 1, effect: createMicEffect, special: false },
@@ -897,7 +870,7 @@
                 setTimeout(() => {
                     diamond.remove();
                     style.remove();
-                }, duration * 4000);
+                }, duration * 1000);
             }
             
             if (isPlayerWin) {
@@ -1069,32 +1042,81 @@
             }
         }
         
-   function checkForWin() {
-        const giftConfig = gifts[currentGift];
-        if (!giftConfig.special) {
-            // Get win multipliers scaled for current combo
-            const scaledMultipliers = getWinMultipliersForCombo(currentCombo);
-            
-            // Calculate total win probability (sum of all win probabilities except "no win")
-            const totalWinProbability = scaledMultipliers
-                .filter(win => win.multiplier > 0)
-                .reduce((sum, win) => sum + win.probability, 0);
-            
-            if (Math.random() < totalWinProbability) {
-                let random = Math.random() * totalWinProbability;
-                let cumulativeProbability = 0;
+        function checkForWin() {
+            const giftConfig = gifts[currentGift];
+            if (!giftConfig.special) {
+                // Dapatkan base multipliers berdasarkan harga gift
+                let baseMultipliers;
                 
-                // Check scaled multipliers (skip the "no win" option)
-                for (const win of scaledMultipliers.slice(1)) {
-                    cumulativeProbability += win.probability;
-                    if (random <= cumulativeProbability) {
-                        return win;
+                if (currentGiftCost < 20) {
+                    // Gift murah (di bawah 20) - lebih sering x500
+                    baseMultipliers = [
+                        { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
+                        { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
+                        { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+                        { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+                        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+                        { multiplier: 500, probability: 0.008,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 650, probability: 0.0002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+                    ];
+                } else {
+                    // Gift mahal (20 ke atas) - x500 lebih sulit
+                    baseMultipliers = [
+                        { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
+                        { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
+                        { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+                        { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+                        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+                        { multiplier: 500, probability: 0.00008, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 650, probability: 0.00002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+                    ];
+                }
+
+                // Tentukan bonus probabilitas berdasarkan combo
+                let comboBonus = 0;
+                if (currentCombo === 10) {
+                    comboBonus = 6; // +6 untuk combo x10
+                } else if (currentCombo === 20) {
+                    comboBonus = 7; // +7 untuk combo x20
+                } else if (currentCombo === 50) {
+                    comboBonus = 10; // +10 untuk combo x50
+                }
+
+                // Scale probabilities dengan combo bonus
+                const scaledMultipliers = baseMultipliers.map(win => {
+                    if (win.multiplier === 0) return win;
+                    
+                    // Hitung bonus khusus untuk big wins (x500 dan x650)
+                    let bonus = 0;
+                    if (win.multiplier >= 500) {
+                        bonus = comboBonus * 0.005; // Konversi bonus ke desimal (6 -> 0.006)
+                    }
+                    
+                    return {
+                        ...win,
+                        probability: win.probability + bonus
+                    };
+                });
+
+                // Hitung total win probability
+                const totalWinProbability = scaledMultipliers
+                    .filter(win => win.multiplier > 0)
+                    .reduce((sum, win) => sum + win.probability, 0);
+                
+                if (Math.random() < totalWinProbability) {
+                    let random = Math.random() * totalWinProbability;
+                    let cumulativeProbability = 0;
+                    
+                    for (const win of scaledMultipliers.slice(1)) {
+                        cumulativeProbability += win.probability;
+                        if (random <= cumulativeProbability) {
+                            return win;
+                        }
                     }
                 }
             }
+            return null;
         }
-        return null;
-    }
         
         function countUp() {
             const totalCost = currentGiftCost * currentCombo;
@@ -1129,7 +1151,7 @@
             const y = giftRect.top + giftRect.height / 2;
             
             // Create multiple effects based on combo
-            for (let i = 0; i < Math.min(currentCombo, 10); i++) {
+            for (let i = 0; i < Math.min(currentCombo, 1); i++) {
                 setTimeout(() => {
                     gifts[currentGift].effect(x, y);
                 }, i * 100);
@@ -1313,8 +1335,7 @@
             const gameState = {
                 diamonds: userDiamonds,
                 hostDiamonds: hostDiamonds,
-                
-                
+               
             };
             localStorage.setItem('giftGameSave', JSON.stringify(gameState));
         }
