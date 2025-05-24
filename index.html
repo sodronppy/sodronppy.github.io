@@ -799,30 +799,45 @@
         let isMusicPlaying = false;
         let currentCombo = 1; // Default combo multiplier
         
-        // Updated professional win probabilities
-    const winMultipliers = [
-        { multiplier: 0, probability: 0.80, text: "", bigWin: false, color: "#feca57" },        // 65% chance no win
-        { multiplier: 10, probability: 0.10, text: "x10 Times", bigWin: false, color: "#feca57" },  // 24% chance
-        { multiplier: 20, probability: 0.07, text: "x20 Times", bigWin: false, color: "#42b6e6" },  // 8% chance
-        { multiplier: 50, probability: 0.01, text: "x50 Times", bigWin: false, color: "#9b59b6" },  // 1% chance
-        { multiplier: 100, probability: 0.001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, // 0.7% chance
-        { multiplier: 500, probability: 0.02, text: "x500 Times", bigWin: true, color: "#ff6b6b" }, // 1% chance
-        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true, color: "#ff3e3e" }  // 0.2% chance
-    ];
-                    // Total probability sums to 1.0 (100%)
+        // Base win probabilities (for x1 combo)
+        const baseWinMultipliers = [
+  { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
+  { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
+  { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+  { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+  { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+  { multiplier: 500, probability: 0.0008, text: "x500 Times", bigWin: true,  color: "#ff6b6b" }, 
+  { multiplier: 650, probability: 0.0002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+];
+
+
+        function getWinMultipliersForCombo(combo) {
+            // Scale probabilities based on combo (higher combos get better odds)
+            const scaleFactor = 1 + (combo / 50); // Linear scaling (x50 combo doubles the base chance)
+            
+            return baseWinMultipliers.map(win => {
+                // Don't scale the "no win" probability
+                if (win.multiplier === 0) return win;
+                
+                return {
+                    ...win,
+                    probability: win.probability * scaleFactor
+                };
+            });
+        }
   
         // Gift configurations
         const gifts = {
-            "🌹": { name: "MAWAR", cost: 1, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🌞": { name: "SUN", cost: 2, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🧹": { name: "SAPU", cost: 3, winMultipliers: winMultipliers, effect: createMicEffect },
-            "☕": { name: "KOPI", cost: 5, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🚁": { name: "HELI", cost: 10, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🎤": { name: "MIC", cost: 20, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🛶": { name: "PERAHU", cost: 50, winMultipliers: winMultipliers, effect: createMicEffect },
-            "👑": { name: "CROWN", cost: 100, winMultipliers: winMultipliers, effect: createMicEffect },
-            "✈️": { name: "PESAWAT", cost: 200, winMultipliers: winMultipliers, effect: createMicEffect },
-            "🚀": { name: "ROCKET", cost: 300, winMultipliers: winMultipliers, effect: createMicEffect },
+            "🌹": { name: "MAWAR", cost: 1, effect: createMicEffect, special: false },
+            "🌞": { name: "SUN", cost: 2, effect: createMicEffect, special: false },
+            "🧹": { name: "SAPU", cost: 3, effect: createMicEffect, special: false },
+            "☕": { name: "KOPI", cost: 5, effect: createMicEffect, special: false },
+            "🚁": { name: "HELI", cost: 10, effect: createMicEffect, special: false },
+            "🎤": { name: "MIC", cost: 20, effect: createMicEffect, special: false },
+            "🛶": { name: "PERAHU", cost: 50, effect: createMicEffect, special: false },
+            "👑": { name: "CROWN", cost: 100, effect: createMicEffect, special: false },
+            "✈️": { name: "PESAWAT", cost: 200, effect: createMicEffect, special: false },
+            "🚀": { name: "ROCKET", cost: 300, effect: createMicEffect, special: false },
             "🔖": { name: "LABEL", cost: 100, effect: createSpecialEffect, special: true },
             "🔕": { name: "LONCENG", cost: 500, effect: createSpecialEffect, special: true },
             "🧸": { name: "BONEKA", cost: 5000, effect: createSpecialEffect, special: true },
@@ -882,7 +897,7 @@
                 setTimeout(() => {
                     diamond.remove();
                     style.remove();
-                }, duration * 1000);
+                }, duration * 4000);
             }
             
             if (isPlayerWin) {
@@ -986,7 +1001,7 @@
                 setTimeout(() => {
                     particle.remove();
                     style.remove();
-                }, duration * 1000);
+                }, duration * 3000);
             }
         }
         
@@ -1054,21 +1069,32 @@
             }
         }
         
-      function checkForWin() {
-            const giftConfig = gifts[currentGift];
-            if (Math.random() < 0.10 && !giftConfig.special) { // No win check for special gifts
-                let random = Math.random();
+   function checkForWin() {
+        const giftConfig = gifts[currentGift];
+        if (!giftConfig.special) {
+            // Get win multipliers scaled for current combo
+            const scaledMultipliers = getWinMultipliersForCombo(currentCombo);
+            
+            // Calculate total win probability (sum of all win probabilities except "no win")
+            const totalWinProbability = scaledMultipliers
+                .filter(win => win.multiplier > 0)
+                .reduce((sum, win) => sum + win.probability, 0);
+            
+            if (Math.random() < totalWinProbability) {
+                let random = Math.random() * totalWinProbability;
                 let cumulativeProbability = 0;
                 
-                for (const win of giftConfig.winMultipliers) {
+                // Check scaled multipliers (skip the "no win" option)
+                for (const win of scaledMultipliers.slice(1)) {
                     cumulativeProbability += win.probability;
                     if (random <= cumulativeProbability) {
                         return win;
                     }
                 }
             }
-            return null;
         }
+        return null;
+    }
         
         function countUp() {
             const totalCost = currentGiftCost * currentCombo;
@@ -1150,7 +1176,7 @@
                 if (!countUp()) {
                     stopAutoCounting();
                 }
-            }, isSpecialGift ? 1000 : 400); // Slower for special gifts
+            }, isSpecialGift ? 1000 : 350); // Slower for special gifts
         }
 
         function stopAutoCounting() {
