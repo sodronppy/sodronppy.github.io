@@ -1048,38 +1048,40 @@
                 // Dapatkan base multipliers berdasarkan harga gift
                 let baseMultipliers;
                 
+                
+                
                 if (currentGiftCost < 20) {
                     // Gift murah (di bawah 20) - lebih sering x500
                     baseMultipliers = [
-                        { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
-                        { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
-                        { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-                        { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-                        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.03,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-                        { multiplier: 650, probability: 0.0002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+                        { multiplier: 0,   probability: 0.60, text: "",           bigWin: false, color: "#feca57" },        
+                        { multiplier: 10,  probability: 0.025,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
+                        { multiplier: 20,  probability: 0.008,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+                        { multiplier: 50,  probability: 0.004, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+                        { multiplier: 100, probability: 0.002, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+                        { multiplier: 500, probability: 0.06,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 650, probability: 0.002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
                 } else {
                     // Gift mahal (20 ke atas) - x500 lebih sulit
                     baseMultipliers = [
-                        { multiplier: 0,   probability: 0.15, text: "",           bigWin: false, color: "#feca57" },        
-                        { multiplier: 10,  probability: 0.04,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
-                        { multiplier: 20,  probability: 0.0006,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-                        { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-                        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+                        { multiplier: 0,   probability: 0.70, text: "",           bigWin: false, color: "#feca57" },        
+                        { multiplier: 10,  probability: 0.015,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
+                        { multiplier: 20,  probability: 0.007,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+                        { multiplier: 50,  probability: 0.004, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+                        { multiplier: 100, probability: 0.0025, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
                         { multiplier: 500, probability: 0.003, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-                        { multiplier: 650, probability: 0.00001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+                        { multiplier: 650, probability: 0.0001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
                 }
 
                 // Tentukan bonus probabilitas berdasarkan combo
                 let comboBonus = 0;
                 if (currentCombo === 10) {
-                    comboBonus = 0.02; // +6 untuk combo x10
+                    comboBonus = 0.05; // +6 untuk combo x10
                 } else if (currentCombo === 20) {
-                    comboBonus = 0.07; // +7 untuk combo x20
+                    comboBonus = 0.10; // +7 untuk combo x20
                 } else if (currentCombo === 50) {
-                    comboBonus = 0.4; // +10 untuk combo x50
+                    comboBonus = 0.20; // +10 untuk combo x50
                 }
 
                 // Scale probabilities dengan combo bonus
