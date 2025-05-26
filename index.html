@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=0.46, maximum-scale=0.46, user-scalable=no">
+  <title>Game SodroN</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+     :root {
+      --primary-color: #2ecc71;
+      --secondary-color: #3498db;
+      --accent-color: #e74c3c;
+      --dark-color: #2c3e50;
+      --light-color: #ecf0f1;
+      --gold-color: #f1c40f;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      --glow: 0 0 15px rgba(46, 204, 113, 0.5);
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      text-align: center;
+      padding: 20px;
+      color: var(--light-color);
+      min-height: 100vh;
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: rgba(44, 62, 80, 0.8);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    h1 {
+      color: var(--gold-color);
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(to right, var(--gold-color), #e67e22);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .header {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .header::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 4px;
+      background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+      margin: 10px auto;
+      border-radius: 2px;
+    }
+    
+    #timer {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent-color);
+      margin: 15px 0;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 10px;
+      border-radius: 10px;
+      display: inline-block;
+      min-width: 200px;
+      border: 1px solid var(--accent-color);
+      box-shadow: 0 0 10px rgba(231, 76, 60, 0.3);
+    }
+    
+    .player-info {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .player-info span {
+      font-weight: bold;
+      color: var(--gold-color);
+    }
+    
+    .bets {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 25px;
+    }
+    
+    .bets button {
+      background: var(--dark-color);
+      color: var(--light-color);
+      padding: 12px 20px;
+      margin: 0;
+      border: none;
+      border-radius: 10px;
+      font-size: 1.9rem;
+      cursor: pointer;
+      transition: all 0.05s ease;
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .bets button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    
+    .bets button.active {
+      background: var(--primary-color);
+      color: var(--dark-color);
+      border: 2px solid var(--gold-color);
+      transform: scale(1.05);
+      box-shadow: var(--glow);
+    }
+    
+    .items {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      max-width: 700px;
+      margin: 30px auto;
+    }
+    
+    .item {
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid var(--secondary-color);
+      width: 135px;
+      height: 135px;
+      border-radius: 50%;
+      font-size: 4rem;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.01s ease;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(5px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    
+    .item.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+      filter: grayscale(80%);
+    }
+    
+    .bet-label {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: var(--gold-color);
+      color: var(--dark-color);
+      padding: 5px 10px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      min-width: 30px;
+      text-align: center;
+      z-index: 1;
+    }
+    
+    .multiplier {
+      position: absolute;
+      bottom: 10px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--gold-color);
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      padding: 2px 6px;
+    }
+    
+    #resultMessage {
+      font-size: 1.7rem;
+      margin: 20px;
+      color: var(--gold-color);
+      font-weight: bold;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 15px;
+      border: 1px solid var(--gold-color);
+      box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+    }
+    
+    .history {
+      margin-top: 40px;
+      background: rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .history h3 {
+      margin-bottom: 15px;
+      color: var(--light-color);
+      font-size: 1.2rem;
+    }
+    
+    .history span {
+      display: inline-block;
+      margin: 5px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      font-size: 2rem;
+      background: rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
+    
+    .history .latest {
+      background: var(--primary-color);
+      color: var(--dark-color);
+      font-weight: bold;
+      transform: scale(1.1);
+      box-shadow: 0 0 14px rgba(255, 223, 0, 0.9);
+    }
+    
+    .pulse {
+      animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background-color: var(--gold-color);
+      opacity: 0;
+    }
+    
+    .audio-panel {
+      position: fixed;
+      bottom: 10px;
+      right: 290px;
+      background: rgba(44, 62, 80, 0.9);
+      border-radius: 15px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(5px);
+      transform: translateY(150%);
+      transition: transform 0.3s ease;
+    }
+    
+    .audio-panel.show {
+      transform: translateY(0);
+    }
+    
+    .audio-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1001;
+      font-size: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    
+    .audio-control {
+      display: flex;
+      align-items: center;
+      margin: 10px 0;
+      color: white;
+    }
+    
+    .audio-control label {
+      margin-right: 10px;
+      width: 120px;
+      font-size: 14px;
+    }
+    
+    .audio-control input[type="range"] {
+      width: 200px;
+    }
+    
+    .audio-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      margin-left: 10px;
+    }
+    
+    .audio-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .audio-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 24px;
+    }
+    
+    .audio-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .audio-slider {
+      background-color: #2ecc71;
+    }
+    
+    input:checked + .audio-slider:before {
+      transform: translateX(26px);
+    }
+    
+    @media (max-width: 600px) {
+      .items {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+      
+      .item {
+        width: 80px;
+        height: 80px;
+        font-size: 2rem;
+      }
+      
+      .multiplier {
+        font-size: 0.9rem;
+        bottom: 8px;
+      }
+      
+      .bets button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+    }
+    
+    @keyframes confettiFall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(500px) rotate(360deg); opacity: 0; }
+    }
+    
+    @keyframes slideDown {
+      from { top: -50px; opacity: 0; }
+      to { top: 20px; opacity: 1; }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>🎮 Game SodroN 🎮</h1>
+    <div class="player-info">
+      Player: <span>SodroN</span> | Saldo: 💎<span id="saldo">100.000</span>
+    </div>
+  </div>
+
+  <div id="timer" class="pulse">Waktu betting: 8</div>
+  <div id="resultMessage"></div>
+
+  <div class="bets">
+    <button data-bet="100" onclick="setBetAmount(100)">Bet 100</button>
+    <button data-bet="500" onclick="setBetAmount(500)">Bet 500</button>
+    <button data-bet="1000" onclick="setBetAmount(1000)">Bet 1K</button>
+    <button data-bet="5000" onclick="setBetAmount(5000)">Bet 5K</button>
+    <button data-bet="10000" onclick="setBetAmount(10000)">Bet 10K</button>
+    <button onclick="repeatBet()" style="background: var(--accent-color);">Repeat Bet</button>
+  </div>
+
+  <div class="items" id="itemList"></div>
+
+  <div class="history">
+    <h2>👈[Histori Pengeluaran]</h2>
+    <div id="history"></div>
+  </div>
+</div>
+
+<!-- Audio elements -->
+<audio id="bgMusic" loop>
+  <source src="https://assets.mixkit.co/active_storage/sfx/2472/2472-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="betSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2597/2597-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="spinSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/254/254-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="resultSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2462/2462-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="winSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2576/2576-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="clickSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/2595/2595-preview.mp3" type="audio/mpeg">
+</audio>
+<audio id="errorSound">
+  <source src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Audio Control Panel -->
+<div class="audio-toggle" onclick="toggleAudioPanel()">🔊</div>
+<div class="audio-panel" id="audioPanel">
+  <h3 style="margin-top:0;color:var(--gold-color);text-align:center;">Audio Settings</h3>
+  <div class="audio-control">
+    <label>Background Music</label>
+    <label class="audio-switch">
+      <input type="checkbox" id="musicToggle" checked>
+      <span class="audio-slider"></span>
+    </label>
+  </div>
+  
+  <div class="audio-control">
+    <label>Music Volume</label>
+    <input type="range" id="musicVolume" min="0" max="1" step="0.1" value="0.3">
+  </div>
+  
+  <div class="audio-control">
+    <label>Sound Effects</label>
+    <label class="audio-switch">
+      <input type="checkbox" id="sfxToggle" checked>
+      <span class="audio-slider"></span>
+    </label>
+  </div>
+  
+  <div class="audio-control">
+    <label>SFX Volume</label>
+    <input type="range" id="sfxVolume" min="0" max="1" step="0.1" value="0.5">
+  </div>
+</div>
+
+<script>
+/* ---------- DATA ITEM DENGAN PROBABILITAS ---------- */
+const items = [
+  {emoji: "🐖", multiplier: 2, probability: 45, color: "#f39c12"},
+  {emoji: "🐕", multiplier: 5, probability: 18, color: "#e67e22"},
+  {emoji: "🐱", multiplier: 8, probability: 10, color: "#d35400"},
+  {emoji: "🐅", multiplier: 18, probability: 10, color: "#c0392b"},
+  {emoji: "🧸", multiplier: 66, probability: 2, color: "#9b59b6"},
+  {emoji: "🦍", multiplier: 50, probability: 3, color: "#3498db"},
+  {emoji: "🐒", multiplier: 100, probability: 1, color: "#1abc9c"},
+  {emoji: "🐘", multiplier: 88, probability: 1, color: "#2ecc71"},
+  {emoji: "🐼", multiplier: 30, probability: 5, color: "#f1c40f"},
+  {emoji: "🐸", multiplier: 20, probability: 5, color: "#27ae60"},
+];
+
+/* ---------- VARIABEL GAME ---------- */
+let saldo = 100000;
+let bettingTime = 8;
+let selectedBet = 100;
+let betsPerItem = {};
+let lastBets = {};
+let isBettingActive = false;
+let timer;
+let history = [];
+const emojiToIndex = {};
+let isMusicOn = true;
+let isSfxOn = true;
+
+/* ---------- ELEMENT DOM ---------- */
+const saldoDisplay = document.getElementById("saldo");
+const itemList = document.getElementById("itemList");
+const resultMsg = document.getElementById("resultMessage");
+const historyDisplay = document.getElementById("history");
+const bgMusic = document.getElementById("bgMusic");
+const betSound = document.getElementById("betSound");
+const spinSound = document.getElementById("spinSound");
+const resultSound = document.getElementById("resultSound");
+const winSound = document.getElementById("winSound");
+const clickSound = document.getElementById("clickSound");
+const errorSound = document.getElementById("errorSound");
+
+/* ---------- RENDER ITEM ---------- */
+items.forEach((item, idx) => {
+  emojiToIndex[item.emoji] = idx;
+  const div = document.createElement("div");
+  div.className = "item";
+  div.style.borderColor = item.color;
+  div.innerHTML = `<div class="bet-label" id="bet-${idx}" style="display:none">0</div>
+         ${item.emoji}
+         <div class="multiplier">x${item.multiplier}</div>`;
+  div.onclick = () => placeBet(idx);
+  itemList.appendChild(div);
+  betsPerItem[idx] = 0;
+});
+
+/* ---------- FUNGSI PILIH NOMINAL BET ---------- */
+function setBetAmount(val) {
+  selectedBet = val;
+  document.querySelectorAll('.bets button[data-bet]').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.bet) === val);
+  });
+  
+  playSound('click');
+}
+
+/* ---------- FUNGSI PASANG BET ---------- */
+function placeBet(idx) {
+  if (!isBettingActive) {
+    showAlert("Betting belum dimulai!");
+    return;
+  }
+  if (saldo < selectedBet) {
+    showAlert("Saldo tidak cukup!");
+    return;
+  }
+
+  saldo -= selectedBet;
+  saldoDisplay.textContent = saldo.toLocaleString();
+
+  betsPerItem[idx] += selectedBet;
+  const label = document.getElementById(`bet-${idx}`);
+  label.textContent = betsPerItem[idx].toLocaleString();
+  label.style.display = "block";
+  
+  // Animate the bet
+  const item = document.querySelectorAll('.item')[idx];
+  item.style.animation = 'none';
+  setTimeout(() => {
+    item.style.animation = 'pulse 0.5s';
+  }, 10);
+  
+  playSound('bet');
+}
+
+/* ---------- ALERT STYLISH ---------- */
+function showAlert(message) {
+  const alert = document.createElement('div');
+  alert.textContent = message;
+  alert.style.position = 'fixed';
+  alert.style.top = '20px';
+  alert.style.left = '50%';
+  alert.style.transform = 'translateX(-50%)';
+  alert.style.backgroundColor = '#e74c3c';
+  alert.style.color = 'white';
+  alert.style.padding = '15px 25px';
+  alert.style.borderRadius = '10px';
+  alert.style.zIndex = '1000';
+  alert.style.boxShadow = '0 4px 8px rgba(0,0,0,0.2)';
+  alert.style.animation = 'slideDown 0.5s, fadeOut 0.5s 2.5s';
+  document.body.appendChild(alert);
+  
+  setTimeout(() => {
+    document.body.removeChild(alert);
+  }, 3000);
+  
+  playSound('error');
+}
+
+/* ---------- AKTIF & NONAKTIF ITEM ---------- */
+function toggleItemClickable(enabled) {
+  document.querySelectorAll(".item").forEach(el => {
+    el.classList.toggle("disabled", !enabled);
+  });
+}
+
+/* ---------- MULAI RONDE BETTING ---------- */
+function startBettingRound() {
+  isBettingActive = true;
+  bettingTime = 20;
+  document.getElementById("timer").textContent = `Waktu betting: ${bettingTime}`;
+  document.getElementById("timer").classList.add('pulse');
+  toggleItemClickable(true);
+
+  timer = setInterval(() => {
+    bettingTime--;
+    document.getElementById("timer").textContent = `Waktu betting: ${bettingTime}`;
+    
+    // Change color when time is running out
+    if (bettingTime <= 5) {
+      document.getElementById("timer").style.color = '#ff7675';
+      document.getElementById("timer").style.animation = 'none';
+      setTimeout(() => {
+        document.getElementById("timer").style.animation = 'pulse 0.5s infinite';
+      }, 10);
+    }
+    
+    if (bettingTime <= 0) {
+      clearInterval(timer);
+      isBettingActive = false;
+      toggleItemClickable(false);
+      document.getElementById("timer").classList.remove('pulse');
+      runDraw();
+    }
+  }, 1000);
+}
+
+/* ---------- PILIH ITEM BERDASARKAN PROBABILITAS ---------- */
+function getRandomItemIndex() {
+  const r = Math.random() * 100;
+  let acc = 0;
+  for (let i = 0; i < items.length; i++) {
+    acc += items[i].probability;
+    if (r < acc) return i;
+  }
+  return items.length - 1; //fallback
+}
+
+/* ---------- EFEK SPIN & HASIL ---------- */
+function runDraw() {
+  let spinCount = 40, current = 0;
+  playSound('spin');
+  
+  const spinInterval = setInterval(() => {
+    const randIdx = Math.floor(Math.random() * items.length);
+    resultMsg.textContent = `Mengacak... ${items[randIdx].emoji}`;
+    current++;
+    if (current >= spinCount) {
+      clearInterval(spinInterval);
+      spinSound.pause();
+      revealResult();
+    }
+  }, 200);
+}
+
+function revealResult() {
+  playSound('result');
+  
+  const resultIdx = getRandomItemIndex();
+  const {emoji, multiplier, color} = items[resultIdx];
+  const betOnResult = betsPerItem[resultIdx] || 0;
+
+  let msg = `Hasil: ${emoji}`;
+  if (betOnResult > 0) {
+    const reward = betOnResult * multiplier;
+    saldo += reward;
+    msg += `  +💎${reward.toLocaleString()}`;
+    createConfetti();
+    setTimeout(() => playSound('win'), 500);
+  }
+  
+  saldoDisplay.textContent = saldo.toLocaleString();
+  resultMsg.innerHTML = msg;
+  resultMsg.style.borderColor = color;
+  updateHistory(emoji);
+
+  lastBets = {...betsPerItem};
+  
+  // bersihkan taruhan
+  for (const idx in betsPerItem) {
+    betsPerItem[idx] = 0;
+    document.getElementById(`bet-${idx}`).style.display = "none";
+  }
+
+  // jeda 5 detik
+  let wait = 5;
+  const delay = setInterval(() => {
+    resultMsg.innerHTML = `${msg} <small>&nbsp;&nbsp;Next dalam ${wait} detik...</small>`;
+    wait--;
+    if (wait < 0) {
+      clearInterval(delay);
+      resultMsg.textContent = "";
+      resultMsg.style.borderColor = 'var(--gold-color)';
+      startBettingRound();
+    }
+  }, 1000);
+}
+
+/* ---------- CONFETTI EFFECT ---------- */
+function createConfetti() {
+  const container = document.querySelector('.container');
+  for (let i = 0; i < 50; i++) {
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.top = -10 + 'px';
+    confetti.style.backgroundColor = getRandomColor();
+    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+    container.appendChild(confetti);
+    
+    const animationDuration = Math.random() * 3 + 2;
+    
+    confetti.style.animation = `confettiFall ${animationDuration}s linear forwards`;
+    
+    setTimeout(() => {
+      confetti.remove();
+    }, animationDuration * 1000);
+  }
+}
+
+function getRandomColor() {
+  const colors = ['#f1c40f', '#e74c3c', '#3498db', '#2ecc71', '#9b59b6'];
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+/* ---------- UPDATE HISTORY ---------- */
+function updateHistory(res) {
+  history.unshift(res);
+  if (history.length > 8) history.pop();
+  historyDisplay.innerHTML = history.map((e, i) => 
+    `<span class="${i === 0 ? 'latest' : ''}" style="background: ${items[emojiToIndex[e]].color}">${e}</span>`
+  ).join('');
+}
+
+function repeatBet() {
+  if (!isBettingActive) {
+    showAlert("Tidak bisa repeat bet di luar waktu betting!");
+    return;
+  }
+
+  let totalCost = 0;
+  for (let idx in lastBets) {
+    if (lastBets[idx] > 0) totalCost += lastBets[idx];
+  }
+
+  if (saldo < totalCost) {
+    showAlert("Saldo tidak cukup untuk repeat bet.");
+    return;
+  }
+
+  for (let idx in lastBets) {
+    idx = parseInt(idx);
+    const amount = lastBets[idx];
+    if (amount > 0) {
+      betsPerItem[idx] += amount;
+      saldo -= amount;
+      const label = document.getElementById(`bet-${idx}`);
+      label.textContent = betsPerItem[idx].toLocaleString();
+      label.style.display = "block";
+    }
+  }
+
+  saldoDisplay.textContent = saldo.toLocaleString();
+  playSound('click');
+}
+
+/* ---------- SOUND EFFECTS ---------- */
+function playSound(type) {
+  if (!isSfxOn) return;
+  
+  try {
+    let sound;
+    switch(type) {
+      case 'bet': sound = betSound; break;
+      case 'spin': sound = spinSound; break;
+      case 'result': sound = resultSound; break;
+      case 'win': sound = winSound; break;
+      case 'click': sound = clickSound; break;
+      case 'error': sound = errorSound; break;
+      default: return;
+    }
+    
+    sound.currentTime = 0;
+    sound.play();
+  } catch(e) {
+    console.log("Error playing sound:", e);
+  }
+}
+
+/* ========== AUDIO CONTROL FUNCTIONS ========== */
+function toggleAudioPanel() {
+  document.getElementById('audioPanel').classList.toggle('show');
+}
+
+// Set initial audio states
+document.addEventListener('DOMContentLoaded', function() {
+  // Music controls
+  const musicToggle = document.getElementById('musicToggle');
+  const musicVolume = document.getElementById('musicVolume');
+  
+  musicToggle.addEventListener('change', function() {
+    isMusicOn = this.checked;
+    if (isMusicOn) {
+      bgMusic.play().catch(e => console.log("Autoplay prevented"));
+    } else {
+      bgMusic.pause();
+    }
+  });
+  
+  musicVolume.addEventListener('input', function() {
+    bgMusic.volume = this.value;
+  });
+  
+  // SFX controls
+  const sfxToggle = document.getElementById('sfxToggle');
+  const sfxVolume = document.getElementById('sfxVolume');
+  
+  sfxToggle.addEventListener('change', function() {
+    isSfxOn = this.checked;
+  });
+  
+  sfxVolume.addEventListener('input', function() {
+    betSound.volume = this.value;
+    spinSound.volume = this.value;
+    resultSound.volume = this.value;
+    winSound.volume = this.value;
+    clickSound.volume = this.value;
+    errorSound.volume = this.value;
+  });
+  
+  // Initialize audio settings
+  bgMusic.volume = musicVolume.value;
+  betSound.volume = sfxVolume.value;
+  spinSound.volume = sfxVolume.value;
+  resultSound.volume = sfxVolume.value;
+  winSound.volume = sfxVolume.value;
+  clickSound.volume = sfxVolume.value;
+  errorSound.volume = sfxVolume.value;
+  
+  // Try to start music automatically
+  setTimeout(() => {
+    bgMusic.play().then(() => {
+      isMusicOn = true;
+      musicToggle.checked = true;
+    }).catch(e => {
+      console.log("Autoplay prevented, user must interact first");
+      isMusicOn = false;
+      musicToggle.checked = false;
+    });
+  }, 1000);
+});
+
+/* ---------- MULAI GAME ---------- */
+startBettingRound();
+
+// Prevent zooming on mobile devices
+document.addEventListener('gesturestart', function(e) {
+  e.preventDefault();
+});
+
+// Prevent double tap zoom
+let lastTap = 0;
+document.addEventListener('touchend', function(event) {
+  const now = (new Date()).getTime();
+  if (now - lastTap <= 300) {
+    event.preventDefault();
+  }
+  lastTap = now;
+}, false);
+</script>
+
+</body>
+</html>
