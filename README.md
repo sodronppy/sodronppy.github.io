@@ -1,2 +1,2 @@
 selamat datang di welcome!<br>
-<b>🛠️SEDANG MAINTENANCE 💡</b>
+<b>i`am SodroN</b>
