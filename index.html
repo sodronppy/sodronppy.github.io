@@ -573,17 +573,21 @@ function loadGameData() {
   const savedData = localStorage.getItem('gameSodronData');
   if (savedData) {
     const data = JSON.parse(savedData);
-    saldo = data.saldo || 100000;
+    // Pertahankan nilai saldo apa adanya (termasuk 0)
+    saldo = data.saldo !== undefined ? data.saldo : 100000;
     history = data.history || [];
     totalBetAmount = data.totalBet || 0;
     lastWinAmount = data.lastWin || 0;
     totalWinAmount = data.totalWin || 0;
-    
-    saldoDisplay.textContent = saldo.toLocaleString();
-    updateTotalBetDisplay();
-    updateWinDisplays();
-    updateHistoryDisplay();
+  } else {
+    // Hanya set ke 100.000 jika benar-benar tidak ada data tersimpan
+    saldo = 100000;
   }
+  
+  saldoDisplay.textContent = saldo.toLocaleString();
+  updateTotalBetDisplay();
+  updateWinDisplays();
+  updateHistoryDisplay();
 }
 
 function saveGameData() {
