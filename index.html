@@ -454,6 +454,17 @@
             font-weight: bold;
             transition: all 0.2s;
         }
+        
+        .gift-type-button22 {
+            padding: 5px 10px;
+            border-radius: 15px;
+            border: none;
+            background: brown;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
 
         .gift-type-button.active {
             background: #feca57;
@@ -678,7 +689,7 @@
         <div class="gift-type-selector">
             <button class="gift-type-button active" id="regular-gift-button">Lucky Player</button>
             <button class="gift-type-button" id="special-gift-button">Special Gift</button>
-           <button class="gift-type-button" onclick="window.open('https://sodronppy.github.io/Game%20SodroN.html', '_blank')">
+           <button class="gift-type-button22" onclick="window.open('https://sodronppy.github.io/Game%20SodroN.html', '_blank')">
   Game SodroN
 </button>
     
@@ -1073,14 +1084,14 @@
                 
                 
                 
-                if (currentGiftCost < 20) {
+                if (currentGiftCost < 1) {
                     // Gift murah (di bawah 20) - lebih sering x500
                     baseMultipliers = [
                         { multiplier: 0,   probability: 0.60, text: "",           bigWin: false, color: "#feca57" },        
                         { multiplier: 10,  probability: 0.025,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
                         { multiplier: 20,  probability: 0.008,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
                         { multiplier: 50,  probability: 0.004, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-                        { multiplier: 100, probability: 0.002, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+                        { multiplier: 100, probability: 0.0002, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
                         { multiplier: 500, probability: 0.03,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
                         { multiplier: 650, probability: 0.002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
@@ -1092,19 +1103,19 @@
                         { multiplier: 20,  probability: 0.0007,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
                         { multiplier: 50,  probability: 0.0004, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
                         { multiplier: 100, probability: 0.00025, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.001, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-                        { multiplier: 650, probability: 0.0001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+                        { multiplier: 500, probability: 0.01, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+                        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
                     ];
                 }
 
                 // Tentukan bonus probabilitas berdasarkan combo
                 let comboBonus = 0;
                 if (currentCombo === 10) {
-                    comboBonus = 0.05; // +6 untuk combo x10
+                    comboBonus = 0.6; // +6 untuk combo x10
                 } else if (currentCombo === 20) {
-                    comboBonus = 0.10; // +7 untuk combo x20
+                    comboBonus = 0.6; // +7 untuk combo x20
                 } else if (currentCombo === 50) {
-                    comboBonus = 0.20; // +10 untuk combo x50
+                    comboBonus = 0.6; // +10 untuk combo x50
                 }
 
                 // Scale probabilities dengan combo bonus
@@ -1114,7 +1125,7 @@
                     // Hitung bonus khusus untuk big wins (x500 dan x650)
                     let bonus = 0;
                     if (win.multiplier >= 500) {
-                        bonus = comboBonus * 0.002; // Konversi bonus ke desimal (6 -> 0.006)
+                        bonus = comboBonus * 0.005; // Konversi bonus ke desimal (6 -> 0.3)
                     }
                     
                     return {
