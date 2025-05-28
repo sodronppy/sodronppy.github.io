@@ -429,7 +429,7 @@
       border-radius: 50%;
       box-shadow: 0 0 30px var(--gold-color), 0 0 50px rgba(255, 215, 0, 0.1);
       z-index: 10;
-      transition: transform 0.6s ease-out;
+      transition: transform 0.7s ease-out;
       pointer-events: none;
       display: none;
     }
@@ -554,6 +554,10 @@
   <source src="https://assets.mixkit.co/active_storage/sfx/257/257-preview.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="spinningSound">
+  <source src="https://www.fesliyanstudios.com/play-mp3/6626" type="audio/mpeg">
+</audio>
+
 <!-- Audio Control Panel -->
 <div class="audio-toggle" onclick="toggleAudioPanel()">🔊</div>
 <div class="audio-panel" id="audioPanel">
@@ -634,6 +638,7 @@ const winSound = document.getElementById("winSound");
 const clickSound = document.getElementById("clickSound");
 const errorSound = document.getElementById("errorSound");
 const selectionBall = document.getElementById("selectionBall");
+const spinningSound = document.getElementById("spinningSound");
 
 /* ---------- FUNGSI LOAD/SAVE DATA ---------- */
 function loadGameData() {
@@ -844,12 +849,15 @@ function getRandomItemIndex() {
 
 /* ---------- EFEK SPIN & HASIL ---------- */
 function runDraw() {
-  let spinCount = 40, current = 0;
+  let spinCount = 80, current = 0;
   const finalResultIndex = getRandomItemIndex();
   playSound('spin');
+  playSound('spinning');
   
   // Show the selection ball
   selectionBall.style.display = 'block';
+  
+  // Rest of your existing runDraw function...
   
   // Start with a random position
   currentItemIndex = Math.floor(Math.random() * items.length);
@@ -895,6 +903,7 @@ function runDraw() {
           if (current >= spinCount + 10) {
             clearInterval(currentSpinInterval);
             spinSound.pause();
+            spinningSound.pause();
             
             // Move to final result with a little bounce effect
             let bounceCount = 0;
@@ -1077,6 +1086,7 @@ function playSound(type) {
       case 'win': sound = winSound; break;
       case 'click': sound = clickSound; break;
       case 'error': sound = errorSound; break;
+      case 'spinning': sound = spinningSound; break;
       default: return;
     }
     
@@ -1136,6 +1146,7 @@ document.addEventListener('DOMContentLoaded', function() {
     winSound.volume = this.value;
     clickSound.volume = this.value;
     errorSound.volume = this.value;
+    spinningSound.volume = this.value;
   });
   
   // Set initial SFX volume
@@ -1166,6 +1177,7 @@ document.addEventListener('touchend', function(event) {
   }
   lastTap = now;
 }, false);
+
 </script>
 
 </body>
