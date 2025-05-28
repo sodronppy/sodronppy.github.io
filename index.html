@@ -157,31 +157,42 @@
     }
     
     .items {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      max-width: 700px;
-      margin: 30px auto;
-    }
-    
-    .item {
-      background: rgba(255, 255, 255, 0.1);
-      border: 3px solid var(--secondary-color);
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      font-size: 6rem;
-      position: relative;
-      cursor: pointer;
-      transition: all 0.02s ease;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(5px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto;
-    }
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 500px;
+  height: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  
+  background: rgba(255, 255, 255, 0.1);
+  border: 3px solid var(--secondary-color);
+  box-shadow: 
+  inset 0 -5px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  position: relative;
+}
+
+.item {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--secondary-color);
+  width: 140px;
+  height: 110px;
+  border-radius: 50%;
+  font-size: 6rem;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.02s ease;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  /* Efek pemisah tambahan */
+  box-shadow: 0 0 0 5px rgba(0,0,0,0.1) inset;
+}
     
     .item.disabled {
       opacity: 0.5;
@@ -225,8 +236,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      
-      
     }
     
     .history {
@@ -267,7 +276,6 @@
     
     #lastWin, #totalWin, #totalBet {
       color: var(--primary-color);
-      
     }
     
     .history h3 {
@@ -412,6 +420,26 @@
       transform: translateX(26px);
     }
     
+    /* Selection Ball Styles */
+    .selection-ball {
+      position: absolute;
+      width: 50px;
+      height: 60px;
+      background: radial-gradient(circle at 30% 30%, #fff, var(--gold-color));
+      border-radius: 50%;
+      box-shadow: 0 0 30px var(--gold-color), 0 0 50px rgba(255, 215, 0, 0.1);
+      z-index: 10;
+      transition: transform 0.6s ease-out;
+      pointer-events: none;
+      display: none;
+    }
+    
+    .item.highlighted {
+      transform: scale(1.1);
+      box-shadow: 0 0 20px var(--gold-color);
+      z-index: 5;
+    }
+    
     @media (max-width: 600px) {
       .items {
         grid-template-columns: repeat(2, 1fr);
@@ -438,6 +466,11 @@
       .player-info {
         font-size: 1.5rem;
       }
+      
+      .selection-ball {
+        width: 40px;
+        height: 40px;
+      }
     }
     
     @keyframes confettiFall {
@@ -461,20 +494,19 @@
 <div class="container">
   <div class="header">
     <h1>🎮 Game SodroN 🎮</h1>
-    
   </div>
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
-
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
   <div id="timer" class="pulse">Waktu betting: 8</div>
-  
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
-
-<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
+  <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
 
   <div id="resultMessage"></div>
 
-  <div class="items" id="itemList"></div>
+  <div class="items" id="itemList">
+    <!-- Selection ball will be added here by JavaScript -->
+    <div class="selection-ball" id="selectionBall"></div>
+  </div>
   <div class="win-history-container">
     <small>Total Bet: <span id="totalBet">0</span> | Total Kemenangan: <span id="totalWin">0</span></small>
   </div>
@@ -583,6 +615,8 @@ let totalWinAmount = 0;
 const emojiToIndex = {};
 let isMusicOn = false; // Default OFF
 let isSfxOn = true;
+let currentSpinInterval;
+let currentItemIndex = 0;
 
 /* ---------- ELEMENT DOM ---------- */
 const saldoDisplay = document.getElementById("saldo");
@@ -599,6 +633,7 @@ const resultSound = document.getElementById("resultSound");
 const winSound = document.getElementById("winSound");
 const clickSound = document.getElementById("clickSound");
 const errorSound = document.getElementById("errorSound");
+const selectionBall = document.getElementById("selectionBall");
 
 /* ---------- FUNGSI LOAD/SAVE DATA ---------- */
 function loadGameData() {
@@ -772,6 +807,30 @@ function startBettingRound() {
   }, 1000);
 }
 
+/* ---------- POSITION SELECTION BALL ---------- */
+function positionBall(index) {
+  const items = document.querySelectorAll('.item');
+  if (index >= 0 && index < items.length) {
+    const item = items[index];
+    const itemRect = item.getBoundingClientRect();
+    const containerRect = itemList.getBoundingClientRect();
+    
+    const ballSize = parseInt(window.getComputedStyle(selectionBall).width);
+    const itemSize = parseInt(window.getComputedStyle(item).width);
+    
+    const x = itemRect.left - containerRect.left + (itemSize / 2) - (ballSize / 2);
+    const y = itemRect.top - containerRect.top + (itemSize / 2) - (ballSize / 2);
+    
+    selectionBall.style.transform = `translate(${x}px, ${y}px)`;
+    selectionBall.style.display = 'block';
+    
+    // Remove highlight from all items
+    items.forEach(i => i.classList.remove('highlighted'));
+    // Add highlight to current item
+    item.classList.add('highlighted');
+  }
+}
+
 /* ---------- PILIH ITEM BERDASARKAN PROBABILITAS ---------- */
 function getRandomItemIndex() {
   const r = Math.random() * 100;
@@ -786,24 +845,85 @@ function getRandomItemIndex() {
 /* ---------- EFEK SPIN & HASIL ---------- */
 function runDraw() {
   let spinCount = 40, current = 0;
+  const finalResultIndex = getRandomItemIndex();
   playSound('spin');
   
-  const spinInterval = setInterval(() => {
-    const randIdx = Math.floor(Math.random() * items.length);
-    resultMsg.textContent = `Mengacak... ${items[randIdx].emoji}`;
+  // Show the selection ball
+  selectionBall.style.display = 'block';
+  
+  // Start with a random position
+  currentItemIndex = Math.floor(Math.random() * items.length);
+  positionBall(currentItemIndex);
+  
+  currentSpinInterval = setInterval(() => {
+    currentItemIndex = (currentItemIndex + 1) % items.length;
+    positionBall(currentItemIndex);
+    
     current++;
     if (current >= spinCount) {
-      clearInterval(spinInterval);
-      spinSound.pause();
-      revealResult();
+      // Slow down at the end
+      if (current >= spinCount + 10) {
+        clearInterval(currentSpinInterval);
+        spinSound.pause();
+        
+        // Move to final result with a little bounce effect
+        let bounceCount = 0;
+        const bounceInterval = setInterval(() => {
+          if (bounceCount < 3) {
+            // Bounce to nearby items before landing on final
+            currentItemIndex = (finalResultIndex + (bounceCount % 2 === 0 ? -1 : 1)) % items.length;
+            if (currentItemIndex < 0) currentItemIndex = items.length - 1;
+            positionBall(currentItemIndex);
+            bounceCount++;
+          } else {
+            clearInterval(bounceInterval);
+            currentItemIndex = finalResultIndex;
+            positionBall(currentItemIndex);
+            setTimeout(() => {
+              revealResult(finalResultIndex);
+            }, 500);
+          }
+        }, 200);
+      } else if (current >= spinCount + 5) {
+        // Slow down more
+        clearInterval(currentSpinInterval);
+        currentSpinInterval = setInterval(() => {
+          currentItemIndex = (currentItemIndex + 1) % items.length;
+          positionBall(currentItemIndex);
+          current++;
+          
+          if (current >= spinCount + 10) {
+            clearInterval(currentSpinInterval);
+            spinSound.pause();
+            
+            // Move to final result with a little bounce effect
+            let bounceCount = 0;
+            const bounceInterval = setInterval(() => {
+              if (bounceCount < 3) {
+                // Bounce to nearby items before landing on final
+                currentItemIndex = (finalResultIndex + (bounceCount % 2 === 0 ? -1 : 1)) % items.length;
+                if (currentItemIndex < 0) currentItemIndex = items.length - 1;
+                positionBall(currentItemIndex);
+                bounceCount++;
+              } else {
+                clearInterval(bounceInterval);
+                currentItemIndex = finalResultIndex;
+                positionBall(currentItemIndex);
+                setTimeout(() => {
+                  revealResult(finalResultIndex);
+                }, 500);
+              }
+            }, 200);
+          }
+        }, 300);
+      }
     }
-  }, 200);
+  }, 100);
 }
 
-function revealResult() {
+function revealResult(resultIdx) {
   playSound('result');
   
-  const resultIdx = getRandomItemIndex();
   const {emoji, multiplier, color} = items[resultIdx];
   const betOnResult = betsPerItem[resultIdx] || 0;
 
@@ -843,6 +963,8 @@ function revealResult() {
       clearInterval(delay);
       resultMsg.textContent = "";
       resultMsg.style.borderColor = 'var(--gold-color)';
+      selectionBall.style.display = 'none';
+      document.querySelectorAll('.item').forEach(i => i.classList.remove('highlighted'));
       startBettingRound();
     }
   }, 1000);
@@ -873,7 +995,7 @@ function createConfetti() {
     
     setTimeout(() => {
       confetti.remove();
-    }, animationDuration * 1000);
+    }, animationDuration * 2000);
   }
 }
 
@@ -921,7 +1043,7 @@ function repeatBet() {
 /* ---------- RESET GAME ---------- */
 function resetGame() {
   if (confirm("Apakah Anda yakin ingin mereset game? Semua progress akan hilang.")) {
-    saldo = 750000;
+    saldo = 75000;
     history = [];
     totalBetAmount = 0;
     lastWinAmount = 0;
