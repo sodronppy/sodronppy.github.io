@@ -5,12 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>1489781 |SodroN</title>
     <style>
-    #gameContainer {
-            display: none; /* Awalnya disembunyikan *
-            border: none;
-        }
-        
-        * {
+       * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
@@ -683,7 +678,9 @@
         <div class="gift-type-selector">
             <button class="gift-type-button active" id="regular-gift-button">Lucky Player</button>
             <button class="gift-type-button" id="special-gift-button">Special Gift</button>
-            <button onclick="showGame()">Tampilkan Game</button>
+           <button class="gift-type-button" onclick="window.open('https://sodronppy.github.io/Game%20SodroN.html', '_blank')">
+  Game SodroN
+</button>
     
         </div>
 
@@ -784,12 +781,6 @@
 
     
     <script>
-        function showGame() {
-            const gameContainer = document.getElementById("gameContainer");
-            gameContainer.style.display = "block"; // Tampilkan iframe
-        }
-    
-   
         // Game elements
         const counter = document.getElementById('counter');
         const giftElement = document.getElementById('gift-element');
@@ -1569,6 +1560,5 @@
             }
         }
     </script>
-    <iframe id="gameContainer" src="Game%20SodroN.html"></iframe>
 </body>
 </html>
