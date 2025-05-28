@@ -143,11 +143,11 @@
     
     .item {
       background: rgba(255, 255, 255, 0.1);
-      border: 2px solid var(--secondary-color);
+      border: 3px solid var(--secondary-color);
       width: 125px;
       height: 125px;
       border-radius: 50%;
-      font-size: 4rem;
+      font-size: 5rem;
       position: relative;
       cursor: pointer;
       transition: all 0.01s ease;
@@ -210,25 +210,25 @@
     }
     
     .history {
-      margin-top: 40px;
+      margin-top: 20px;
       background: rgba(0, 0, 0, 0.2);
-      padding: 20px;
-      border-radius: 15px;
+      padding: 18px;
+      border-radius: 12px;
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
     .win-history-containerX {
       background: rgba(0, 0, 0, 0.3);
-      padding: 10px;
-      border-radius: 10px;
-      margin-bottom: 15px;
+      padding: 8px;
+      border-radius: 8px;
+      margin-bottom: 12px;
       border: 1px solid rgba(255, 215, 0, 0.3);
     }
     
     .win-history-container h3 {
       margin: 0;
       color: var(--gold-color);
-      font-size: 1rem;
+      font-size: 0.1rem;
     }
     
     .total-bet-containerX {
@@ -436,15 +436,27 @@
 <div class="container">
   <div class="header">
     <h1>🎮 Game SodroN 🎮</h1>
-    <div class="player-info">
-      Player: <span>SodroN</span> | Saldo: 💎<span id="saldo">100.000</span>
-    </div>
+    
   </div>
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
 
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
   <div id="timer" class="pulse">Waktu betting: 8</div>
+  
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="90px;" height="90px;">
+
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjrbCjx5n1921kpvkLj67LPwjWEmr3SHPYMtM96UONsoeXyphFqfAJTvotHZ2nJtvjaHy7uYLnZA7fx02KLL0iXcgxJD1torhgGR6czVMVLmBk5jb6NCZZD6tnxeg6vXQK-oyHh5PiYt0Q/s1600/monkey.gif" alt="SodroN" width="100px;" height="100px;">
+
   <div id="resultMessage"></div>
 
-  <div class="bets">
+  <div class="items" id="itemList"></div>
+  <div class="win-history-container">
+    <small>Total Bet: <span id="totalBet">0</span> | Total Kemenangan: <span id="totalWin">0</span></small>
+  </div>
+  <div class="total-bet-container">
+    <small>Kemenangan Sebelumnya: <span id="lastWin">0</span></small>
+  </div>
+    <div class="bets">
     <button data-bet="100" onclick="setBetAmount(100)">Bet 100</button>
     <button data-bet="500" onclick="setBetAmount(500)">Bet 500</button>
     <button data-bet="1000" onclick="setBetAmount(1000)">Bet 1K</button>
@@ -453,18 +465,13 @@
     <button onclick="repeatBet()" style="background: var(--dark-color);">Repeat Bet</button>
     <button onclick="resetGame()" style="background: var(--accent-color);">Reset Game</button>
   </div>
-
-  <div class="items" id="itemList"></div>
-  <div class="win-history-container">
-    <small>Total Bet: <span id="totalBet">0</span> | Total Kemenangan: <span id="totalWin">0</span></small>
-  </div>
-  <div class="total-bet-container">
-    <small>Kemenangan Terahir: <span id="lastWin">0</span></small>
-  </div>
   <div class="history">
     <h2>👈[Histori Pengeluaran]</h2>
     <div id="history"></div>
   </div>
+  <div class="player-info">
+    Player: <span>SodroN</span> | Saldo: 💎<span id="saldo">75.000</span>
+    </div>
 </div>
 
 <!-- Audio elements -->
@@ -504,7 +511,7 @@
   
   <div class="audio-control">
     <label>Music Volume</label>
-    <input type="range" id="musicVolume" min="0" max="1" step="0.1" value="0.3">
+    <input type="range" id="musicVolume" min="0" max="1" step="0.1" value="0.5">
   </div>
   
   <div class="audio-control">
@@ -517,7 +524,7 @@
   
   <div class="audio-control">
     <label>SFX Volume</label>
-    <input type="range" id="sfxVolume" min="0" max="1" step="0.1" value="0.5">
+    <input type="range" id="sfxVolume" min="0" max="1" step="0.1" value="0.9">
   </div>
 </div>
 
@@ -537,7 +544,7 @@ const items = [
 ];
 
 /* ---------- VARIABEL GAME ---------- */
-let saldo = 100000;
+let saldo = 75000;
 let bettingTime = 8;
 let selectedBet = 100;
 let betsPerItem = {};
@@ -574,14 +581,14 @@ function loadGameData() {
   if (savedData) {
     const data = JSON.parse(savedData);
     // Pertahankan nilai saldo apa adanya (termasuk 0)
-    saldo = data.saldo !== undefined ? data.saldo : 100000;
+    saldo = data.saldo !== undefined ? data.saldo : 75000;
     history = data.history || [];
     totalBetAmount = data.totalBet || 0;
     lastWinAmount = data.lastWin || 0;
     totalWinAmount = data.totalWin || 0;
   } else {
-    // Hanya set ke 100.000 jika benar-benar tidak ada data tersimpan
-    saldo = 100000;
+    // Hanya set ke 75.000 jika benar-benar tidak ada data tersimpan
+    saldo = 75000;
   }
   
   saldoDisplay.textContent = saldo.toLocaleString();
@@ -672,7 +679,7 @@ function placeBet(idx) {
   const item = document.querySelectorAll('.item')[idx];
   item.style.animation = 'none';
   setTimeout(() => {
-    item.style.animation = 'pulse 0.5s';
+    item.style.animation = 'pulse 0.2s';
   }, 10);
   
   playSound('bet');
