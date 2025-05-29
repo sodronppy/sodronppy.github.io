@@ -1082,63 +1082,78 @@
                 // Dapatkan base multipliers berdasarkan harga gift
                 let baseMultipliers;
                 
-                
-                
-                if (currentGiftCost < 1) {
-                    // Gift murah (di bawah 20) - lebih sering x500
-                    baseMultipliers = [
-                        { multiplier: 0,   probability: 0.60, text: "",           bigWin: false, color: "#feca57" },        
-                        { multiplier: 10,  probability: 0.025,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
-                        { multiplier: 20,  probability: 0.008,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-                        { multiplier: 50,  probability: 0.004, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-                        { multiplier: 100, probability: 0.0002, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.03,  text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-                        { multiplier: 650, probability: 0.002, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
-                    ];
-                } else {
-                    // Gift mahal (20 ke atas) - x500 lebih sulit
-                    baseMultipliers = [
-                        { multiplier: 0,   probability: 0.20, text: "",           bigWin: false, color: "#feca57" },        
-                        { multiplier: 10,  probability: 0.005,  text: "x10 Times",  bigWin: false, color: "#feca57" },  
-                        { multiplier: 20,  probability: 0.007,  text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-                        { multiplier: 50,  probability: 0.0003, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-                        { multiplier: 100, probability: 0.0020, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-                        { multiplier: 500, probability: 0.001, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-                        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
-                    ];
-                }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+               if (currentGiftCost < 20) {
+    // Cheap gifts (below 20) - slightly better than strict version
+    baseMultipliers = [
+        { multiplier: 0,   probability: 0.65, text: "",           bigWin: false, color: "#feca57" },        
+        { multiplier: 10,  probability: 0.03, text: "x10 Times",  bigWin: false, color: "#feca57" },  
+        { multiplier: 20,  probability: 0.01, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+        { multiplier: 50,  probability: 0.005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+        { multiplier: 100, probability: 0.0005, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+        { multiplier: 500, probability: 0.02, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+    ];
+} else {
+    // Expensive gifts (20 and above) - still rare but not impossible
+    baseMultipliers = [
+        { multiplier: 0,   probability: 0.70, text: "",           bigWin: false, color: "#feca57" },        
+        { multiplier: 10,  probability: 0.01, text: "x10 Times",  bigWin: false, color: "#feca57" },  
+        { multiplier: 20,  probability: 0.008, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+        { multiplier: 50,  probability: 0.0005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+        { multiplier: 100, probability: 0.001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+        { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+        { multiplier: 650, probability: 0.0005, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+    ];
+}
 
-                // Tentukan bonus probabilitas berdasarkan combo
-                let comboBonus = 0;
-                if (currentCombo === 10) {
-                    comboBonus = 0.08; // +6 untuk combo x10
-                } else if (currentCombo === 20) {
-                    comboBonus = 0.08; // +7 untuk combo x20
-                } else if (currentCombo === 50) {
-                    comboBonus = 0.09; // +10 untuk combo x50
-                }
+// Combo bonus - balanced (not too strong, not too weak)
+let comboBonus = 0;
+if (currentCombo === 10) {
+    comboBonus = 0.05; // +5% win chance boost
+} else if (currentCombo === 20) {
+    comboBonus = 0.06; // +6% for 20x combo
+} else if (currentCombo === 50) {
+    comboBonus = 0.07; // +7% for 50x combo
+}
 
-                // Scale probabilities dengan combo bonus
-                const scaledMultipliers = baseMultipliers.map(win => {
-                    if (win.multiplier === 0) return win;
-                    
-                    // Hitung bonus khusus untuk big wins (x500 dan x650)
-                    let bonus = 0;
-                    if (win.multiplier >= 500) {
-                        bonus = comboBonus * 0.17; // Konversi bonus ke desimal (6 -> 0.3)
-                    }
-                    
-                    return {
-                        ...win,
-                        probability: win.probability + bonus
-                    };
-                });
+// Apply combo bonus (favor small wins slightly more than big wins)
+const scaledMultipliers = baseMultipliers.map(win => {
+    if (win.multiplier === 0) return win;
+    
+    let bonus = 0;
+    if (win.multiplier >= 500) {
+        bonus = comboBonus * 0.12; // Big wins get a smaller boost
+    } else if (win.multiplier >= 100) {
+        bonus = comboBonus * 0.08; // Medium wins get a moderate boost
+    } else {
+        bonus = comboBonus * 0.15; // Small wins get the biggest boost
+    }
+    
+    return {
+        ...win,
+        probability: win.probability + bonus
+    };
+});
 
-                // Hitung total win probability
-                const totalWinProbability = scaledMultipliers
-                    .filter(win => win.multiplier > 0)
-                    .reduce((sum, win) => sum + win.probability, 0);
-                
+// Ensure total win probability doesn't exceed 40% (cheap) or 25% (expensive)
+const maxProbability = currentGiftCost < 1 ? 0.40 : 0.25;
+const totalWinProbability = scaledMultipliers
+    .filter(win => win.multiplier > 0)
+    .reduce((sum, win) => sum + win.probability, 0);
+
+if (totalWinProbability > maxProbability) {
+    const scaleFactor = maxProbability / totalWinProbability;
+    scaledMultipliers.forEach(win => {
+        if (win.multiplier > 0) {
+            win.probability *= scaleFactor;
+        }
+    });
+}
+
+// Determine if player wins
+
                 if (Math.random() < totalWinProbability) {
                     let random = Math.random() * totalWinProbability;
                     let cumulativeProbability = 0;
@@ -1153,6 +1168,8 @@
             }
             return null;
         }
+        
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         function countUp() {
             const totalCost = currentGiftCost * currentCombo;
@@ -1549,7 +1566,7 @@
         Maka diamonds akan bertambah 💎75.000<br>
     <br>
         </left><center>
-       <a style="color: red;"> Jika Web ini tidak berfungsi, kemungkinan Anda menggunakan Browser Jenis Lama.<br> GUNAKAN BROWSER MODERN atau Google Chrome ..<br></a><br><br>Game dan Jp2 adalah dua file, belum singkron akun,<br>males mikir dan belum ada database...<br>
+       <a style="color: red;"> Jika Web ini tidak berfungsi, kemungkinan Anda menggunakan Browser Jenis Lama.<br> GUNAKAN BROWSER MODERN atau Google Chrome ...<br></a><br><br>Game dan Jp2 adalah dua file, belum singkron akun,<br>males mikir dan belum ada database...<br>
         Aplikasi Game & Jp2 ini aku buat dengan penuh Cinta<br><a style="color: green;"> <u> @2025-SodroN</u> </a></center>
     </div>
 
