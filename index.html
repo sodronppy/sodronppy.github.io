@@ -1084,51 +1084,51 @@
                 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
-               if (currentGiftCost < 20) {
-    // Cheap gifts (below 20) - slightly better than strict version
+              if (currentGiftCost < 20) {
+    // Cheap gifts - extremely low win rates
     baseMultipliers = [
-        { multiplier: 0,   probability: 0.65, text: "",           bigWin: false, color: "#feca57" },        
-        { multiplier: 10,  probability: 0.03, text: "x10 Times",  bigWin: false, color: "#feca57" },  
-        { multiplier: 20,  probability: 0.01, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-        { multiplier: 50,  probability: 0.005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-        { multiplier: 100, probability: 0.0005, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-        { multiplier: 500, probability: 0.02, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-        { multiplier: 650, probability: 0.001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+        { multiplier: 0,   probability: 0.92, text: "",           bigWin: false, color: "#feca57" },        
+        { multiplier: 10,  probability: 0.008, text: "x10 Times",  bigWin: false, color: "#feca57" },  
+        { multiplier: 20,  probability: 0.002, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+        { multiplier: 50,  probability: 0.0005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+        { multiplier: 500, probability: 0.001, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+        { multiplier: 650, probability: 0.00005, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
     ];
 } else {
-    // Expensive gifts (20 and above) - still rare but not impossible
+    // Expensive gifts - near impossible to win
     baseMultipliers = [
-        { multiplier: 0,   probability: 0.70, text: "",           bigWin: false, color: "#feca57" },        
-        { multiplier: 10,  probability: 0.01, text: "x10 Times",  bigWin: false, color: "#feca57" },  
-        { multiplier: 20,  probability: 0.008, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
-        { multiplier: 50,  probability: 0.0005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
-        { multiplier: 100, probability: 0.001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
-        { multiplier: 500, probability: 0.002, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
-        { multiplier: 650, probability: 0.0005, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
+        { multiplier: 0,   probability: 0.97, text: "",           bigWin: false, color: "#feca57" },        
+        { multiplier: 10,  probability: 0.001, text: "x10 Times",  bigWin: false, color: "#feca57" },  
+        { multiplier: 20,  probability: 0.0005, text: "x20 Times",  bigWin: false, color: "#42b6e6" },  
+        { multiplier: 50,  probability: 0.00005, text: "x50 Times",  bigWin: false, color: "#9b59b6" }, 
+        { multiplier: 100, probability: 0.0001, text: "x100 Times", bigWin: false, color: "#2ecc71" }, 
+        { multiplier: 500, probability: 0.0001, text: "x500 Times", bigWin: true,  color: "#ff6b6b" },
+        { multiplier: 650, probability: 0.00001, text: "x650 Times", bigWin: true,  color: "#ff3e3e" }  
     ];
 }
 
-// Combo bonus - balanced (not too strong, not too weak)
+// Combo bonuses almost useless (very tiny boost)
 let comboBonus = 0;
 if (currentCombo === 10) {
-    comboBonus = 0.05; // +5% win chance boost
+    comboBonus = 0.005; // 0.5% boost (almost nothing)
 } else if (currentCombo === 20) {
-    comboBonus = 0.06; // +6% for 20x combo
+    comboBonus = 0.008; // 0.8% boost
 } else if (currentCombo === 50) {
-    comboBonus = 0.07; // +7% for 50x combo
+    comboBonus = 0.01; // 1% boost (max)
 }
 
-// Apply combo bonus (favor small wins slightly more than big wins)
+// Apply tiny bonuses (big wins get almost nothing)
 const scaledMultipliers = baseMultipliers.map(win => {
     if (win.multiplier === 0) return win;
     
     let bonus = 0;
     if (win.multiplier >= 500) {
-        bonus = comboBonus * 0.12; // Big wins get a smaller boost
+        bonus = comboBonus * 0.03; // Big wins get almost no help
     } else if (win.multiplier >= 100) {
-        bonus = comboBonus * 0.08; // Medium wins get a moderate boost
+        bonus = comboBonus * 0.02; // Medium wins get tiny boost
     } else {
-        bonus = comboBonus * 0.15; // Small wins get the biggest boost
+        bonus = comboBonus * 0.05; // Small wins get a little more
     }
     
     return {
@@ -1137,8 +1137,8 @@ const scaledMultipliers = baseMultipliers.map(win => {
     };
 });
 
-// Ensure total win probability doesn't exceed 40% (cheap) or 25% (expensive)
-const maxProbability = currentGiftCost < 20 ? 0.40 : 0.25;
+// Strict probability caps (player almost never wins)
+const maxProbability = currentGiftCost < 20 ? 0.15 : 0.05; // Max 15% (cheap), 5% (expensive)
 const totalWinProbability = scaledMultipliers
     .filter(win => win.multiplier > 0)
     .reduce((sum, win) => sum + win.probability, 0);
@@ -1152,7 +1152,7 @@ if (totalWinProbability > maxProbability) {
     });
 }
 
-// Determine if player wins
+// Win check (very unlikely)
 
                 if (Math.random() < totalWinProbability) {
                     let random = Math.random() * totalWinProbability;
@@ -1566,8 +1566,8 @@ if (totalWinProbability > maxProbability) {
         Maka diamonds akan bertambah 💎75.000<br>
     <br>
         </left><center>
-       <a style="color: red;"> Jika Web ini tidak berfungsi, kemungkinan Anda menggunakan Browser Jenis Lama.<br> GUNAKAN BROWSER MODERN atau Google Chrome ...<br></a><br><br>Game dan Jp2 adalah dua file, belum singkron akun,<br>males mikir dan belum ada database...<br>
-        Aplikasi Game & Jp2 ini aku buat dengan penuh Cinta.<br><a style="color: green;"> <u> @2025-SodroN</u> </a></center>
+       <a style="color: red;"> Jika Web ini tidak berfungsi, kemungkinan Anda menggunakan Browser Jenis Lama.<br> GUNAKAN BROWSER MODERN atau Google Chrome ..<br></a><br><br>Game dan Jp2 adalah dua file, belum singkron akun,<br>males mikir dan belum ada database...<br>
+        Aplikasi Game & Jp2 ini aku buat dengan penuh Cinta<br><a style="color: green;"> <u> @2025-SodroN</u> </a></center>
     </div>
 
     <script>
