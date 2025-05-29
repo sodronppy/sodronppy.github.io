@@ -1138,7 +1138,7 @@ const scaledMultipliers = baseMultipliers.map(win => {
 });
 
 // Ensure total win probability doesn't exceed 40% (cheap) or 25% (expensive)
-const maxProbability = currentGiftCost < 1 ? 0.40 : 0.25;
+const maxProbability = currentGiftCost < 20 ? 0.40 : 0.25;
 const totalWinProbability = scaledMultipliers
     .filter(win => win.multiplier > 0)
     .reduce((sum, win) => sum + win.probability, 0);
@@ -1567,7 +1567,7 @@ if (totalWinProbability > maxProbability) {
     <br>
         </left><center>
        <a style="color: red;"> Jika Web ini tidak berfungsi, kemungkinan Anda menggunakan Browser Jenis Lama.<br> GUNAKAN BROWSER MODERN atau Google Chrome ...<br></a><br><br>Game dan Jp2 adalah dua file, belum singkron akun,<br>males mikir dan belum ada database...<br>
-        Aplikasi Game & Jp2 ini aku buat dengan penuh Cinta<br><a style="color: green;"> <u> @2025-SodroN</u> </a></center>
+        Aplikasi Game & Jp2 ini aku buat dengan penuh Cinta.<br><a style="color: green;"> <u> @2025-SodroN</u> </a></center>
     </div>
 
     <script>
