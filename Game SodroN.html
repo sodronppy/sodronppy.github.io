@@ -523,6 +523,12 @@
       animation: jackpotWin 1s infinite;
       box-shadow: 0 0 50px var(--jackpot-color);
     }
+    .history-icon {
+  width: 55px;
+  height: 55px;
+  vertical-align: middle;
+  object-fit: contain;
+}
     
     @media (max-width: 600px) {
       .items {
@@ -714,7 +720,8 @@ const jackpotItem = {
   multiplier: 300,
   probability: 0.3, // 0.3% chance default
   color: "#ff0000",
-  image: "https://s14.gifyu.com/images/bsQ25.png"
+  image: "https://s14.gifyu.com/images/bsQ25.png",
+  historyIcon: "https://s14.gifyu.com/images/bx3EL.png"
 };
 
 /* ---------- VARIABEL GAME ---------- */
@@ -805,7 +812,9 @@ function updateWinDisplays() {
 function updateHistoryDisplay() {
   historyDisplay.innerHTML = history.map((e, i) => {
     if (e === "JACKPOT") {
-      return `<span class="${i === 0 ? 'latest' : ''}" style="background: ${jackpotItem.color}">${e}</span>`;
+      return `<span class="${i === 0 ? 'latest' : ''}" style="background: ${jackpotItem.color}">
+                <img src="${jackpotItem.historyIcon}" class="history-icon" alt="JACKPOT">
+              </span>`;
     } else {
       return `<span class="${i === 0 ? 'latest' : ''}" style="background: ${items[emojiToIndex[e]].color}">${e}</span>`;
     }
